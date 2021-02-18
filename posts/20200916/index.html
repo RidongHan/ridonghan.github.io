@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="http://hanrd.tech/posts/20200916/">
+    
+    
+    <title>AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="AAAI 2020,Relation Extraction">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="摘要 远程监督由于其强烈的假设，深受噪音数据标签的影响。 大多数现有工作都在bag级别采用选择性注意力机制来降噪。但是其无法胜任单句子bag的情况。 本文提出：  提出一种实体感知词嵌入方法(entity-aware word embedding),来整合位置信息和头&#x2F;尾实体embedding，以突出此任务的实体本质；  以PCNN捕获局部依存关系，并提出一种自注意力机制（self-attenti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction">
+<meta property="og:url" content="http://hanrd.tech/posts/20200916/index.html">
+<meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
+<meta property="og:description" content="摘要 远程监督由于其强烈的假设，深受噪音数据标签的影响。 大多数现有工作都在bag级别采用选择性注意力机制来降噪。但是其无法胜任单句子bag的情况。 本文提出：  提出一种实体感知词嵌入方法(entity-aware word embedding),来整合位置信息和头&#x2F;尾实体embedding，以突出此任务的实体本质；  以PCNN捕获局部依存关系，并提出一种自注意力机制（self-attenti">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hanrd.tech/posts/20200916/model.jpg">
+<meta property="article:published_time" content="2020-09-16T12:15:08.000Z">
+<meta property="article:modified_time" content="2020-09-21T02:29:02.000Z">
+<meta property="article:author" content="韩日东">
+<meta property="article:tag" content="AAAI 2020">
+<meta property="article:tag" content="Relation Extraction">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hanrd.tech/posts/20200916/model.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+            
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"   >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">韩日东</h5>
+          
+            <div id="mymotto" class="motto"></div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/categories"  >
+                    <i class="icon icon-lg icon-th-list"></i>
+                    <span>分 类</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/about"  >
+                    <i class="icon icon-lg icon-smile-o"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Email" href="mailto:hanrd@foxmail.com" target="_parent"title="Email" >
+                <i class="icon icon-lg icon-envelope-o envelope-o"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/RidongHan" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+              <a class="nav2item" data-title="微博" href="https://weibo.com/u/5728752984" target="_blank"title="微博" >
+                <i class="icon icon-lg icon-weibo weibo"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="../../atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+            <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要"><span class="post-toc-number">1.</span> <span class="post-toc-text">摘要</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#拟解决的问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">拟解决的问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#创新点"><span class="post-toc-number">3.</span> <span class="post-toc-text">创新点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Model"><span class="post-toc-number">4.</span> <span class="post-toc-text">Model</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Entity-Aware-Embedding"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Entity-Aware Embedding</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#self-Attention-Enhanced-Neural-Network"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">self-Attention Enhanced Neural Network</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#PCNN"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">PCNN</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Self-Attention-Mechanism"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">Self-Attention Mechanism</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Selective-Gate"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Selective Gate</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Output"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Output</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#LOSS"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">LOSS</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-AAAI-2020-Self-Attention-Enhanced-Selective-Gate-with-Entity-Aware-Embedding-for-Distantly-Supervised-Relation-Extraction"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2020-09-16 20:15:08" datetime="2020-09-16T12:15:08.000Z"  itemprop="datePublished">2020-09-16</time>
+
+            <br id="mybreak"/>
+            
+	<i class="icon icon-lg icon-folder-o"></i>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Relation-Extraction-Notes/">Relation Extraction Notes</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Relation-Extraction-Notes/AAAI-2020/">AAAI 2020</a></li></ul></li></ul>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">5</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><blockquote>
+<p>远程监督由于其强烈的假设，深受噪音数据标签的影响。</p>
+<p>大多数现有工作都在bag级别采用选择性注意力机制来降噪。<br>但是其无法胜任<strong>单句子bag</strong>的情况。</p>
+<p>本文提出：</p>
+<ul>
+<li>提出一种实体感知词嵌入方法(<strong>entity-aware word embedding</strong>),来<strong>整合位置信息和头/尾实体embedding，以突出此任务的实体本质</strong>； </li>
+<li>以PCNN捕获局部依存关系，并提出一种自注意力机制（<strong>self-attention</strong>）来捕获全局依存关系，作为PCNN的补充； </li>
+<li>设计一个基于池的门(<strong>pooling-equipped gate</strong>)，来代替选择性注意力机制，该门基于上下文表示，作为聚合器生成bag级别的表示。</li>
+</ul>
+<p>与<strong>选择性注意力机制</strong>相比，该门控机制的主要<strong>优点</strong>是，<strong>即使bag中只有一个句子，也可以稳定执行，从而在所有训练数据中保持一致</strong>。</p>
+<p>在NYT 2010数据集上实验表明，该模型在AUC和top-n指标方面均达到SOTA性能。</p>
+</blockquote>
+<h1 id="拟解决的问题"><a href="#拟解决的问题" class="headerlink" title="拟解决的问题"></a>拟解决的问题</h1><ul>
+<li><strong>单句子bag</strong>在实际数据集上占比很高，并且单句子bag的标签很可能是错误的，即噪音bag；</li>
+<li><strong>单句子bag</strong>的情况，会迫使基于选择性注意力机制的模型，返回单值标量的权重，导致注意力模块不能充分训练，从而影响性能。</li>
+</ul>
+<h1 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h1><ul>
+<li>使用实体嵌入(entity embedding)和相对位置嵌入(position embedding)，并<strong>提出一种实体感知嵌入方法(entity-aware embedding approach)将实体信息动态集成到每个单词嵌入中，产生更具表达力的表示</strong>; </li>
+<li>为增强PCNN捕获长期依赖的能力（Yu等人，2018），<strong>开发一种轻量级的自注意机制来捕获丰富的依赖信息</strong>，为PCNN产生互补依赖表示;</li>
+<li><strong>设计一个选择性门结构（selective gate），将句子级别表示聚合为bag级别的表示</strong>。</li>
+</ul>
+<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>(<strong>注: 本人认为本篇论文中的公式描述和模型图片都有点错误</strong>)<br></p><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200916/model.jpg" alt="结构图" title="">
+                </div>
+                <div class="image-caption">结构图</div>
+            </figure><p></p>
+<h2 id="Entity-Aware-Embedding"><a href="#Entity-Aware-Embedding" class="headerlink" title="Entity-Aware Embedding"></a>Entity-Aware Embedding</h2><p>计算过程如下：</p>
+<p>1.首先针对bag中的每一个句子：</p>
+<p>$s= [\omega_1,\omega_2,…,\omega_n]$, 词嵌入表示为 $X^{(\omega)} = [v_1,v_2,…,v_n] \in R^{d_\omega \times n}$</p>
+<p>2.加入相对位置嵌入(相对距离), 位置嵌入表示为 $ r_i^{e_h} 、r_i^{e_t} \in R^{d_r}$：</p>
+<p>$ X^{(p)} = [x_1^{(p)}, x_2^{(p)},…,x_n^{(p)}] \in R^{d_p \times n} , \forall x_i^{(p)} = [v_i; r_i^{e_h}; r_i^{e_t}], 其中d_p = d_\omega + 2 \times d_r$</p>
+<p>3.加入实体嵌入, 头尾实体嵌入表示为$v^{(h)}、v^{(t)}$：</p>
+<p>$X^{(e)} = [x_1^{(e)}, x_2^{(e)},…,x_n^{(e)}] \in R^{3d_\omega \times n}, \forall x_i^{(e)} = [v_i; v^{(h)};v^{(t)}] \in R^{3d_\omega}$</p>
+<p>4.gate机制计算：</p>
+<p>$ \alpha=sigmoid(\lambda \cdot (W^{(g1)}X^{(e)} + b^{(g1)})) \in R^{d_h \times n}, W^{(g1)} \in R^{d_h \times 3d_\omega},  \lambda是超参数$</p>
+<p>$\tilde{X}^{(p)} = \tanh(W^{(g2)}X^{(p)} + b^{(g2)}) \in R^{d_h \times n}, W^{(g2)} \in R^{d_h \times d_p}$</p>
+<p>$X =\alpha \cdot (W^{(X)} X^{(e)}+ b^{(X)}) + (1-\alpha) \cdot \tilde X ^{(p)} \in R^{d_h \times n}, 其中W^{(X)} \in R^{d_h \times 3d_\omega}$</p>
+<p>得到的$X$,被认为是所有单词的entity-aware embedding。</p>
+<h2 id="self-Attention-Enhanced-Neural-Network"><a href="#self-Attention-Enhanced-Neural-Network" class="headerlink" title="self-Attention Enhanced Neural Network"></a>self-Attention Enhanced Neural Network</h2><blockquote>
+<p>之前的一些工作（Vaswani等人，2017）发现，CNN由于缺乏衡量长期依赖的能力，即使堆叠多层，也无法在大多数NLP Benchmarks上达到SOTA性能。</p>
+</blockquote>
+<h3 id="PCNN"><a href="#PCNN" class="headerlink" title="PCNN"></a>PCNN</h3><p>针对每一个句子的计算公式</p>
+<p>一维卷积操作可以表示为：</p>
+<p>$ H^{(c)} = 1D_CNN(X;W^{(c)}; b^{(c)}) \in R^{d_c \times n}, d_c是输出通道个数(卷积核个数)$</p>
+<p>所得output根据头尾实体位置划分：</p>
+<p>$H^{(c)} = [H^{(1)},H^{(2)},H^{(3)}]$</p>
+<p>$s = \tanh([Pool(H^{(1)}); Pool(H^{(2)}); Pool(H^{(3)})]) \in R^{3d_c}$</p>
+<h3 id="Self-Attention-Mechanism"><a href="#Self-Attention-Mechanism" class="headerlink" title="Self-Attention Mechanism"></a>Self-Attention Mechanism</h3><p>计算公式:</p>
+<p>$A = W^{(\alpha2)} \sigma(W^{(\alpha1)}X + b^{(\alpha1)}) + b^{(\alpha2)}, 其中W^{(\alpha1)}、W^{(\alpha2)} \in R^{d_h \times d_h}, \sigma 是激活函数$ </p>
+<p>$P^{(A)} = softmax(A) \in R^{d_h \times n}$</p>
+<p>$u = \sum P^{(A)} \odot X \in R^{d_h}$</p>
+<h2 id="Selective-Gate"><a href="#Selective-Gate" class="headerlink" title="Selective Gate"></a>Selective Gate</h2><p>给定一个包含m个句子的bag，通过PCNN、Self-Attention得到的句子表示为</p>
+<p>$S = [s_1,s_2,…,s_m] \in R^{3d_c \times m}$, $U = [u_1,u_2,…,u_m] \in R^{d_h \times m}$</p>
+<p>计算公式如下：</p>
+<p>1.首先逐句生成gate值，该值控制该句子的表示是否应该被保留</p>
+<p>$g_j = sigmoid(W^{(g1)} \sigma(W^{(g2)}u_j + b^{(g2)}) + b^{(g1)}) \in R^{3d_c}, \forall j=1,…,m$</p>
+<p>$W^{(g1)} \in R^{3d_c \times d_h}, W^{(g2)} \in R^{d_h \times d_h} , \sigma(\cdot)是激活函数$</p>
+<p>2.对PCNN的句子表示加权求和</p>
+<p>$c = \frac 1 m \sum_{j=1}^m {g_j \cdot s_j} \in R^{3d_c}$</p>
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><p>$p = softmax(MLP(c)) \in R^{|C|}, 其中|C|是关系种类$ </p>
+<h2 id="LOSS"><a href="#LOSS" class="headerlink" title="LOSS"></a>LOSS</h2><p>L2正则化</p>
+<p>$L_{NLL} = - \frac 1 {|D|} \sum_{k=1}^{|D|} \log p_{(y^k)}^k + \beta  || {\theta} || _2^2, 其中\theta表示模型所有参数，\beta是系数$</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-09-21T02:29:02.000Z" itemprop="dateUpdated">2020-09-21 10:29:02</time>
+</span>
+
+
+        
+        原文链接：<a href="/posts/20200916/" target="_blank" rel="external">http://hanrd.tech/posts/20200916/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='http://hanrd.tech'">
+            <img src="/img/avatar.jpg" alt="韩日东">
+            <a>韩日东</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AAAI-2020/" rel="tag">AAAI 2020</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Relation-Extraction/" rel="tag">Relation Extraction</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20200916/&title=《AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20200916/&title=《AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20200916/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20200916/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20200916/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/posts/20200921-TopicModel/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：主题模型
+        </h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/posts/20200905/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：ACL 2020 -- Relation Extraction with Explanation">下一篇：ACL 2020 -- Relation Extraction with Explanation</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2020
+            <i class="icon icon-lg icon-heart"></i>
+            <a href="http://hanrd.tech">www.hanrd.tech</a>
+            <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a>
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">
+            本站总访问:<span id="busuanzi_value_site_pv"> </span>次
+            本站访客:<span id="busuanzi_value_site_uv"> </span>人次
+            本文总阅读量:<span id="busuanzi_value_page_pv"> </span>次
+            </span>
+        <br/>
+
+        <span class="license">This blog is licensed under a <a rel="license noopener" rel="external nofollow noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20200916/&title=《AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20200916/&title=《AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20200916/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20200916/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20200916/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxUlEQVR42u3aQW7DIBAF0Nz/0q2UVaU25H8wxJUeKyux4bEZDTM8HvH4eo6fz+Px+9tXvz92DFxc3GVusvD4OYEmcyabx8XFPcmdC155zEnmH7+Di4t7T26bdeRz4uLi/l/uOE1pEyZcXNz7c/MFkjJHkgZtP6vh4uIucOcKptc+b6/v4uLiXtSVWAkoeSArVsfFxT3CHR9gEkTeQG1TopdbxcXFPc5tQSvXL9oSDC4u7hlufj1iDF0pniYbe5OR4eLibuO2gaxNidqGyptAhouLu5nbpiNtaaP96qUHFxf3CLdNTdpCSX6poijR4uLiHuEmyUpy7Mmva+QlWlxc3M9y22bnVUeadgZcXNwz3DyxWN8SLi7u/bl5IyQ/oox/WWno4uLinuFei2gPOUsFU1xc3G3clTQlvzwxF85wcXE/y50rYiahJ0lf8rooLi7uSe5KsWPlsuZkSxUXF3czd6752m6mLZck/+Li4u7m5kFn7lrVxckQLi7uQW4bvNpLXSvv/BHIcHFxb8NNNlMsHIfFyUCGi4t7kJs3P9p+b5To4OLiHuTOHWDaY0zesLmgLIKLi7uasUwWTOtGadnawcXFPc79BrJrGzEGeIBaAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/js/script.min.js?v=3.0" ></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2020/07/05");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+    elasticText({
+        id: "mymotto",
+        duration: 100,
+        effact: "easeOut",
+        content: ""
+    });
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "韩日东");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c 一个坏掉的番茄 %c  © Simon Ma  http://tomotoes.com \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

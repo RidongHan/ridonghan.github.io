@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="http://hanrd.tech/posts/92710899/">
+    
+    
+    <title>计算机概论 | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="linux">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="计算机 接收用户输入指令与数据，经过中央处理器的数据与逻辑单元运算处理后，以产生或存储成有用的信息。  计算机硬件的五大单元 输入单元：键盘、鼠标等 CPU内部的控制单元 CPU内部的算术逻辑单元 内存：CPU实际要处理的数据都来自内存 输出单元：显示器、打印机等  CPU种类 精简指令集系统 RISC ARM系列 SPARC系列   复杂指令集系统 CISC AMD、Intel等x86架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机概论">
+<meta property="og:url" content="http://hanrd.tech/posts/92710899/index.html">
+<meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
+<meta property="og:description" content="计算机 接收用户输入指令与数据，经过中央处理器的数据与逻辑单元运算处理后，以产生或存储成有用的信息。  计算机硬件的五大单元 输入单元：键盘、鼠标等 CPU内部的控制单元 CPU内部的算术逻辑单元 内存：CPU实际要处理的数据都来自内存 输出单元：显示器、打印机等  CPU种类 精简指令集系统 RISC ARM系列 SPARC系列   复杂指令集系统 CISC AMD、Intel等x86架构">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-05T15:26:55.000Z">
+<meta property="article:modified_time" content="2020-07-06T03:12:18.000Z">
+<meta property="article:author" content="韩日东">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+            
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"   >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">韩日东</h5>
+          
+            <div id="mymotto" class="motto"></div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/categories"  >
+                    <i class="icon icon-lg icon-th-list"></i>
+                    <span>分 类</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/about"  >
+                    <i class="icon icon-lg icon-smile-o"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Email" href="mailto:hanrd@foxmail.com" target="_parent"title="Email" >
+                <i class="icon icon-lg icon-envelope-o envelope-o"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/RidongHan" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+              <a class="nav2item" data-title="微博" href="https://weibo.com/u/5728752984" target="_blank"title="微博" >
+                <i class="icon icon-lg icon-weibo weibo"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">计算机概论</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="../../atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+            <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#计算机"><span class="post-toc-number">1.</span> <span class="post-toc-text">计算机</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算机硬件的五大单元"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">计算机硬件的五大单元</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU种类"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">CPU种类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接口设备"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">接口设备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算机分类"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">计算机分类</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#PC机架构与接口设备"><span class="post-toc-number">2.</span> <span class="post-toc-text">PC机架构与接口设备</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#主板芯片组"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">主板芯片组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">CPU</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">内存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#显卡"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">显卡</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#硬盘与存储设备"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">硬盘与存储设备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CMOS与BIOS"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">CMOS与BIOS</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#操作系统"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">操作系统</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-计算机概论"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">计算机概论</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2020-07-05 23:26:55" datetime="2020-07-05T15:26:55.000Z"  itemprop="datePublished">2020-07-05</time>
+
+            <br id="mybreak"/>
+            
+	<i class="icon icon-lg icon-folder-o"></i>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/">Linux-鸟哥私房菜</a></li></ul>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">3</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h1><blockquote>
+<p>接收用户输入指令与数据，经过中央处理器的数据与逻辑单元运算处理后，以产生或存储成有用的信息。</p>
+</blockquote>
+<h2 id="计算机硬件的五大单元"><a href="#计算机硬件的五大单元" class="headerlink" title="计算机硬件的五大单元"></a>计算机硬件的五大单元</h2><ul>
+<li>输入单元：键盘、鼠标等</li>
+<li>CPU内部的控制单元</li>
+<li>CPU内部的算术逻辑单元</li>
+<li>内存：CPU实际要处理的数据都来自内存</li>
+<li>输出单元：显示器、打印机等</li>
+</ul>
+<h2 id="CPU种类"><a href="#CPU种类" class="headerlink" title="CPU种类"></a>CPU种类</h2><ul>
+<li>精简指令集系统 RISC<ul>
+<li>ARM系列</li>
+<li>SPARC系列</li>
+</ul>
+</li>
+<li>复杂指令集系统 CISC<ul>
+<li>AMD、Intel等x86架构</li>
+</ul>
+</li>
+</ul>
+<h2 id="接口设备"><a href="#接口设备" class="headerlink" title="接口设备"></a>接口设备</h2><ul>
+<li>主板<ul>
+<li>主板芯片组</li>
+</ul>
+</li>
+<li>存储设备<ul>
+<li>硬盘、光盘</li>
+</ul>
+</li>
+<li>显示设备<ul>
+<li>显卡</li>
+</ul>
+</li>
+<li>网络设备<ul>
+<li>网卡</li>
+</ul>
+</li>
+</ul>
+<h2 id="计算机分类"><a href="#计算机分类" class="headerlink" title="计算机分类"></a>计算机分类</h2><ul>
+<li>超级计算机</li>
+<li>大型计算机</li>
+<li>迷你计算机</li>
+<li>工作站</li>
+<li>个人计算机<ul>
+<li>台式机</li>
+<li>笔记本电脑</li>
+</ul>
+</li>
+</ul>
+<h1 id="PC机架构与接口设备"><a href="#PC机架构与接口设备" class="headerlink" title="PC机架构与接口设备"></a>PC机架构与接口设备</h1><blockquote>
+<p>x86架构<br>主要有Intel、AMD</p>
+</blockquote>
+<h2 id="主板芯片组"><a href="#主板芯片组" class="headerlink" title="主板芯片组"></a>主板芯片组</h2><ul>
+<li>北桥负责连接速度较快的CPU、内存、显卡等组件<ul>
+<li>系统总线</li>
+</ul>
+</li>
+<li>南桥负责连接速度较慢的周边接口，包括硬盘、USB、网卡等<ul>
+<li>输入输出总线（I/O）</li>
+</ul>
+</li>
+<li>特别注意，AMD的内存直接与CPU连接，不通过北桥</li>
+</ul>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><ul>
+<li><p>频率</p>
+<ul>
+<li>不同的CPU由于微指令集不同、架构不同、每次频率能进行的工作指令数也不同，所以只能用来比较同款CPU的速度</li>
+<li>外频<ul>
+<li>CPU与外部组件进行数据传输/运算时的速度</li>
+<li>通常超频，就是超的外频</li>
+</ul>
+</li>
+<li>倍频<ul>
+<li>CPU内部用来加速工作性能的一个倍数</li>
+<li>出厂时通常被锁定，无法更改</li>
+</ul>
+</li>
+<li>外频 * 倍频 = 频率</li>
+</ul>
+</li>
+<li><p>总线与位数</p>
+<ul>
+<li>北桥所支持的频率：<strong>前端总线速度</strong><ul>
+<li>2666MHz</li>
+</ul>
+</li>
+<li>每次传送的位数：<strong>总线带宽</strong><ul>
+<li>32/64</li>
+</ul>
+</li>
+<li><strong>总线频宽</strong> = 总线带宽 * 前端总线速度</li>
+<li>CPU每次能够处理解析的数据量：<strong>字组大小</strong>    <ul>
+<li><strong>字组大小</strong>可以与<strong>总线带宽</strong>不相同</li>
+<li>通常说的计算机位数，是指<strong>字组大小</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CPU等级</p>
+<ul>
+<li>目前64位CPU：x86_64等级</li>
+</ul>
+</li>
+</ul>
+<h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><ul>
+<li>DRAM 动态随机访问内存<ul>
+<li>内存主要组件就是DRAM，断电数据消失</li>
+<li>DDR:双倍数据传送速度</li>
+</ul>
+</li>
+<li>对服务器而言，内存的容量有时比CPU速度还重要</li>
+<li>双通道设计<ul>
+<li>扩大内存数据宽度</li>
+</ul>
+</li>
+<li><p>CPU与内存的外率要尽量一致为佳</p>
+</li>
+<li><p>SRAM 静态随机访问内存</p>
+<ul>
+<li>通常SRAM容量较小、速度频率高，用作CPU 的L2缓存，集成到CPU内部</li>
+</ul>
+</li>
+<li>ROM 只读存储器<ul>
+<li>非挥发性内存，断电数据不消失</li>
+<li>BIOS程序存储在ROM中，开机首先会读取BIOS程序</li>
+<li>固件，也是一个程序，是对硬件更加重要的部分，最初也是使用ROM来进行软件的写入，现在写入到闪存或EEPROM中</li>
+</ul>
+</li>
+</ul>
+<h2 id="显卡"><a href="#显卡" class="headerlink" title="显卡"></a>显卡</h2><ul>
+<li>显存、3D加速芯片GPU</li>
+<li>PCI-Express（PCIe）规格</li>
+</ul>
+<h2 id="硬盘与存储设备"><a href="#硬盘与存储设备" class="headerlink" title="硬盘与存储设备"></a>硬盘与存储设备</h2><ul>
+<li>物理组成<ul>
+<li>盘片</li>
+<li>机械手臂</li>
+<li>磁头</li>
+<li>主轴马达</li>
+</ul>
+</li>
+<li>数据<ul>
+<li>磁道</li>
+<li>扇区 512B</li>
+<li>柱面<ul>
+<li>分割硬盘的最小单位</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>传输接口<ul>
+<li>IDE接口</li>
+<li>SATA接口</li>
+<li>SCSI接口</li>
+</ul>
+</li>
+</ul>
+<h2 id="CMOS与BIOS"><a href="#CMOS与BIOS" class="headerlink" title="CMOS与BIOS"></a>CMOS与BIOS</h2><ul>
+<li>CMOS主要功能为，记录主板上面的重要参数，包括系统时间、CPU电压与频率、各项设备的I/O地址与IRQ等,需要主板上的电池供电</li>
+<li>BIOS是写入到主板上某一块闪存或EEPROM的程序，它可以在开机的时候执行，以加载CMOS当中的参数，并尝试调用存储设备中的开机程序，进一步进入到操作系统中。</li>
+</ul>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><ul>
+<li><p>两部分</p>
+<ul>
+<li>内核<ul>
+<li>直接参考硬件规格生成</li>
+<li>功能：<ul>
+<li>系统调用接口</li>
+<li>程序管理</li>
+<li>内存管理</li>
+<li>文件系统管理</li>
+<li>设备驱动</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>系统调用</li>
+</ul>
+</li>
+<li><p>目前操作系统都会包含内核和相关的用户应用软件</p>
+</li>
+<li>操作系统只是在管理整个硬件资源，包括CPU、内存、输入输出设备及系统文件</li>
+<li>应用程序的开发都是参考操作系统提供的开发接口，所以该应用程序只能在该操作系统上面运行</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-07-06T03:12:18.000Z" itemprop="dateUpdated">2020-07-06 11:12:18</time>
+</span>
+
+
+        
+        原文链接：<a href="/posts/92710899/" target="_blank" rel="external">http://hanrd.tech/posts/92710899/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='http://hanrd.tech'">
+            <img src="/img/avatar.jpg" alt="韩日东">
+            <a>韩日东</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/92710899/&title=《计算机概论》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/92710899/&title=《计算机概论》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/92710899/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《计算机概论》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/92710899/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/92710899/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/posts/b4c6216f/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：入门
+        </h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2020
+            <i class="icon icon-lg icon-heart"></i>
+            <a href="http://hanrd.tech">www.hanrd.tech</a>
+            <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a>
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">
+            本站总访问:<span id="busuanzi_value_site_pv"> </span>次
+            本站访客:<span id="busuanzi_value_site_uv"> </span>人次
+            本文总阅读量:<span id="busuanzi_value_page_pv"> </span>次
+            </span>
+        <br/>
+
+        <span class="license">This blog is licensed under a <a rel="license noopener" rel="external nofollow noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/92710899/&title=《计算机概论》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/92710899/&title=《计算机概论》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/92710899/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《计算机概论》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/92710899/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/92710899/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxElEQVR42u3aS27DMAwFwNz/0u42QGDjkaIVpxitAqeRR10Q/Oj1itfxtt6ffH77/vzst587DC9cXNxl7nG5kr9Jdrg+WL4DLi7uTu5ZxEiCTi/MJfvj4uL+CjcPRtU9cXFx/xO38LJioMTFxf0uNyl+kmbHVBo0UKvh4uIucPOX3ff5lv4uLi5ui9trfZ4FoJUyKXo7Li7uFm4eUKbGqNVAhouL+11udVyaH6bXImnWari4uMvc62QlaWpUWxv559OMDBcX92Zunqbkl66qMafaWsXFxX0Cd2XsmoTFXlmFi4t7NzdPL5In1WZK+VoGLi7uV7nN5GNoTloOZLi4uKPcvH2ZBKneUDbfARcXdye3epGiypqi4+Li7uQmFyamEpfeVVFcXNyd3GoAWm+S5sPUZq2Gi4s7xL3eKKdXG6bJe3FxcZ/AjUYarYubY1kYLi7ubdyjuHpBKmmtRsfDxcXdwu0NR1euc1UDZfMwuLi4y9zemGRlANMLhbi4uPu51UCTH6k3mDl9gouL+2DuVEFVHsfi4uI+npuUPSuN1+FAhouLW+RWC5Xqr6L0Jfln4eLibuH2Bp9VVq9wWurv4uLidrh/ZN3YV7THm3sAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/js/script.min.js?v=3.0" ></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2020/07/05");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+    elasticText({
+        id: "mymotto",
+        duration: 100,
+        effact: "easeOut",
+        content: ""
+    });
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "韩日东");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c 一个坏掉的番茄 %c  © Simon Ma  http://tomotoes.com \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

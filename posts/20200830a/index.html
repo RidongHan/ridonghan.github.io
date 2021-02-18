@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="http://hanrd.tech/posts/20200830a/">
+    
+    
+    <title>ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="ICLR 2019">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="拟解决问题语言虽然看起来是一个序列，实际上内部是有复杂的层次结构的，这也是NLP的难点所在。复杂的层次结构，意味着序列即使看起来相同，也可能因为内部层次结构的不同而有语义的差别。 在斯坦福CS224n上提到了这样的一个例子：  The police killed the man with a knife.  这个句子，可以有两种理解：  警察把那个带刀的人干掉了 警察用刀干掉了那个人  上面两种解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS">
+<meta property="og:url" content="http://hanrd.tech/posts/20200830a/index.html">
+<meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
+<meta property="og:description" content="拟解决问题语言虽然看起来是一个序列，实际上内部是有复杂的层次结构的，这也是NLP的难点所在。复杂的层次结构，意味着序列即使看起来相同，也可能因为内部层次结构的不同而有语义的差别。 在斯坦福CS224n上提到了这样的一个例子：  The police killed the man with a knife.  这个句子，可以有两种理解：  警察把那个带刀的人干掉了 警察用刀干掉了那个人  上面两种解">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/police-tree.jpg">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/lstm-formula.jpg">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/lstm-img.png">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/cell-state-flow.jpg">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/cell-update.JPG">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/eg1.JPG">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/level-his-now.jpg">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/two-case.jpg">
+<meta property="og:image" content="http://hanrd.tech/posts/20200830a/on-lstm-img.jpg">
+<meta property="article:published_time" content="2020-08-30T08:28:30.000Z">
+<meta property="article:modified_time" content="2020-09-03T07:50:23.000Z">
+<meta property="article:author" content="韩日东">
+<meta property="article:tag" content="ICLR 2019">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hanrd.tech/posts/20200830a/police-tree.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+            
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"   >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">韩日东</h5>
+          
+            <div id="mymotto" class="motto"></div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/categories"  >
+                    <i class="icon icon-lg icon-th-list"></i>
+                    <span>分 类</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/about"  >
+                    <i class="icon icon-lg icon-smile-o"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Email" href="mailto:hanrd@foxmail.com" target="_parent"title="Email" >
+                <i class="icon icon-lg icon-envelope-o envelope-o"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/RidongHan" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+              <a class="nav2item" data-title="微博" href="https://weibo.com/u/5728752984" target="_blank"title="微博" >
+                <i class="icon icon-lg icon-weibo weibo"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="../../atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+            <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#拟解决问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">拟解决问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#出发点"><span class="post-toc-number">2.</span> <span class="post-toc-text">出发点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#回顾LSTM"><span class="post-toc-number">3.</span> <span class="post-toc-text">回顾LSTM</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ON-LSTM"><span class="post-toc-number">4.</span> <span class="post-toc-text">ON-LSTM</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#从LSTM开始"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">从LSTM开始</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ON-LSTM具体设计"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">ON-LSTM具体设计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ON-LSTM实现过程"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">ON-LSTM实现过程</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">5.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-ICLR-2019-ORDERED-NEURONS-INTEGRATING-TREE-STRUCTURES-INTO-RECURRENT-NEURAL-NETWORKS"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2020-08-30 16:28:30" datetime="2020-08-30T08:28:30.000Z"  itemprop="datePublished">2020-08-30</time>
+
+            <br id="mybreak"/>
+            
+	<i class="icon icon-lg icon-folder-o"></i>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/ICLR-2019/">ICLR 2019</a></li></ul>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">8</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="拟解决问题"><a href="#拟解决问题" class="headerlink" title="拟解决问题"></a>拟解决问题</h1><p>语言虽然看起来是一个序列，实际上内部是有复杂的层次结构的，这也是NLP的难点所在。复杂的层次结构，意味着序列即使看起来相同，也可能因为内部层次结构的不同而有语义的差别。</p>
+<p>在斯坦福CS224n上提到了这样的一个例子：</p>
+<blockquote>
+<p>The police killed the man with a knife.</p>
+</blockquote>
+<p>这个句子，可以有两种理解：</p>
+<ul>
+<li>警察把那个带刀的人干掉了</li>
+<li>警察用刀干掉了那个人</li>
+</ul>
+<p>上面两种解释对应的句法树分别是这样的：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/police-tree.jpg" alt="句法树" title="">
+                </div>
+                <div class="image-caption">句法树</div>
+            </figure>
+<blockquote>
+<p>序列看起来一样，但是由于内部的层级结构不一样会导致不同的语义理解</p>
+</blockquote>
+<p>当用LSTM为语言序列编码Encode的时候，由于LSTM单纯认为语言是一个序列，忽略了语言内部的语法树的层级结构，因此其无法解决上面<strong>相同序列，不同语义</strong>的问题。</p>
+<h1 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h1><p>本文提出ON-LSTM(Ordered Neurons - LSTM)，通过重新设计LSTM递归的cell的<strong>cell states的更新方式及策略</strong>，实现将语法树的层级结构融合进LSTM编码器中，解决上述问题。</p>
+<h1 id="回顾LSTM"><a href="#回顾LSTM" class="headerlink" title="回顾LSTM"></a>回顾LSTM</h1><p>LSTM主要由三个特殊的门（gate）结构组成：遗忘门、输入门、输出门</p>
+<p>具体的公式如下：<br></p><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/lstm-formula.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><p></p>
+<p>示意图如下：<br></p><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/lstm-img.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure><p></p>
+<h1 id="ON-LSTM"><a href="#ON-LSTM" class="headerlink" title="ON-LSTM"></a>ON-LSTM</h1><h2 id="从LSTM开始"><a href="#从LSTM开始" class="headerlink" title="从LSTM开始"></a>从LSTM开始</h2><p>论文中一直是从神经元排序的角度解释的，对我个人来说，很难理解，故下文按照cell state的角度理解。</p>
+<p>LSTM的<strong>核心</strong>就是<strong>cell state</strong>：信息在cell state这个传送带上流动，伴随着一些简单的线性变换，乘和加，分别由“遗忘门”和“输入门”来控制cell state的信息更新。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/cell-state-flow.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这样存在一个问题：<br><strong>每次更新，cell state这个向量的每一维都会更新</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/cell-update.JPG" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>信息流就是存在于这个cell state中，如果希望模型可以刻画出语言的结构信息，也就意味着这个cell state中要隐含着层次结构的信息。</p>
+<p>所以作者希望，能够让这个cell state的不同维度，对应到语言的不同层级上，让不同的层级使用不一样的方式进行更新，具体来说就是层次越高的更新越少。这样的话，cell state就包含了层次信息了。</p>
+<p><strong>作者的例子：</strong></p>
+<p>假设我们有一个很简单的句子，三个词组成[x1,x2,x3]，有三个层次，用下图的最左边的图表示，分别是句子（S）、短语（NP，VP）、词（N，V）。<strong>我们希望cell state中也可以有对应的三个层次，层次就体现在不同的更新频率上。</strong></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/eg1.JPG" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>层次越高的，自然其信息应该保留的时间更久，所以其更新频率应该越低。上图的最右边是三个词分别对应的cell states。颜色越深代表更新频率越高。</p>
+<ul>
+<li>当读到第一个词x1的时候，这个时候是new S，new NP，new word，所以三个层次都应该更新；</li>
+<li>当读到第二个词x2的时候，这个时候是new VP，new word，所以下面两个层次应该更新；</li>
+<li>当读到第三个词x3的时候，这个时候只是new word，所以只是最下面的层次应该更新；<br>这样，语言的层次就和cell states的不同区间对应上的。</li>
+</ul>
+<blockquote>
+<p>这样，就相当于给<strong>cell states</strong>加了一个顺序，从某种意义上讲也相当于是给LSTM的神经元加了顺序，因此作者称这种结构是<strong>Ordered-Neurons</strong>，对应的LSTM称为<strong>ON-LSTM</strong>。所以并不是真的给神经元排序。</p>
+</blockquote>
+<p>接下来的问题：</p>
+<p>上面给cell states这样分区间，是因为我们提前知道了句子的结构，但我们真正使用LSTM进行建模、训练的时候，是不知道语言的真实层次的，除非你先把每个句子都解析成语法树，再显式加入到LSTM中的，但是这种方法不仅开销大，而且不一定可靠，所以我们<strong>需要设计一种结构，让模型可以学习到如何给cell state去分区</strong>。</p>
+<h2 id="ON-LSTM具体设计"><a href="#ON-LSTM具体设计" class="headerlink" title="ON-LSTM具体设计"></a>ON-LSTM具体设计</h2><p>为了实现区间的划分，模型用到了两个整数 $l_{his}$ 和 $l_{now}$，它们分别用来表示<strong>历史信息的最低等级</strong> 和 <strong>当前信息的最高等级</strong></p>
+<ul>
+<li>$l_{his}$表示cell state中高于该等级的维度需要保留历史信息$c_{t-1}$，对应于<strong>低更新频率</strong></li>
+<li>$l_{now}$表示cell state中低于该等级的维度需要补充更新输入信息$\hat{c_t}$，对应于<strong>高更新频率</strong></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/level-his-now.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>总体上，就包含以下两种情况：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/two-case.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><p>$l_{his} &lt; l_{now}$ ,有重叠交汇部分：</p>
+<ul>
+<li><strong>交汇部分</strong>，采用原来LSTM更新方式，融合历史信息和当前输入信息</li>
+<li><strong>低于$l_{his}$的</strong>，完全更新为新输入的信息</li>
+<li><strong>高于$l_{now}$的</strong>，完全保留历史信息</li>
+</ul>
+</li>
+<li><p>$l_{his} &gt; l_{now}$ ,无重叠交汇部分：</p>
+<ul>
+<li><strong>无交汇部分</strong>，全部设置为0</li>
+<li><strong>低于$l_{now}$的</strong>，完全更新为新输入的信息</li>
+<li><strong>高于$l_{his}$的</strong>，完全保留历史信息</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>其实该模型认为高层次的语法信息主要是来自于历史信息，而低层次的主要来自当前输入信息，而这也比较符合人们的直观印象，对于一个新的输入，它对于语法信息的影响往往局限于一个较低的层次，高层次的信息（如句子或者短语信息）仍然来自于历史信息，只有当一个句子或者短语完结的时候，历史信息的影响变小，这时新的输入才有可能影响较高语法层次的信息。而这样也就使得高语法层次的信息的更新频率较低，大多时候是保持不变，而低语法层次的信息则随着当前的输入一直变化。</p>
+</blockquote>
+<h2 id="ON-LSTM实现过程"><a href="#ON-LSTM实现过程" class="headerlink" title="ON-LSTM实现过程"></a>ON-LSTM实现过程</h2><p>把$l_{his}、 l_{now}$转化为向量</p>
+<script type="math/tex; mode=display">L_k = [0,0,...,1,0,...,0] ,其中只有第k位为1</script><p>定义累加函数</p>
+<script type="math/tex; mode=display">cumsum([x_1,x_2,...,x_n]) = [x_1, x_1+x_2, x_1+x_2+x_3,..., x_1+x_2+...+x_n]</script><p>因此，</p>
+<ul>
+<li>$cumsum(L_{l_{his}})=[0,…,0,1,1,…,1]$就表示出了需要保留历史信息的维度（1段）</li>
+<li>$1-cumsum(L_{l_{now}})=[1,…,1,0,0,…,0]$就表示出了需要更新保存新输入信息的维度（1段）</li>
+</ul>
+<p>由于，上面这种分为0段和1段的形式，都是整数，这样函数不可导，无法训练，所以需要做一下软化，即用softmax函数处理一下。</p>
+<p>定义 $cummax(X) = cumsum(softmax(X))$</p>
+<p>综上，引入两个门（gate）结构：master forget（$\tilde{f_t}$）、master input（$\tilde{i_t}$）。</p>
+<p>具体计算公式如下：</p>
+<script type="math/tex; mode=display">\tilde{f_t} = cummax(W_{\tilde{f_t}}x_t+U_{\tilde{f_t}}h_{t-1}+b_{\tilde{f_t}})</script><script type="math/tex; mode=display">\tilde{i_t} = 1-cummax(W_{\tilde{i_t}}x_t+U_{\tilde{i_t}}h_{t-1}+b_{\tilde{i_t}})</script><script type="math/tex; mode=display">\omega_t=\tilde{f_t} \circ \tilde{i_t} (按位相乘，表示重叠交汇部分)</script><script type="math/tex; mode=display">c_t = \omega_t \circ (f_t \circ c_{t-1}+ i_t \circ \hat{c_t}) + (\tilde{f_t}-\omega_t) \circ c_{t-1} + (\tilde{i_t}-\omega_t) \circ \hat{c_t}</script><p>整体计算流程如下：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20200830a/on-lstm-img.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<blockquote>
+<p>通常隐层神经元的数目都比较大，而实际中语法的层数远远达不到这个数字，因此对于$\tilde{f_t}$和$\tilde{i_t}$而言，其实不需要那么多的维数，这样会导致需要学习的参数量过多，但是 $\circ$ 要求它们的维数必须这么大，因此我们可以构造一个维数为$D_m = D / c$ 的向量，其中D为隐层神经元的维数，然后在将其扩充为D维向量，例如D=6，c=3，先构造一个向量[0.2, 0.8] ，然后将其扩充为 [0.2, 0.2, 0.2, 0.8, 0.8, 0.8] 。</p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该ON-LSTM模型从语法结构的角度出发，根据语法层次对cell states进行有序排列，再按照语法层次的不同实行不同的更新规则，从而实现对于较高语法层次信息的保留，这样对于语言模型等任务无疑是很有利的。另外，利用该模型还能够较好地从句子中无监督地提取出语法结构，而这也是该模型的一大亮点。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="https://arxiv.org/abs/1810.09536" target="_blank" rel="noopener">ORDERED NEURONS: INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS</a></p>
+<p>[2] <a href="https://kexue.fm/archives/6621" target="_blank" rel="noopener">苏剑林. (2019, May 28). ON-LSTM：用有序神经元表达层次结构 [Blog post].</a> </p>
+<p>[3] <a href="https://zhuanlan.zhihu.com/p/77086523" target="_blank" rel="noopener">有序的神经元——ON-LSTM模型浅析</a></p>
+<p>[4] <a href="https://zhuanlan.zhihu.com/p/69314959" target="_blank" rel="noopener">ON-LSTM：能表示语言层次的LSTM</a></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-09-03T07:50:23.000Z" itemprop="dateUpdated">2020-09-03 15:50:23</time>
+</span>
+
+
+        
+        原文链接：<a href="/posts/20200830a/" target="_blank" rel="external">http://hanrd.tech/posts/20200830a/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='http://hanrd.tech'">
+            <img src="/img/avatar.jpg" alt="韩日东">
+            <a>韩日东</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ICLR-2019/" rel="tag">ICLR 2019</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20200830a/&title=《ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20200830a/&title=《ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20200830a/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20200830a/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20200830a/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/posts/20200902a/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：markdownPad2 -- 破解
+        </h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/posts/20200829a/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：ACL 2020 -- Exploiting the Syntax-Model Consistency for Neural Relation Extraction">下一篇：ACL 2020 -- Exploiting the Syntax-Model Consistency for Neural Relation Extraction</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2020
+            <i class="icon icon-lg icon-heart"></i>
+            <a href="http://hanrd.tech">www.hanrd.tech</a>
+            <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a>
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">
+            本站总访问:<span id="busuanzi_value_site_pv"> </span>次
+            本站访客:<span id="busuanzi_value_site_uv"> </span>人次
+            本文总阅读量:<span id="busuanzi_value_page_pv"> </span>次
+            </span>
+        <br/>
+
+        <span class="license">This blog is licensed under a <a rel="license noopener" rel="external nofollow noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20200830a/&title=《ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20200830a/&title=《ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20200830a/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20200830a/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20200830a/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAByklEQVR42u3aSYrDMBAF0Nz/0m7oVUOI/Ks0xA1Pq2A8PGVRSL/0esXj+h3vV/5ef7/y6f7xnQsGLi7uNPcajjGuN73x+2+mhIuLe5A7/uT41dUJ5M/i4uI+n1stczkRFxf3v3PHW6B8g4SLi/t8blKqqrHIp6fyQomLi/stbjUw3fF7Y76Li4tb5F6tkSxleuHpzXdxcXGPcPMwtNpYzZdH5SAVFxd3MzdpflRbJsm0q4EsLi7uSW4vGM2XI/nb8mMcuLi4u7m9BU21+ZEsg6LYFBcX9wg3r3a9pkg1MG22UnBxcZdyVy1ZqqFJsmWaaqXg4uIu4hYeK97TK5c3hQwXF/c4N1lw5B9bNXBxcc9zkw3P2oKVbJnKgSkuLu4ibn4kopeyVKPV6EW4uLjbuL2jGDOHtHqtXFxc3JPcPB7d1ygtoHFxcY9w87CyV7aSMCVffuHi4p7hliPLOBjNj2IUyhwuLu4Rbj6SgjXzVHUauLi4u7l58aouX6qbq+h4By4u7kHuTKNl5vBWuVeCi4v7SG7Omi+ICwoZLi7uZm7vUMXMHzFVyHBxcae589HnjncWDmHg4uLu6lyUA9OkrZKA1m6ccHFxJ7g/qQr8MyxTajwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/js/script.min.js?v=3.0" ></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2020/07/05");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+    elasticText({
+        id: "mymotto",
+        duration: 100,
+        effact: "easeOut",
+        content: ""
+    });
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "韩日东");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c 一个坏掉的番茄 %c  © Simon Ma  http://tomotoes.com \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

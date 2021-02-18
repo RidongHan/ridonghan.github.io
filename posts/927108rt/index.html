@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="http://hanrd.tech/posts/927108rt/">
+    
+    
+    <title>2.Linux如何学习、主机规划与磁盘分区 | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="linux">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="Linux操作模式 图形界面 命令行界面（Command Line）  Linux与硬件的搭配 各个组件或设备在Linux下面都是一个文件 硬盘 &#x2F;dev&#x2F;sd[a-p]    磁盘分区 SATA&#x2F;USB接口的磁盘根本没有一定的顺序  设备文件名命名时，根据Linux内核检测到磁盘的顺序命名   磁盘的组成  磁盘的第一个扇区特别重要，包括： 主引导分区（Master Boot Record， M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.Linux如何学习、主机规划与磁盘分区">
+<meta property="og:url" content="http://hanrd.tech/posts/927108rt/index.html">
+<meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
+<meta property="og:description" content="Linux操作模式 图形界面 命令行界面（Command Line）  Linux与硬件的搭配 各个组件或设备在Linux下面都是一个文件 硬盘 &#x2F;dev&#x2F;sd[a-p]    磁盘分区 SATA&#x2F;USB接口的磁盘根本没有一定的顺序  设备文件名命名时，根据Linux内核检测到磁盘的顺序命名   磁盘的组成  磁盘的第一个扇区特别重要，包括： 主引导分区（Master Boot Record， M">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-08T00:53:05.000Z">
+<meta property="article:modified_time" content="2020-07-09T08:29:21.000Z">
+<meta property="article:author" content="韩日东">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+            
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"   >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">韩日东</h5>
+          
+            <div id="mymotto" class="motto"></div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/categories"  >
+                    <i class="icon icon-lg icon-th-list"></i>
+                    <span>分 类</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/about"  >
+                    <i class="icon icon-lg icon-smile-o"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Email" href="mailto:hanrd@foxmail.com" target="_parent"title="Email" >
+                <i class="icon icon-lg icon-envelope-o envelope-o"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/RidongHan" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+              <a class="nav2item" data-title="微博" href="https://weibo.com/u/5728752984" target="_blank"title="微博" >
+                <i class="icon icon-lg icon-weibo weibo"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">2.Linux如何学习、主机规划与磁盘分区</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="../../atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+            <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Linux操作模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">Linux操作模式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Linux与硬件的搭配"><span class="post-toc-number">2.</span> <span class="post-toc-text">Linux与硬件的搭配</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#磁盘分区"><span class="post-toc-number">3.</span> <span class="post-toc-text">磁盘分区</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#开机流程"><span class="post-toc-number">4.</span> <span class="post-toc-text">开机流程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Boot-Loader"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">Boot Loader</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Linux安装模式下，磁盘分区的选择"><span class="post-toc-number">5.</span> <span class="post-toc-text">Linux安装模式下，磁盘分区的选择</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件系统与目录树的关系（挂载）"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">文件系统与目录树的关系（挂载）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装distributions，挂载点及磁盘分区的规划"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">安装distributions，挂载点及磁盘分区的规划</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-2-Linux如何学习、主机规划与磁盘分区"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">2.Linux如何学习、主机规划与磁盘分区</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2020-07-08 08:53:05" datetime="2020-07-08T00:53:05.000Z"  itemprop="datePublished">2020-07-08</time>
+
+            <br id="mybreak"/>
+            
+	<i class="icon icon-lg icon-folder-o"></i>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/">Linux-鸟哥私房菜</a></li></ul>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">2</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Linux操作模式"><a href="#Linux操作模式" class="headerlink" title="Linux操作模式"></a>Linux操作模式</h1><ul>
+<li>图形界面</li>
+<li>命令行界面（Command Line）</li>
+</ul>
+<h1 id="Linux与硬件的搭配"><a href="#Linux与硬件的搭配" class="headerlink" title="Linux与硬件的搭配"></a>Linux与硬件的搭配</h1><ul>
+<li>各个组件或设备在Linux下面都是一个文件<ul>
+<li>硬盘 /dev/sd[a-p]</li>
+</ul>
+</li>
+</ul>
+<h1 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h1><ul>
+<li><p>SATA/USB接口的磁盘根本没有一定的顺序</p>
+<ul>
+<li>设备文件名命名时，根据Linux内核检测到磁盘的顺序命名</li>
+</ul>
+</li>
+<li><p>磁盘的组成</p>
+<ul>
+<li>磁盘的第一个扇区特别重要，包括：<ul>
+<li><strong>主引导分区</strong>（Master Boot Record， MBR）<ul>
+<li>安装引导加载程序的地方，446B</li>
+<li>系统开机的时候会主动读取</li>
+</ul>
+</li>
+<li><strong>分区表</strong>（partition table）<ul>
+<li>记录整块硬盘分区的状态， 64B</li>
+<li>分为若干记录区（最多4个），每组记录区记录了该区段的起始与结束的柱面号码</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>所谓的分区只是针对64B的分区表进行设置</p>
+<p>硬盘默认的分区表仅能写入四组分区信息，这四个分区信息称为<strong>主分区（primary）</strong>或<strong>扩展分区（extended）</strong></p>
+<p>扩展分区最多只能有一个</p>
+<p>分区最小的单位是<strong>柱面</strong></p>
+<p>扩展分区继续切分的分区，叫做<strong>逻辑分区</strong>，逻辑分区的设备名称号码由<strong>5</strong>开始，1-4是保留给主分区或者扩展分区使用的，SATA硬盘最多11个逻辑分区（5-15）</p>
+<p>能够被格式化后作为数据访问的分区为<strong>主分区</strong>与<strong>逻辑分区</strong>，<strong>扩展分区</strong>无法格式化</p>
+</blockquote>
+<h1 id="开机流程"><a href="#开机流程" class="headerlink" title="开机流程"></a>开机流程</h1><ul>
+<li>BIOS是开机时计算机系统主动执行的第一个程序</li>
+<li>BIOS会依据用户的设置去取得能够开机的硬盘，并读取该硬盘第一个扇区的MBR，MBR放置着最基本的引导加载程序，剩下的任务由该引导加载程序（Boot Loader）完成</li>
+<li>引导加载程序目的是<strong>加载内核文件</strong>，剩下的由操作系统完成</li>
+</ul>
+<h3 id="Boot-Loader"><a href="#Boot-Loader" class="headerlink" title="Boot Loader"></a>Boot Loader</h3><ul>
+<li>提供菜单：用户可以选择不同的开机选项</li>
+<li>载入内核文件，开始操作系统</li>
+<li>转交其他Loader：多重引导</li>
+</ul>
+<blockquote>
+<p>引导加载程序可以安装在MBR，也可安装于每个分区的引导扇区（boot sector）</p>
+</blockquote>
+<ul>
+<li>每个分区都有启动扇区</li>
+<li>实际可开机的内核文件是放置在各分区内的</li>
+<li>loader只会认识自己的系统分区内可开机的内核文件和其他loader</li>
+<li>loader可以直接指向或者间接将管理权转交给另一个管理程序</li>
+</ul>
+<h1 id="Linux安装模式下，磁盘分区的选择"><a href="#Linux安装模式下，磁盘分区的选择" class="headerlink" title="Linux安装模式下，磁盘分区的选择"></a>Linux安装模式下，磁盘分区的选择</h1><blockquote>
+<p>Linux的所有数据都是以文件的形态呈现的</p>
+<p>目录树结构</p>
+</blockquote>
+<h2 id="文件系统与目录树的关系（挂载）"><a href="#文件系统与目录树的关系（挂载）" class="headerlink" title="文件系统与目录树的关系（挂载）"></a>文件系统与目录树的关系（挂载）</h2><ul>
+<li>挂载<ul>
+<li>利用一个目录作为进入点，将磁盘分区的数据放置在该目录下</li>
+<li>进入点叫做<strong>挂载点</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="安装distributions，挂载点及磁盘分区的规划"><a href="#安装distributions，挂载点及磁盘分区的规划" class="headerlink" title="安装distributions，挂载点及磁盘分区的规划"></a>安装distributions，挂载点及磁盘分区的规划</h3><ul>
+<li>/</li>
+<li>swap</li>
+<li>预留一个备用的剩余磁盘空间<blockquote>
+<p>可以把/home、/usr、/boot、/var都单独分区</p>
+</blockquote>
+</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-07-09T08:29:21.000Z" itemprop="dateUpdated">2020-07-09 16:29:21</time>
+</span>
+
+
+        
+        原文链接：<a href="/posts/927108rt/" target="_blank" rel="external">http://hanrd.tech/posts/927108rt/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='http://hanrd.tech'">
+            <img src="/img/avatar.jpg" alt="韩日东">
+            <a>韩日东</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/927108rt/&title=《2.Linux如何学习、主机规划与磁盘分区》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/927108rt/&title=《2.Linux如何学习、主机规划与磁盘分区》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/927108rt/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《2.Linux如何学习、主机规划与磁盘分区》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/927108rt/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/927108rt/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/posts/927108io/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：首次登录与在线求助
+        </h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/posts/e3a70ff1/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：Linux是什么">下一篇：Linux是什么</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2020
+            <i class="icon icon-lg icon-heart"></i>
+            <a href="http://hanrd.tech">www.hanrd.tech</a>
+            <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a>
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">
+            本站总访问:<span id="busuanzi_value_site_pv"> </span>次
+            本站访客:<span id="busuanzi_value_site_uv"> </span>人次
+            本文总阅读量:<span id="busuanzi_value_page_pv"> </span>次
+            </span>
+        <br/>
+
+        <span class="license">This blog is licensed under a <a rel="license noopener" rel="external nofollow noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/927108rt/&title=《2.Linux如何学习、主机规划与磁盘分区》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/927108rt/&title=《2.Linux如何学习、主机规划与磁盘分区》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/927108rt/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《2.Linux如何学习、主机规划与磁盘分区》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/927108rt/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/927108rt/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAByUlEQVR42u3aS26EQAwFwLn/pYmUbULz7P6IkYpVxAQoWDzZ7v584uP6Pe7Oj3/9+5/jqxYcuLi409xreOSsu6sSbmLAxcU9z01iaIzr0XMDLi7uO7l3uGrYjT8HLi7ut3OTRigJQVxc3Hdyk+bk7hbJmWrZtKBXw8XFneBWB6Y7/t4438XFxS1yr9bRi6QFz8XFxT3C7Q1D85gbn0kWbB56NVxc3A3cfCSaNCTVpqW8OQMXF/cgtzf+6EVe9cX+CTJcXNzN3HwKkeRJYTkkLn0KY1NcXNwN3LyIyR9cHZgWvisuLu4Rbq8cyVummSoFFxf3PLfahOwrfaJrcXFxj3DXji1WLakWohAXF3cDt7pYkjRCeZNTDkFcXNzN3GoM9TZP9EqcBamJi4vb4uZRNQ67fEl11VYPXFzcfdwkkpIXqC6Z9JolXFzcM9zegkpelFQjr9po4eLi7uDOTFjnv1N5wwcuLu4Rbm/+0HtwXgZNFTe4uLiLuEl4VUcbeYOU3wcXF/c8Nwmd/DXKm6vy4gYXF/eV3Op4tBqID2MUXFzcl3H3DUMLYYeLi3uQu7b5mbnnQ2uEi4t7hDsfPVViEmHL5ru4uLg17g9Rl3adXEI4wgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/js/script.min.js?v=3.0" ></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2020/07/05");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+    elasticText({
+        id: "mymotto",
+        duration: 100,
+        effact: "easeOut",
+        content: ""
+    });
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "韩日东");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c 一个坏掉的番茄 %c  © Simon Ma  http://tomotoes.com \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

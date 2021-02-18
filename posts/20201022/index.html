@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="http://hanrd.tech/posts/20201022/">
+    
+    
+    <title>ICASSP 2016 -- Training deep neural-networks based on unreliable labels | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="Relation Extraction,ICASSP 2016">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="摘要本文拟解决基于 “带有不可靠标签的数据” 训练神经网络的问题。  基于假设观察到的标签是真实标签的带噪观测结果，从而引入一个额外的噪音层，模拟噪音分布对真实标签的影响。   提出一种同时学习神经网络参数和噪声分布的方法 在几个标准分类任务上的对比实验说明了该方法对性能的提升。 在某些情况下，即使“人工手动标注并假定没有错误的数据”，该方法也有所帮助。  模型 假设在训练过程中不能直接观察到正确">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICASSP 2016 -- Training deep neural-networks based on unreliable labels">
+<meta property="og:url" content="http://hanrd.tech/posts/20201022/index.html">
+<meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
+<meta property="og:description" content="摘要本文拟解决基于 “带有不可靠标签的数据” 训练神经网络的问题。  基于假设观察到的标签是真实标签的带噪观测结果，从而引入一个额外的噪音层，模拟噪音分布对真实标签的影响。   提出一种同时学习神经网络参数和噪声分布的方法 在几个标准分类任务上的对比实验说明了该方法对性能的提升。 在某些情况下，即使“人工手动标注并假定没有错误的数据”，该方法也有所帮助。  模型 假设在训练过程中不能直接观察到正确">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hanrd.tech/posts/20201022/model_train.jpg">
+<meta property="article:published_time" content="2020-10-22T02:38:58.000Z">
+<meta property="article:modified_time" content="2020-11-01T08:40:28.000Z">
+<meta property="article:author" content="韩日东">
+<meta property="article:tag" content="Relation Extraction">
+<meta property="article:tag" content="ICASSP 2016">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hanrd.tech/posts/20201022/model_train.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+            
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"   >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">韩日东</h5>
+          
+            <div id="mymotto" class="motto"></div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/categories"  >
+                    <i class="icon icon-lg icon-th-list"></i>
+                    <span>分 类</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/about"  >
+                    <i class="icon icon-lg icon-smile-o"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Email" href="mailto:hanrd@foxmail.com" target="_parent"title="Email" >
+                <i class="icon icon-lg icon-envelope-o envelope-o"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/RidongHan" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+              <a class="nav2item" data-title="微博" href="https://weibo.com/u/5728752984" target="_blank"title="微博" >
+                <i class="icon icon-lg icon-weibo weibo"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ICASSP 2016 -- Training deep neural-networks based on unreliable labels</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="../../atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+            <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要"><span class="post-toc-number">1.</span> <span class="post-toc-text">摘要</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型"><span class="post-toc-number">2.</span> <span class="post-toc-text">模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#训练阶段"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">训练阶段</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#"><span class="post-toc-number">2.2.</span> <span class="post-toc-text"> </span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-ICASSP-2016-Training-deep-neural-networks-based-on-unreliable-labels"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ICASSP 2016 -- Training deep neural-networks based on unreliable labels</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2020-10-22 10:38:58" datetime="2020-10-22T02:38:58.000Z"  itemprop="datePublished">2020-10-22</time>
+
+            <br id="mybreak"/>
+            
+	<i class="icon icon-lg icon-folder-o"></i>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Relation-Extraction-Notes/">Relation Extraction Notes</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Relation-Extraction-Notes/ICASSP-2016/">ICASSP 2016</a></li></ul></li></ul>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">2</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文拟解决基于 “带有不可靠标签的数据” 训练神经网络的问题。</p>
+<blockquote>
+<p>基于假设<strong>观察到的标签是真实标签的带噪观测结果</strong>，从而引入一个额外的噪音层，模拟噪音分布对真实标签的影响。</p>
+</blockquote>
+<ul>
+<li>提出一种同时学习<strong>神经网络参数</strong>和<strong>噪声分布</strong>的方法</li>
+<li>在几个标准分类任务上的对比实验说明了该方法对性能的提升。</li>
+<li>在某些情况下，即使“人工手动标注并假定没有错误的数据”，该方法也有所帮助。</li>
+</ul>
+<h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><blockquote>
+<p>假设在训练过程中不能直接观察到正确标签y，只能观察到带噪标签z</p>
+</blockquote>
+<p>噪音分布可以看作关系标签间的转移概率 </p>
+<p>$\theta (i,j) = p(z=j|y=i) $</p>
+<p>观测的带噪标签 z 的概率：</p>
+<p>$ p(z=j|x;\omega, \theta) = \sum\limits_{i=1}^k p(z=j|y=i; \theta) p(y=i|x;\omega), $</p>
+<p>$\omega是参数集合, x是输入特征（可以是句子、手工创建的特征等）, k是关系的个数$</p>
+<p>模型结构图如下：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20201022/model_train.jpg" alt="model" title="">
+                </div>
+                <div class="image-caption">model</div>
+            </figure>
+<p>对于输入特征 $x$ , 编码后的特征向量表示为 $h = h(x)$,</p>
+<p>$p(y=i|x;\omega) = \frac {\exp(u_i^\top h)}{\sum\limits_{j=1}^k \exp(u_j^\top h)}, i=1,2,…,k$ </p>
+<p>$u$ 是参数</p>
+<h2 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h2><blockquote>
+<p>给定 n 个输入特征 $x_1,…,x_n$, 相对应的观测带噪标签 $z_1,…, z_n$ , 真实标签 $y_1,…,y_n$</p>
+</blockquote>
+<p>对数极大似然估计：</p>
+<p>$L(\omega, \theta) = \sum\limits_{t=1}^n \log (\sum\limits_{i=1}^k p(z_t|y_t=i;\theta) p(y_t=i|x_t;\omega))$</p>
+<p>目标是：最大化该似然函数，找出参数 $\omega$ 、噪音分布 $\theta$</p>
+<p>由于</p>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><p>Improving Long-Tail Relation Extraction with Collaborating Relation-Augmented Attention</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-11-01T08:40:28.000Z" itemprop="dateUpdated">2020-11-01 16:40:28</time>
+</span>
+
+
+        
+        原文链接：<a href="/posts/20201022/" target="_blank" rel="external">http://hanrd.tech/posts/20201022/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='http://hanrd.tech'">
+            <img src="/img/avatar.jpg" alt="韩日东">
+            <a>韩日东</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ICASSP-2016/" rel="tag">ICASSP 2016</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Relation-Extraction/" rel="tag">Relation Extraction</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20201022/&title=《ICASSP 2016 -- Training deep neural-networks based on unreliable labels》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20201022/&title=《ICASSP 2016 -- Training deep neural-networks based on unreliable labels》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20201022/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ICASSP 2016 -- Training deep neural-networks based on unreliable labels》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20201022/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20201022/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/posts/20201101/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：COLING 2020 -- Improving Long-Tail Relation Extraction with Collaborating Relation-Augmented Attention
+        </h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/posts/20201020/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：软件学报2020--基于带噪观测的远监督神经网络关系抽取">下一篇：软件学报2020--基于带噪观测的远监督神经网络关系抽取</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2020
+            <i class="icon icon-lg icon-heart"></i>
+            <a href="http://hanrd.tech">www.hanrd.tech</a>
+            <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a>
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">
+            本站总访问:<span id="busuanzi_value_site_pv"> </span>次
+            本站访客:<span id="busuanzi_value_site_uv"> </span>人次
+            本文总阅读量:<span id="busuanzi_value_page_pv"> </span>次
+            </span>
+        <br/>
+
+        <span class="license">This blog is licensed under a <a rel="license noopener" rel="external nofollow noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20201022/&title=《ICASSP 2016 -- Training deep neural-networks based on unreliable labels》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20201022/&title=《ICASSP 2016 -- Training deep neural-networks based on unreliable labels》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20201022/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ICASSP 2016 -- Training deep neural-networks based on unreliable labels》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20201022/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20201022/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABv0lEQVR42u3aQW6EMAwFUO5/6anUVbso8x0nHiq9rBAzggcLy/7huuL1+l7J8c8zyfnrxMLFxW1zX7erykqufH/Nv/6Pi4s7z02KV4JOSth9QXxjw8XFfRi32nustUq4uLj/i9tpa5KyiIuL+zRufoPOgJS8jm2zGi4uboO7NzBdO/5YvouLi1vcleiHp3loEt0dFxd3hHs/wESjSFD4kjP5OISLizvDrRKTKGStqOXBKy4u7jlutZQk7U41cEke7FdHhouLO869LyXVKLOzoRIVMlxc3MPctfC0X7AK7REuLu4DuHnTkw9C1QcupDK4uLhbuXuHnLy5KUexuLi4I9xqZLm2vZoMPOVtFVxc3GPcaiOSF698yMHFxX0m98Tt70tkfkdcXNx5biGSOBCjlANTXFzcEW7nk4gkJM2Po19xcXEHuR1clV4NRnFxcT/FzVdnqzUZpQp2XFzcY9zOnmZnG2btmri4uJPcavHakMR0miFcXNxBbvXbp+ibjmLkGrVQuLi4D+N2mpjO4LRYyHBxcQe5eZOUtzjJFgsuLu48dy3c3PWBReFl4eLijnCrgWlehqrbq52xChcXdxP3CxFP3UT44OLdAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/js/script.min.js?v=3.0" ></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2020/07/05");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+    elasticText({
+        id: "mymotto",
+        duration: 100,
+        effact: "easeOut",
+        content: ""
+    });
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "韩日东");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c 一个坏掉的番茄 %c  © Simon Ma  http://tomotoes.com \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

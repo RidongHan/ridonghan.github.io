@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="http://hanrd.tech/posts/20201006/">
+    
+    
+    <title>ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="Relation Extraction,ACL 2020">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="摘要现有工作很少能够较好地解决关系三元组的重叠问题（overlapping triple problem）。  本文用一个新的视角来重新审视关系提取任务，并提出了一种级联二分标注框架(Cascade Binary Tagging Framework, 简称CasRel)。 该框架将关系（relation）建模为主体（subject）与客体（object）的函数映射，而不是像以前的工作那样将关系视为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction">
+<meta property="og:url" content="http://hanrd.tech/posts/20201006/index.html">
+<meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
+<meta property="og:description" content="摘要现有工作很少能够较好地解决关系三元组的重叠问题（overlapping triple problem）。  本文用一个新的视角来重新审视关系提取任务，并提出了一种级联二分标注框架(Cascade Binary Tagging Framework, 简称CasRel)。 该框架将关系（relation）建模为主体（subject）与客体（object）的函数映射，而不是像以前的工作那样将关系视为">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hanrd.tech/posts/20201006/overlapType.jpg">
+<meta property="og:image" content="http://hanrd.tech/posts/20201006/casrel.jpg">
+<meta property="article:published_time" content="2020-10-06T03:13:58.000Z">
+<meta property="article:modified_time" content="2020-10-22T02:18:45.000Z">
+<meta property="article:author" content="韩日东">
+<meta property="article:tag" content="Relation Extraction">
+<meta property="article:tag" content="ACL 2020">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hanrd.tech/posts/20201006/overlapType.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+            
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"   >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">韩日东</h5>
+          
+            <div id="mymotto" class="motto"></div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/categories"  >
+                    <i class="icon icon-lg icon-th-list"></i>
+                    <span>分 类</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/about"  >
+                    <i class="icon icon-lg icon-smile-o"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Email" href="mailto:hanrd@foxmail.com" target="_parent"title="Email" >
+                <i class="icon icon-lg icon-envelope-o envelope-o"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/RidongHan" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+              <a class="nav2item" data-title="微博" href="https://weibo.com/u/5728752984" target="_blank"title="微博" >
+                <i class="icon icon-lg icon-weibo weibo"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="../../atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+            <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要"><span class="post-toc-number">1.</span> <span class="post-toc-text">摘要</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#拟解决问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">拟解决问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#本文方案"><span class="post-toc-number">3.</span> <span class="post-toc-text">本文方案</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#本文关系抽取任务定义"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">本文关系抽取任务定义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CasRel框架（三部分）："><span class="post-toc-number">3.2.</span> <span class="post-toc-text">CasRel框架（三部分）：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#训练目标"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">训练目标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BERT-Encoder"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">BERT Encoder</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Subject-Tagger"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">Subject Tagger</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#loss"><span class="post-toc-number">3.5.1.</span> <span class="post-toc-text">loss</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Relation-specific-Object-Taggers"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">Relation-specific Object Taggers</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#loss-1"><span class="post-toc-number">3.6.1.</span> <span class="post-toc-text">loss</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#整体Loss"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">整体Loss</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-ACL-2020-A-Novel-Cascade-Binary-Tagging-Framework-for-Relational-Triple-Extraction"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2020-10-06 11:13:58" datetime="2020-10-06T03:13:58.000Z"  itemprop="datePublished">2020-10-06</time>
+
+            <br id="mybreak"/>
+            
+	<i class="icon icon-lg icon-folder-o"></i>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Relation-Extraction-Notes/">Relation Extraction Notes</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Relation-Extraction-Notes/ACL-2020/">ACL 2020</a></li></ul></li></ul>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">5</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>现有工作很少能够较好地解决关系三元组的<strong>重叠</strong>问题（overlapping triple problem）。 </p>
+<p>本文用一个新的视角来重新审视关系提取任务，并提出了一种<strong>级联二分标注框架(Cascade Binary Tagging Framework, 简称CasRel)</strong>。</p>
+<p>该框架将关系（relation）建模为主体（subject）与客体（object）的函数映射，而不是像以前的工作那样将关系视为离散标签。 </p>
+<p>实验表明，该框架在多个场景下均可以获得性能提升，某些场景大幅度超越现有SOTA。</p>
+<h1 id="拟解决问题"><a href="#拟解决问题" class="headerlink" title="拟解决问题"></a>拟解决问题</h1><p><strong>重叠三元组问题overlapping triple problem</strong>有以下三种情形：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20201006/overlapType.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h1 id="本文方案"><a href="#本文方案" class="headerlink" title="本文方案"></a>本文方案</h1><h2 id="本文关系抽取任务定义"><a href="#本文关系抽取任务定义" class="headerlink" title="本文关系抽取任务定义"></a>本文关系抽取任务定义</h2><blockquote>
+<p>本文的框架将关系（relation）建模为主体（subject）与客体（object）的函数映射，而不是像以前的工作那样将关系视为离散标签。</p>
+</blockquote>
+<p>由学习关系分类器（relation为离散关系标签）</p>
+<p>$f(s,o) \to r$</p>
+<p>转变为学习<strong>主体s在关系r下对客体o</strong>的函数映射</p>
+<p>$f_r(s) \to o$</p>
+<blockquote>
+<p>基于上述视角，关系抽取任务可以分为以下两个步骤：</p>
+<ul>
+<li>确定句子中所有可能的主体  (subject)；</li>
+<li>针对每个主体subject，使用特定于关系的标注器（relation-specific tagger）同时识别<strong>所有可能的关系</strong>和<strong>相应的客体object</strong></li>
+</ul>
+</blockquote>
+<h2 id="CasRel框架（三部分）："><a href="#CasRel框架（三部分）：" class="headerlink" title="CasRel框架（三部分）："></a>CasRel框架（三部分）：</h2><ul>
+<li><p><strong>BERT-based encoder module (基于Bert的编码器模块)</strong></p>
+</li>
+<li><p><strong>subject tagging module(主体标注模块)</strong></p>
+</li>
+<li><p><strong>relation-specific object tagging module(区分关系的客体标注模块)</strong></p>
+</li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/posts/20201006/casrel.jpg" alt="模型结构" title="">
+                </div>
+                <div class="image-caption">模型结构</div>
+            </figure>
+<h2 id="训练目标"><a href="#训练目标" class="headerlink" title="训练目标"></a>训练目标</h2><p>针对训练集 $D$ 中的句子$x_j$，给定对应的潜在overlap triples集合 $ T_j = \{(s,r,o)\} $，最大化数据似然估计：</p>
+<p>$ \prod\limits_{j=1}^{|D|} {\left[ \prod\limits_{(s,r,o) \in T_j} {p((s,r,o)|x_j)}\right]} $</p>
+<p>$ = \prod\limits_{j=1}^{|D|} {\left[ \prod\limits_{s \in T_j} p(s|x_j) \prod\limits_{(r,o) \in T_j|s} p((r,o)|s,x_j)\right]}$</p>
+<p>$ = \prod\limits_{j=1}^{|D|} {\left[ \prod\limits_{s \in T_j} p(s|x_j) \prod\limits_{ r \in T_j|s} p_r(o|s,x_j) \prod\limits_{r \in R \backslash T_j|s} p_r(o_{\emptyset}|s,x_j)\right]}$</p>
+<p>其中，$s \in T_j$ 表示出现在 $T_j$ 中三元组的主体（subject），</p>
+<p>$T_j | s $ 表示 $T_j$ 中主体是 $s$ 的三元组集合，</p>
+<p>$R$ 是所有可能的<strong>关系</strong>的集合，</p>
+<p>$\backslash$ 表示集合的差集,</p>
+<p>$o_\emptyset$ 表示”null”客体。</p>
+<blockquote>
+<p>对于任一个给定的主体 s , 在”s确实参与表达的关系r”的作用下，必定可以映射为客体 o ,而对于其他关系，映射为”空”客体 $null$</p>
+</blockquote>
+<h2 id="BERT-Encoder"><a href="#BERT-Encoder" class="headerlink" title="BERT Encoder"></a>BERT Encoder</h2><p>编码器使用Bert </p>
+<h2 id="Subject-Tagger"><a href="#Subject-Tagger" class="headerlink" title="Subject Tagger"></a>Subject Tagger</h2><p>训练两个二元分类器，分别识别Subject的<strong>开始位置</strong>和<strong>结束位置</strong>,标识为1, 其他标识为0</p>
+<p>对于每一个起始位置，从该位置依次向后<strong>寻找最近的结束位置</strong>, 从而寻找出所有Subject</p>
+<p>$p_i^{start_s} = \sigma (W_{start} X_i + b_{start})$,</p>
+<p>$p_i^{end_s} = \sigma (W_{end} X_i + b_{end})$,</p>
+<p>$ X_i $ 表示序列第i个词的bert编码，</p>
+<p>$\sigma $ 表示sigmoid激活函数。</p>
+<h3 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h3><p>最大化似然函数：<br>$p_\theta(s|X) = \prod\limits_{t \in \{start_s,end_s\}} {\prod\limits_{i=1}^L (p_i^t)^{I\{y_i^t = 1\} }(1-p_i^t)^{I\{y_i^t = 0\}}}$,</p>
+<p>$L$是句子长度，</p>
+<p>$I\{z\} = 1$ ，如果 z 为 true， 否则 0，</p>
+<p>$\theta$ 是参数集合</p>
+<blockquote>
+<p>经过这一步骤，可是识别出句子中<strong>所有Subject</strong></p>
+</blockquote>
+<h2 id="Relation-specific-Object-Taggers"><a href="#Relation-specific-Object-Taggers" class="headerlink" title="Relation-specific Object Taggers"></a>Relation-specific Object Taggers</h2><p>针对每一个关系 $r$,训练两个二元分类器，分别识别<strong>针对关系r映射出的Object</strong>的<strong>开始位置</strong>和<strong>结束位置</strong>，标识为1， 否则标识为0</p>
+<p>$p_i^{start_o} = \sigma (W_{start}^r (X_i + V^k_{sub}) + b_{start}^r)$,</p>
+<p>$p_i^{end_o} = \sigma (W_{end}^r (X_i + V^k_{sub}) + b_{end}^r)$,</p>
+<p>$V_{sub}^k$ 表示subject tagger识别出的<strong>第k个Subject的编码</strong>，若为多个词构成，取均值</p>
+<h3 id="loss-1"><a href="#loss-1" class="headerlink" title="loss"></a>loss</h3><p>最大化似然函数：</p>
+<p>$p_{\emptyset_r}(o|s, X) = \prod\limits_{t \in \{start_o,end_o\}} {\prod\limits_{i=1}^L (p_i^t)^{I\{y_i^t = 1\} }(1-p_i^t)^{I\{y_i^t = 0\}}}$,</p>
+<p>$L$是句子长度，</p>
+<p>$I\{z\} = 1$ ，如果 z 为 true， 否则 0，</p>
+<p>$\emptyset_r$ 是参数集合,</p>
+<p>另外，“空”客体Object，意味着 </p>
+<script type="math/tex; mode=display">y_i^{start\_o_{\emptyset}} = y_i^{end\_o_{\emptyset}} = 0</script><blockquote>
+<p>针对<strong>Subject Tagger</strong>识别出的每一个Subject，计算该subject在<strong>每个关系作用下的Object</strong>。<br>对于每一个关系 $r$<br>若得到非空Object，既可以抽取出关系三元组，<br>若得到空Object，则认为不存在该关系。</p>
+</blockquote>
+<h2 id="整体Loss"><a href="#整体Loss" class="headerlink" title="整体Loss"></a>整体Loss</h2><p>最大化似然函数：</p>
+<p>$J(\Theta) = \sum\limits _{j=1} ^ {|D|} \left[ {\sum\limits _{s \in T_j} \log p_\theta(s|X_j)} + {\sum\limits _{r \in T_j|s} \log p_{\emptyset_r}(o|s,X_j)} + {\sum\limits _{r \in R \backslash T_j|s} \log p_{\emptyset_r}(o_\emptyset|s,X_j)}  \right]$</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-10-22T02:18:45.000Z" itemprop="dateUpdated">2020-10-22 10:18:45</time>
+</span>
+
+
+        
+        原文链接：<a href="/posts/20201006/" target="_blank" rel="external">http://hanrd.tech/posts/20201006/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='http://hanrd.tech'">
+            <img src="/img/avatar.jpg" alt="韩日东">
+            <a>韩日东</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ACL-2020/" rel="tag">ACL 2020</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Relation-Extraction/" rel="tag">Relation Extraction</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20201006/&title=《ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20201006/&title=《ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20201006/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20201006/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20201006/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/posts/20201020/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：软件学报2020--基于带噪观测的远监督神经网络关系抽取
+        </h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/posts/20200921-TopicModel/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：主题模型">下一篇：主题模型</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2020
+            <i class="icon icon-lg icon-heart"></i>
+            <a href="http://hanrd.tech">www.hanrd.tech</a>
+            <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a>
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">
+            本站总访问:<span id="busuanzi_value_site_pv"> </span>次
+            本站访客:<span id="busuanzi_value_site_uv"> </span>人次
+            本文总阅读量:<span id="busuanzi_value_page_pv"> </span>次
+            </span>
+        <br/>
+
+        <span class="license">This blog is licensed under a <a rel="license noopener" rel="external nofollow noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20201006/&title=《ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20201006/&title=《ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20201006/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20201006/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20201006/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3aQY7CMAwFUO5/6c4WNGr4jokF0suqqkrywsKK7Twe8biext375Jv/7x8nBi4ubpt7Lcd6yXyGuy+rM+Di4k5y7xB3z+vAtKasv39jw8XF/WJu9aBTnRMXF/e3uK3F+jPg4uIOcpPkpwpaF0eO52q4uLgNbr7Yuecj9V1cXNwt7lUcefG0Ux69XR0XF3eEmweUfOH1AagayHBxcee5nSZHspkk8OXhDxcXd5LbT4Sq1y+qTdmXQIaLizvCzQNZZ/m96sfLDLi4uCPcaqKSHFPySxjVK564uLiT3Gqo6rD61z5wcXHnuXkgy69H7DVRyvVdXFzcD3GTEJYcPpKN5dt+k6vh4uIe5u5dxqoGrE5wzMMlLi7uaW6e2OTFjn7bBhcXd5KbX7RKwk2/yFIumOLi4h7j7i1fbbh+YNu4uLiD3P7UnaNM4RSGi4t7mHsVR3XJvE2ymZPh4uIe4O4tn8fIvLCSB1BcXNwZbh508jZqteFaaPHi4uIOcvfKHNVjyt43uLi4v8XtJ1TlRAsXF/cruXnbo9qMiX6Fi4s7yM2Lm8kGqhcsCn8WLi7uCLffp61WYTuFFVxc3MPcP4noCwl+5TAuAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/js/script.min.js?v=3.0" ></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2020/07/05");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+    elasticText({
+        id: "mymotto",
+        duration: 100,
+        effact: "easeOut",
+        content: ""
+    });
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "韩日东");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c 一个坏掉的番茄 %c  © Simon Ma  http://tomotoes.com \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

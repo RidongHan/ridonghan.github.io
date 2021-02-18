@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="http://hanrd.tech/posts/927108io/">
+    
+    
+    <title>首次登录与在线求助 | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="linux">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="X window与命令行模式的切换 命令行模式，也称为终端界面（terminal或者console） 启动的程序称为shell，linux默认的shell就是bash   Linux默认情况会提供6个terminal来让用户登录，切换的方式是：[Ctrl]+[Alt]+[F1]~[F6],用户名密码登录，exit注销 这六个终端界面命名为 tty1~tty6，[Ctrl]+[Alt]+[F7]返回">
+<meta property="og:type" content="article">
+<meta property="og:title" content="首次登录与在线求助">
+<meta property="og:url" content="http://hanrd.tech/posts/927108io/index.html">
+<meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
+<meta property="og:description" content="X window与命令行模式的切换 命令行模式，也称为终端界面（terminal或者console） 启动的程序称为shell，linux默认的shell就是bash   Linux默认情况会提供6个terminal来让用户登录，切换的方式是：[Ctrl]+[Alt]+[F1]~[F6],用户名密码登录，exit注销 这六个终端界面命名为 tty1~tty6，[Ctrl]+[Alt]+[F7]返回">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-11T02:01:31.000Z">
+<meta property="article:modified_time" content="2020-07-13T09:14:15.000Z">
+<meta property="article:author" content="韩日东">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+            
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"   >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">韩日东</h5>
+          
+            <div id="mymotto" class="motto"></div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/categories"  >
+                    <i class="icon icon-lg icon-th-list"></i>
+                    <span>分 类</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/about"  >
+                    <i class="icon icon-lg icon-smile-o"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Email" href="mailto:hanrd@foxmail.com" target="_parent"title="Email" >
+                <i class="icon icon-lg icon-envelope-o envelope-o"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/RidongHan" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+              <a class="nav2item" data-title="微博" href="https://weibo.com/u/5728752984" target="_blank"title="微博" >
+                <i class="icon icon-lg icon-weibo weibo"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">首次登录与在线求助</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="../../atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+            <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#X-window与命令行模式的切换"><span class="post-toc-number">1.</span> <span class="post-toc-text">X window与命令行模式的切换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux登录模式"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Linux登录模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux运行等级"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Linux运行等级</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#说明"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">~说明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#提示符"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">提示符</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#执行命令"><span class="post-toc-number">2.</span> <span class="post-toc-text">执行命令</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基础命令"><span class="post-toc-number">3.</span> <span class="post-toc-text">基础命令</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#常用快捷键"><span class="post-toc-number">4.</span> <span class="post-toc-text">常用快捷键</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在线求助-man-page-info-page"><span class="post-toc-number">5.</span> <span class="post-toc-text">在线求助 man page &#x2F; info page</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#man-page"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">man page</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#详细说明"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">详细说明</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#info-page"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">info page</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#info-page内容"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">info page内容</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#按键"><span class="post-toc-number">5.2.2.</span> <span class="post-toc-text">按键</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#其他文档-documents"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">其他文档 documents</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文本编辑器-nano"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">文本编辑器 nano</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正确关机方法"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">正确关机方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数据同步写入硬盘"><span class="post-toc-number">5.5.1.</span> <span class="post-toc-text">数据同步写入硬盘</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常用关机重启命令"><span class="post-toc-number">5.5.2.</span> <span class="post-toc-text">常用关机重启命令</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#shutdown"><span class="post-toc-number">5.5.2.1.</span> <span class="post-toc-text">shutdown</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#reboot"><span class="post-toc-number">5.5.2.2.</span> <span class="post-toc-text">reboot</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#halt"><span class="post-toc-number">5.5.2.3.</span> <span class="post-toc-text">halt</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#poweroff"><span class="post-toc-number">5.5.2.4.</span> <span class="post-toc-text">poweroff</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#切换执行等级-init"><span class="post-toc-number">5.5.2.5.</span> <span class="post-toc-text">切换执行等级 init</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-首次登录与在线求助"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">首次登录与在线求助</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2020-07-11 10:01:31" datetime="2020-07-11T02:01:31.000Z"  itemprop="datePublished">2020-07-11</time>
+
+            <br id="mybreak"/>
+            
+	<i class="icon icon-lg icon-folder-o"></i>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/">Linux-鸟哥私房菜</a></li></ul>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">7</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="X-window与命令行模式的切换"><a href="#X-window与命令行模式的切换" class="headerlink" title="X window与命令行模式的切换"></a>X window与命令行模式的切换</h1><ul>
+<li>命令行模式，也称为终端界面（terminal或者console）</li>
+<li>启动的程序称为<strong>shell</strong>，linux默认的shell就是bash</li>
+</ul>
+<blockquote>
+<p>Linux默认情况会提供6个terminal来让用户登录，切换的方式是：[Ctrl]+[Alt]+[F1]~[F6],用户名密码登录，exit注销</p>
+<p>这六个终端界面命名为 tty1~tty6，[Ctrl]+[Alt]+[F7]返回图形界面tty7</p>
+</blockquote>
+<h2 id="Linux登录模式"><a href="#Linux登录模式" class="headerlink" title="Linux登录模式"></a>Linux登录模式</h2><ul>
+<li>仅有纯文本界面<ul>
+<li>运行等级 <strong>run level 3</strong></li>
+</ul>
+</li>
+<li>图形界面登录环境<ul>
+<li>运行等级 <strong>run level 5</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="Linux运行等级"><a href="#Linux运行等级" class="headerlink" title="Linux运行等级"></a>Linux运行等级</h2><ul>
+<li>共计<strong>7</strong>个run level</li>
+<li>最常用到的是run level 3 与run level 5</li>
+</ul>
+<blockquote>
+<p>若想要更改linux默认的登录模式，需要修改 <strong>/etc/inittab</strong>，下次重启生效</p>
+</blockquote>
+<h2 id="说明"><a href="#说明" class="headerlink" title="~说明"></a>~说明</h2><ul>
+<li>~代表的是用户的主文件夹，它是个变化的值<ul>
+<li>root的主目录：/root</li>
+<li>hanrd这个用户的主目录：/home/hanrd</li>
+</ul>
+</li>
+</ul>
+<h2 id="提示符"><a href="#提示符" class="headerlink" title="提示符"></a>提示符</h2><ul>
+<li>root提示符 <strong>#</strong></li>
+<li>一般用户提示符 <strong>$</strong></li>
+</ul>
+<h1 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h1><ul>
+<li>格式为: 命令 选项 参数1 参数2 …<ul>
+<li>command [-options] parameter1 …</li>
+<li>一行命令的第一个部分绝对是<strong>命令command</strong>或<strong>可执行文件</strong></li>
+<li>选项参数设置<ul>
+<li>-后面接选项的简写</li>
+<li>—后面接选项的全名</li>
+<li>特殊情况会有 +</li>
+</ul>
+</li>
+<li>各部分用空格分隔，不论几个空格，都按照一个空格对待</li>
+<li>按下回车Enter开始执行</li>
+<li>命令太长可以用反斜杠\转义Enter，下一行续写</li>
+</ul>
+</li>
+<li>特别注意，linux命令大小写敏感</li>
+</ul>
+<blockquote>
+<p>ls</p>
+<p>ls -al ~</p>
+<p>ls -a -l ~</p>
+</blockquote>
+<h1 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h1><ul>
+<li><p>echo $LANG</p>
+<ul>
+<li>显示目前所支持的语言</li>
+</ul>
+</li>
+<li><p>LANG=en_US</p>
+<ul>
+<li>临时修改为英语</li>
+</ul>
+</li>
+<li><p>date</p>
+<ul>
+<li>显示日期与时间</li>
+<li>date +%Y/%m/%d 特定输出</li>
+</ul>
+</li>
+<li><p>cal</p>
+<ul>
+<li>显示日历</li>
+<li>cal 12 2020 指定年月</li>
+</ul>
+</li>
+<li><p>bc</p>
+<ul>
+<li>显示计算器</li>
+<li>quit离开</li>
+<li>+、-、*、/、^、%</li>
+<li>默认只输出结果的整数位</li>
+<li>保留小数要执行<strong>scale=3</strong>，指定保留几位小数</li>
+</ul>
+</li>
+</ul>
+<h1 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h1><ul>
+<li><p>[Tab]</p>
+<ul>
+<li>命令补全</li>
+<li>文件补齐</li>
+</ul>
+</li>
+<li><p>[Ctrl] + c</p>
+<ul>
+<li>中断目前程序/命令</li>
+</ul>
+</li>
+<li><p>[Ctrl] + d</p>
+<ul>
+<li>表示键盘输入结束</li>
+<li>可以用来直接离开文字界面，关闭terminal</li>
+<li>相当于输入exit</li>
+</ul>
+</li>
+</ul>
+<h1 id="在线求助-man-page-info-page"><a href="#在线求助-man-page-info-page" class="headerlink" title="在线求助 man page / info page"></a>在线求助 man page / info page</h1><h2 id="man-page"><a href="#man-page" class="headerlink" title="man page"></a>man page</h2><ul>
+<li>man是manual（操作说明）缩写</li>
+<li>查询出的页面，叫做man page</li>
+<li>如，man date</li>
+<li>man page的文件数据通常放在<strong>/usr/share/man</strong>目录里，可通过修改名为<strong>/etc/man.config</strong>的文件更改目录（不同的distribution文件名略有不同）</li>
+</ul>
+<h3 id="详细说明"><a href="#详细说明" class="headerlink" title="详细说明"></a>详细说明</h3><ul>
+<li><p>诸如“DATE(1)”中的数字的意义（1-9），<strong>常用数字</strong>如下：</p>
+<ul>
+<li>1—用户在shell环境中可以操作的命令或者可执行文件</li>
+<li>5—配置文件或者是某些文件的格式</li>
+<li>8—系统管理员可用的管理命令</li>
+</ul>
+</li>
+<li><p>man page <strong>主要内容</strong>包括：</p>
+<ul>
+<li>NAME—简短的命令、数据名称说明</li>
+<li>SYNOPSIS—简短的命令执行语法简介</li>
+<li>DESCRIPTION—较为完整的说明，这部分最好仔细看看</li>
+<li>OPTIONS—针对SYNOPSIS的所有的可用的选项的说明</li>
+<li>SEE ALSO—其他参考材料</li>
+<li>FILES—某些有关的文件</li>
+<li>其他诸如，EXAMPLES、BUGS、AUTHORS等</li>
+</ul>
+</li>
+<li><p>man page <strong>常用按键</strong></p>
+<ul>
+<li>向下翻一页<ul>
+<li>空格</li>
+<li>[Page Down]</li>
+</ul>
+</li>
+<li>向上翻一页<ul>
+<li>[Page Up]</li>
+</ul>
+</li>
+<li>回到第一页<ul>
+<li>[Home]</li>
+</ul>
+</li>
+<li>去到最后一页<ul>
+<li>[End]</li>
+</ul>
+</li>
+<li>向下查询字符串<ul>
+<li>/string</li>
+</ul>
+</li>
+<li>向上查询字符串<ul>
+<li>?string</li>
+</ul>
+</li>
+<li>继续查询<ul>
+<li>n继续当前查询方向查询写一个</li>
+<li>N当前查询方向逆方向查询下一个</li>
+</ul>
+</li>
+<li>离开<ul>
+<li>q</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>高阶命令</p>
+<ul>
+<li><p>查找与指定命令或数据有关的man page文件</p>
+<ul>
+<li>whatis 命令或数据 <ul>
+<li>需要root权限执行 makewhatis创建whatis数据库</li>
+</ul>
+</li>
+<li>man -f 命令或数据</li>
+</ul>
+</li>
+<li><p>查找包含指定关键字的man page文件</p>
+<ul>
+<li>apropos 命令或数据<ul>
+<li>需要root权限执行 makewhatis创建whatis数据库</li>
+</ul>
+</li>
+<li>man -k 命令或数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="info-page"><a href="#info-page" class="headerlink" title="info page"></a>info page</h2><blockquote>
+<p>info与man的用途差不多</p>
+<p>info page将文件数据拆成一个一个的段落，每个段落用自己的页面撰写，并且每个页面有“超链接”来跳到不同的页面中，每个独立的页面称为<strong>节点（Node）</strong></p>
+<p>info page是只有linux才有的产物，必须按照info page的格式撰写求助文件才能具有info page的功能，info page的文件放置于<strong>/usr/share/info/</strong>目录中</p>
+<p>非info page格式的文件也能用info显示，只不过显示效果与man相同</p>
+</blockquote>
+<h3 id="info-page内容"><a href="#info-page内容" class="headerlink" title="info page内容"></a>info page内容</h3><ul>
+<li><p>第一行</p>
+<ul>
+<li>File—文件名（xx.info）</li>
+<li>Node—节点名</li>
+<li>Next—下一个节点</li>
+<li>Up—回到上一层的节点总览界面</li>
+<li>Prev—上一个节点</li>
+</ul>
+</li>
+<li><p>Menu</p>
+<ul>
+<li>可使用方向键选择，按下[Enter]，前往该小节</li>
+<li>也可[Tab]，在节点间移动</li>
+</ul>
+</li>
+</ul>
+<h3 id="按键"><a href="#按键" class="headerlink" title="按键"></a>按键</h3><ul>
+<li>空格键 — 向下翻页</li>
+<li>[Page Down] — 向下翻页</li>
+<li>[Page Up] — 向上翻页</li>
+<li>[Tab] — 在节点间移动，节点以“*”显示</li>
+<li>[Enter] — 进入该节点</li>
+<li>B — 光标移至info界面第一个节点处</li>
+<li>E — 光标移至info界面最后一个节点处</li>
+<li>N — 前往下一个节点</li>
+<li>P — 前往上一个节点</li>
+<li>U — 向上移动一层</li>
+<li>S或者/ — 查询搜索</li>
+<li>H — 显示求助菜单</li>
+<li>? — 命令一览表</li>
+<li>Q — 离开</li>
+</ul>
+<blockquote>
+<p>上述命令不区分大小写字母</p>
+</blockquote>
+<h2 id="其他文档-documents"><a href="#其他文档-documents" class="headerlink" title="其他文档 documents"></a>其他文档 documents</h2><ul>
+<li><strong>/usr/share/doc</strong>目录包含一些额外的说明文件，包含how-to及相关原理说明</li>
+</ul>
+<h2 id="文本编辑器-nano"><a href="#文本编辑器-nano" class="headerlink" title="文本编辑器 nano"></a>文本编辑器 nano</h2><ul>
+<li><p>进入nano</p>
+<ul>
+<li>nano text.txt</li>
+</ul>
+</li>
+<li><p>离开nano</p>
+<ul>
+<li>[Ctrl] + X</li>
+<li>Y/N</li>
+</ul>
+</li>
+<li><p>查询字符串</p>
+<ul>
+<li>[Ctrl] + W</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>^表示[Ctrl]</p>
+<p>M表示[Alt]</p>
+</blockquote>
+<h2 id="正确关机方法"><a href="#正确关机方法" class="headerlink" title="正确关机方法"></a>正确关机方法</h2><ul>
+<li>关机时要注意：<ul>
+<li>查看系统的使用状态<ul>
+<li>who 查看谁在线</li>
+<li>netstat -a 查看网络联机状态</li>
+<li>ps -aux 查看后台执行的程序</li>
+</ul>
+</li>
+<li>通知在线用户关机的时刻</li>
+<li>正确的关机命令使用<ul>
+<li>shutdown</li>
+<li>reboot</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>非正常关机可能造成文件系统的毁损</li>
+</ul>
+<h3 id="数据同步写入硬盘"><a href="#数据同步写入硬盘" class="headerlink" title="数据同步写入硬盘"></a>数据同步写入硬盘</h3><ul>
+<li><p>命令</p>
+<ul>
+<li>sync</li>
+</ul>
+</li>
+<li><p>目的</p>
+<ul>
+<li>在默认情况下，某些已经加载内存中的数据不会直接被写回硬盘，而是先存在内存中，因而，特殊情况或者非正常关机会使数据的更新不正常</li>
+<li>需要sync将内存里的尚未被更新的数据写入硬盘</li>
+</ul>
+</li>
+</ul>
+<h3 id="常用关机重启命令"><a href="#常用关机重启命令" class="headerlink" title="常用关机重启命令"></a>常用关机重启命令</h3><h4 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h4><blockquote>
+<p>shutdown可以完成如下工作：</p>
+<p>可以自由选择关机模式：关机、重启、单用户操作模式</p>
+<p>可以设置关机时间</p>
+<p>可以自定义关机消息</p>
+<p>可以仅发出警告消息，不关机或重启</p>
+<p>可以选择是否要用fsck检查文件系统</p>
+</blockquote>
+<ul>
+<li>shutdown — 依据目前已启动的服务逐次关闭各服务，然后关机<ul>
+<li>shutdown -h now<ul>
+<li>立刻关机</li>
+</ul>
+</li>
+<li>shutdown -h 20:25<ul>
+<li>20：25关机</li>
+</ul>
+</li>
+<li>shutdown -h +10<ul>
+<li>十分钟后关机</li>
+</ul>
+</li>
+<li>shutdown -r now<ul>
+<li>立即重启</li>
+</ul>
+</li>
+<li>shutdown -r +30 ‘the system will reboot’<ul>
+<li>30分钟后重启，在目前登录者的屏幕前方显示该信息</li>
+</ul>
+</li>
+<li>shutdown -k now ‘the system will reboot’<ul>
+<li>仅发出警告消息，系统不会关机</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="reboot"><a href="#reboot" class="headerlink" title="reboot"></a>reboot</h4><ul>
+<li>重启</li>
+<li>通常执行:  sync;sync;sync;reboot</li>
+</ul>
+<h4 id="halt"><a href="#halt" class="headerlink" title="halt"></a>halt</h4><ul>
+<li>不理会目前系统状态，硬件关机</li>
+</ul>
+<h4 id="poweroff"><a href="#poweroff" class="headerlink" title="poweroff"></a>poweroff</h4><ul>
+<li>关机<ul>
+<li>poweroff -f</li>
+</ul>
+</li>
+</ul>
+<h4 id="切换执行等级-init"><a href="#切换执行等级-init" class="headerlink" title="切换执行等级 init"></a>切换执行等级 init</h4><ul>
+<li>run level 0<ul>
+<li>关机</li>
+</ul>
+</li>
+<li>run level 3<ul>
+<li>纯命令行模式</li>
+</ul>
+</li>
+<li>run level 5<ul>
+<li>含有图形界面模式</li>
+</ul>
+</li>
+<li>run level 6<ul>
+<li>重启</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>init 0</strong>也可以关机</p>
+</blockquote>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-07-13T09:14:15.000Z" itemprop="dateUpdated">2020-07-13 17:14:15</time>
+</span>
+
+
+        
+        原文链接：<a href="/posts/927108io/" target="_blank" rel="external">http://hanrd.tech/posts/927108io/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='http://hanrd.tech'">
+            <img src="/img/avatar.jpg" alt="韩日东">
+            <a>韩日东</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/927108io/&title=《首次登录与在线求助》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/927108io/&title=《首次登录与在线求助》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/927108io/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《首次登录与在线求助》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/927108io/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/927108io/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/posts/200711ia/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：论文笔记--关系抽取概述
+        </h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/posts/927108rt/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：2.Linux如何学习、主机规划与磁盘分区">下一篇：2.Linux如何学习、主机规划与磁盘分区</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2020
+            <i class="icon icon-lg icon-heart"></i>
+            <a href="http://hanrd.tech">www.hanrd.tech</a>
+            <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a>
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">
+            本站总访问:<span id="busuanzi_value_site_pv"> </span>次
+            本站访客:<span id="busuanzi_value_site_uv"> </span>人次
+            本文总阅读量:<span id="busuanzi_value_page_pv"> </span>次
+            </span>
+        <br/>
+
+        <span class="license">This blog is licensed under a <a rel="license noopener" rel="external nofollow noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/927108io/&title=《首次登录与在线求助》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/927108io/&title=《首次登录与在线求助》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/927108io/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《首次登录与在线求助》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/927108io/&via=http://hanrd.tech" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/927108io/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABuUlEQVR42u3aQY7DIAwF0N7/0p1tF1P6bYgbVY9VFEXwyMLCNo9HPJ4v4/XN+pvk/eOKgYuLu819Lseam4z1WrkBFxd3nvsuYvS+WVN68+Pi4t6Z2wth+fZwcXF/iRstthEocXFx57lJ8rMuc+wUVi7J1XBxcTe4+WLXPV9S38XFxW1xn8WxLnNUCyLl1XFxcUe4eUDZp/cCGS4u7re4Ozcc8qmrJZJC8oOLi3uUmyDOtlV6Tdl/TmS4uLiD3ORYkzRUdgqsb2fDxcUd4VZPQPnGqj8i+Sm4uLgz3J2CZm8bO9c+cHFxJ7nNMmWrUbrTtsHFxZ3h5g2PU6lLAoqSH1xc3Mu4vXSlxzpAx8XFHeEmU+8kSOXubnKEwsXF/Sq3mhTthMJmfRcXF3ec22uQVI876w18qPLi4uIOcvPmx9CxppqH4eLibnB7qcvbEBOUP5L3B/owuLi4G9yzzdHeda5TNytwcXHPcnvB69SXeeqFi4s7z62WOU6lT0ngw8XFvT+3eug53I7FxcW9JbfXGqkGsg+tFFxc3BFuHoySwmjOLYdRXFzcEW618Vm9ilENVclvwsXFvYz7B9y490bmO7itAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/js/script.min.js?v=3.0" ></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2020/07/05");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+    elasticText({
+        id: "mymotto",
+        duration: 100,
+        effact: "easeOut",
+        content: ""
+    });
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "韩日东");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c 一个坏掉的番茄 %c  © Simon Ma  http://tomotoes.com \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+</body>
+</html>

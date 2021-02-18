@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Welcome to RidongHan&#39;s blogs!</title>
+  <icon>https://www.gravatar.com/avatar/ba6bf8f17ae6032e2b506153fb9d1109</icon>
+  <subtitle>一只进击的IT菜鸟</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://hanrd.tech/"/>
+  <updated>2021-02-06T07:38:58.000Z</updated>
+  <id>http://hanrd.tech/</id>
+  
+  <author>
+    <name>韩日东</name>
+    <email>hanrd@foxmail.com</email>
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>dpkg强制卸载软件</title>
+    <link href="http://hanrd.tech/posts/20210206/"/>
+    <id>http://hanrd.tech/posts/20210206/</id>
+    <published>2021-02-06T07:34:09.000Z</published>
+    <updated>2021-02-06T07:38:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="dpkg强制卸载软件，忽略依赖warning"><a href="#dpkg强制卸载软件，忽略依赖warning" class="headerlink" title="dpkg强制卸载软件，忽略依赖warning"></a>dpkg强制卸载软件，忽略依赖warning</h1><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --purge --force-depends 软件名</span><br></pre></td></tr></tbody></table></figure><p>例如：<br></p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --purge --force-depends "libglvnd-dev"</span><br></pre></td></tr></tbody></table></figure><p></p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;dpkg强制卸载软件，忽略依赖warning&quot;&gt;&lt;a href=&quot;#dpkg强制卸载软件，忽略依赖warning&quot; class=&quot;headerlink&quot; title=&quot;dpkg强制卸载软件，忽略依赖warning&quot;&gt;&lt;/a&gt;dpkg强制卸载软件，忽略依赖warni
+      
+    
+    </summary>
+    
+    
+      <category term="dpkg" scheme="http://hanrd.tech/categories/dpkg/"/>
+    
+    
+      <category term="dpkg" scheme="http://hanrd.tech/tags/dpkg/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>COLING 2020 -- Improving Long-Tail Relation Extraction with Collaborating Relation-Augmented Attention</title>
+    <link href="http://hanrd.tech/posts/20201101/"/>
+    <id>http://hanrd.tech/posts/20201101/</id>
+    <published>2020-11-01T08:41:07.000Z</published>
+    <updated>2020-11-01T12:44:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>在关系抽取中，远程监督引起两个主要挑战：</p><ul><li>错误标签</li><li>长尾关系（NYT数据集中，41个关系类别（共53个）只有不到1000个训练样例）</li></ul><p>最近的工作通过“<strong>多实例学习的选择性注意力</strong>”减轻错误标签影响，</p><p>但即使引入<strong>关系的层次结构</strong>来共享知识，也不能很好地处理长尾关系。</p><p>为解决上述问题，本文提出一种新的神经网络，即协作关系增强的注意力（Collaborating Relation-augmented Attention，CoRA）。</p><blockquote><p>具体如下：</p><ul><li>首先提出<strong>关系增强注意力网络</strong>(relation-augmented attention network)，作为 base model。<ul><li>bag级别的sentence-to-relation注意力机制，最大程度减少错误标记的影响。</li></ul></li><li>基于 base model，引入<strong>在关系的层次结构中，各关系间共享的协同特征</strong>（collaborating relation features）<ul><li>促进关系增强过程</li><li>平衡长尾关系的训练数据</li></ul></li></ul></blockquote><p>主要训练目标: </p><ul><li>预测句子bag的关系</li></ul><p>辅助目标：</p><ul><li>指导关系增强过程，以获得更准确的bag级特征表示</li></ul><p>CoRA在数据集NYT上进行的实验在 $Precision@N$，$AUC$ 和  $Hits@K$ 指标上均达到SOTA。</p><p>对比实验的进一步分析也证明了CoRA在处理长尾关系方面的卓越能力。</p><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>在关系抽取中，远程监督引起两个主要挑战：</p><ul><li>错误标签</li><li>长尾关系（NYT数据集中，41个关系类别（共53个）只有不到1000个训练样例）</li></ul><ol><li>对于错误标签问题：</li></ol><blockquote><p>最近的工作大多是通过“<strong>多实例学习的选择性注意力</strong>”减轻错误标签影响 </p></blockquote><ol><li>对于long-tail问题：</li></ol><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h1&gt;&lt;p&gt;在关系抽取中，远程监督引起两个主要挑战：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;错误标签&lt;/li&gt;
+&lt;li&gt;长尾关系（NYT数据集中，41个关系类别（共
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+      <category term="COLING 2020" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/COLING-2020/"/>
+    
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+      <category term="COLING 2020" scheme="http://hanrd.tech/tags/COLING-2020/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ICASSP 2016 -- Training deep neural-networks based on unreliable labels</title>
+    <link href="http://hanrd.tech/posts/20201022/"/>
+    <id>http://hanrd.tech/posts/20201022/</id>
+    <published>2020-10-22T02:38:58.000Z</published>
+    <updated>2020-11-01T08:40:28.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文拟解决基于 “带有不可靠标签的数据” 训练神经网络的问题。</p><blockquote><p>基于假设<strong>观察到的标签是真实标签的带噪观测结果</strong>，从而引入一个额外的噪音层，模拟噪音分布对真实标签的影响。</p></blockquote><ul><li>提出一种同时学习<strong>神经网络参数</strong>和<strong>噪声分布</strong>的方法</li><li>在几个标准分类任务上的对比实验说明了该方法对性能的提升。</li><li>在某些情况下，即使“人工手动标注并假定没有错误的数据”，该方法也有所帮助。</li></ul><h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><blockquote><p>假设在训练过程中不能直接观察到正确标签y，只能观察到带噪标签z</p></blockquote><p>噪音分布可以看作关系标签间的转移概率 </p><p>$\theta (i,j) = p(z=j|y=i) $</p><p>观测的带噪标签 z 的概率：</p><p>$ p(z=j|x;\omega, \theta) = \sum\limits_{i=1}^k p(z=j|y=i; \theta) p(y=i|x;\omega), $</p><p>$\omega是参数集合, x是输入特征（可以是句子、手工创建的特征等）, k是关系的个数$</p><p>模型结构图如下：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20201022/model_train.jpg" alt="model" title="">                </div>                <div class="image-caption">model</div>            </figure><p>对于输入特征 $x$ , 编码后的特征向量表示为 $h = h(x)$,</p><p>$p(y=i|x;\omega) = \frac {\exp(u_i^\top h)}{\sum\limits_{j=1}^k \exp(u_j^\top h)}, i=1,2,…,k$ </p><p>$u$ 是参数</p><h2 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h2><blockquote><p>给定 n 个输入特征 $x_1,…,x_n$, 相对应的观测带噪标签 $z_1,…, z_n$ , 真实标签 $y_1,…,y_n$</p></blockquote><p>对数极大似然估计：</p><p>$L(\omega, \theta) = \sum\limits_{t=1}^n \log (\sum\limits_{i=1}^k p(z_t|y_t=i;\theta) p(y_t=i|x_t;\omega))$</p><p>目标是：最大化该似然函数，找出参数 $\omega$ 、噪音分布 $\theta$</p><p>由于</p><h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><p>Improving Long-Tail Relation Extraction with Collaborating Relation-Augmented Attention</p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h1&gt;&lt;p&gt;本文拟解决基于 “带有不可靠标签的数据” 训练神经网络的问题。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;基于假设&lt;strong&gt;观察到的标签
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+      <category term="ICASSP 2016" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/ICASSP-2016/"/>
+    
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+      <category term="ICASSP 2016" scheme="http://hanrd.tech/tags/ICASSP-2016/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>软件学报2020--基于带噪观测的远监督神经网络关系抽取</title>
+    <link href="http://hanrd.tech/posts/20201020/"/>
+    <id>http://hanrd.tech/posts/20201020/</id>
+    <published>2020-10-20T14:01:19.000Z</published>
+    <updated>2020-10-21T07:33:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="拟解决问题"><a href="#拟解决问题" class="headerlink" title="拟解决问题"></a>拟解决问题</h1><p>远程监督关系抽取的标记噪音问题</p><h1 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h1><p>提出”<strong>远程监督中，最终句子对齐的标签是基于某些未知因素所生成的带噪观测结果</strong>”这一假设。</p><h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><p>模型结构如下图所示：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20201020/model.jpg" alt="带噪观测模型" title="">                </div>                <div class="image-caption">带噪观测模型</div>            </figure><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;拟解决问题&quot;&gt;&lt;a href=&quot;#拟解决问题&quot; class=&quot;headerlink&quot; title=&quot;拟解决问题&quot;&gt;&lt;/a&gt;拟解决问题&lt;/h1&gt;&lt;p&gt;远程监督关系抽取的标记噪音问题&lt;/p&gt;
+&lt;h1 id=&quot;出发点&quot;&gt;&lt;a href=&quot;#出发点&quot; class=&quot;hea
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+      <category term="软件学报 2020" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/%E8%BD%AF%E4%BB%B6%E5%AD%A6%E6%8A%A5-2020/"/>
+    
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+      <category term="软件学报 2020" scheme="http://hanrd.tech/tags/%E8%BD%AF%E4%BB%B6%E5%AD%A6%E6%8A%A5-2020/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ACL 2020 - A Novel Cascade Binary Tagging Framework for Relational Triple Extraction</title>
+    <link href="http://hanrd.tech/posts/20201006/"/>
+    <id>http://hanrd.tech/posts/20201006/</id>
+    <published>2020-10-06T03:13:58.000Z</published>
+    <updated>2020-10-22T02:18:45.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>现有工作很少能够较好地解决关系三元组的<strong>重叠</strong>问题（overlapping triple problem）。 </p><p>本文用一个新的视角来重新审视关系提取任务，并提出了一种<strong>级联二分标注框架(Cascade Binary Tagging Framework, 简称CasRel)</strong>。</p><p>该框架将关系（relation）建模为主体（subject）与客体（object）的函数映射，而不是像以前的工作那样将关系视为离散标签。 </p><p>实验表明，该框架在多个场景下均可以获得性能提升，某些场景大幅度超越现有SOTA。</p><h1 id="拟解决问题"><a href="#拟解决问题" class="headerlink" title="拟解决问题"></a>拟解决问题</h1><p><strong>重叠三元组问题overlapping triple problem</strong>有以下三种情形：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20201006/overlapType.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><h1 id="本文方案"><a href="#本文方案" class="headerlink" title="本文方案"></a>本文方案</h1><h2 id="本文关系抽取任务定义"><a href="#本文关系抽取任务定义" class="headerlink" title="本文关系抽取任务定义"></a>本文关系抽取任务定义</h2><blockquote><p>本文的框架将关系（relation）建模为主体（subject）与客体（object）的函数映射，而不是像以前的工作那样将关系视为离散标签。</p></blockquote><p>由学习关系分类器（relation为离散关系标签）</p><p>$f(s,o) \to r$</p><p>转变为学习<strong>主体s在关系r下对客体o</strong>的函数映射</p><p>$f_r(s) \to o$</p><blockquote><p>基于上述视角，关系抽取任务可以分为以下两个步骤：</p><ul><li>确定句子中所有可能的主体  (subject)；</li><li>针对每个主体subject，使用特定于关系的标注器（relation-specific tagger）同时识别<strong>所有可能的关系</strong>和<strong>相应的客体object</strong></li></ul></blockquote><h2 id="CasRel框架（三部分）："><a href="#CasRel框架（三部分）：" class="headerlink" title="CasRel框架（三部分）："></a>CasRel框架（三部分）：</h2><ul><li><p><strong>BERT-based encoder module (基于Bert的编码器模块)</strong></p></li><li><p><strong>subject tagging module(主体标注模块)</strong></p></li><li><p><strong>relation-specific object tagging module(区分关系的客体标注模块)</strong></p></li></ul><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20201006/casrel.jpg" alt="模型结构" title="">                </div>                <div class="image-caption">模型结构</div>            </figure><h2 id="训练目标"><a href="#训练目标" class="headerlink" title="训练目标"></a>训练目标</h2><p>针对训练集 $D$ 中的句子$x_j$，给定对应的潜在overlap triples集合 $ T_j = \{(s,r,o)\} $，最大化数据似然估计：</p><p>$ \prod\limits_{j=1}^{|D|} {\left[ \prod\limits_{(s,r,o) \in T_j} {p((s,r,o)|x_j)}\right]} $</p><p>$ = \prod\limits_{j=1}^{|D|} {\left[ \prod\limits_{s \in T_j} p(s|x_j) \prod\limits_{(r,o) \in T_j|s} p((r,o)|s,x_j)\right]}$</p><p>$ = \prod\limits_{j=1}^{|D|} {\left[ \prod\limits_{s \in T_j} p(s|x_j) \prod\limits_{ r \in T_j|s} p_r(o|s,x_j) \prod\limits_{r \in R \backslash T_j|s} p_r(o_{\emptyset}|s,x_j)\right]}$</p><p>其中，$s \in T_j$ 表示出现在 $T_j$ 中三元组的主体（subject），</p><p>$T_j | s $ 表示 $T_j$ 中主体是 $s$ 的三元组集合，</p><p>$R$ 是所有可能的<strong>关系</strong>的集合，</p><p>$\backslash$ 表示集合的差集,</p><p>$o_\emptyset$ 表示”null”客体。</p><blockquote><p>对于任一个给定的主体 s , 在”s确实参与表达的关系r”的作用下，必定可以映射为客体 o ,而对于其他关系，映射为”空”客体 $null$</p></blockquote><h2 id="BERT-Encoder"><a href="#BERT-Encoder" class="headerlink" title="BERT Encoder"></a>BERT Encoder</h2><p>编码器使用Bert </p><h2 id="Subject-Tagger"><a href="#Subject-Tagger" class="headerlink" title="Subject Tagger"></a>Subject Tagger</h2><p>训练两个二元分类器，分别识别Subject的<strong>开始位置</strong>和<strong>结束位置</strong>,标识为1, 其他标识为0</p><p>对于每一个起始位置，从该位置依次向后<strong>寻找最近的结束位置</strong>, 从而寻找出所有Subject</p><p>$p_i^{start_s} = \sigma (W_{start} X_i + b_{start})$,</p><p>$p_i^{end_s} = \sigma (W_{end} X_i + b_{end})$,</p><p>$ X_i $ 表示序列第i个词的bert编码，</p><p>$\sigma $ 表示sigmoid激活函数。</p><h3 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h3><p>最大化似然函数：<br>$p_\theta(s|X) = \prod\limits_{t \in \{start_s,end_s\}} {\prod\limits_{i=1}^L (p_i^t)^{I\{y_i^t = 1\} }(1-p_i^t)^{I\{y_i^t = 0\}}}$,</p><p>$L$是句子长度，</p><p>$I\{z\} = 1$ ，如果 z 为 true， 否则 0，</p><p>$\theta$ 是参数集合</p><blockquote><p>经过这一步骤，可是识别出句子中<strong>所有Subject</strong></p></blockquote><h2 id="Relation-specific-Object-Taggers"><a href="#Relation-specific-Object-Taggers" class="headerlink" title="Relation-specific Object Taggers"></a>Relation-specific Object Taggers</h2><p>针对每一个关系 $r$,训练两个二元分类器，分别识别<strong>针对关系r映射出的Object</strong>的<strong>开始位置</strong>和<strong>结束位置</strong>，标识为1， 否则标识为0</p><p>$p_i^{start_o} = \sigma (W_{start}^r (X_i + V^k_{sub}) + b_{start}^r)$,</p><p>$p_i^{end_o} = \sigma (W_{end}^r (X_i + V^k_{sub}) + b_{end}^r)$,</p><p>$V_{sub}^k$ 表示subject tagger识别出的<strong>第k个Subject的编码</strong>，若为多个词构成，取均值</p><h3 id="loss-1"><a href="#loss-1" class="headerlink" title="loss"></a>loss</h3><p>最大化似然函数：</p><p>$p_{\emptyset_r}(o|s, X) = \prod\limits_{t \in \{start_o,end_o\}} {\prod\limits_{i=1}^L (p_i^t)^{I\{y_i^t = 1\} }(1-p_i^t)^{I\{y_i^t = 0\}}}$,</p><p>$L$是句子长度，</p><p>$I\{z\} = 1$ ，如果 z 为 true， 否则 0，</p><p>$\emptyset_r$ 是参数集合,</p><p>另外，“空”客体Object，意味着 </p><script type="math/tex; mode=display">y_i^{start\_o_{\emptyset}} = y_i^{end\_o_{\emptyset}} = 0</script><blockquote><p>针对<strong>Subject Tagger</strong>识别出的每一个Subject，计算该subject在<strong>每个关系作用下的Object</strong>。<br>对于每一个关系 $r$<br>若得到非空Object，既可以抽取出关系三元组，<br>若得到空Object，则认为不存在该关系。</p></blockquote><h2 id="整体Loss"><a href="#整体Loss" class="headerlink" title="整体Loss"></a>整体Loss</h2><p>最大化似然函数：</p><p>$J(\Theta) = \sum\limits _{j=1} ^ {|D|} \left[ {\sum\limits _{s \in T_j} \log p_\theta(s|X_j)} + {\sum\limits _{r \in T_j|s} \log p_{\emptyset_r}(o|s,X_j)} + {\sum\limits _{r \in R \backslash T_j|s} \log p_{\emptyset_r}(o_\emptyset|s,X_j)}  \right]$</p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h1&gt;&lt;p&gt;现有工作很少能够较好地解决关系三元组的&lt;strong&gt;重叠&lt;/strong&gt;问题（overlapping triple problem）。 
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+      <category term="ACL 2020" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/ACL-2020/"/>
+    
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+      <category term="ACL 2020" scheme="http://hanrd.tech/tags/ACL-2020/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>主题模型</title>
+    <link href="http://hanrd.tech/posts/20200921-TopicModel/"/>
+    <id>http://hanrd.tech/posts/20200921-TopicModel/</id>
+    <published>2020-09-21T05:38:41.000Z</published>
+    <updated>2020-09-22T04:40:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="主题模型-（Topic-Model）"><a href="#主题模型-（Topic-Model）" class="headerlink" title="主题模型 （Topic Model）"></a>主题模型 （Topic Model）</h1><ul><li><strong>主题模型</strong>（Topic Model）是以无监督学习的方式对文档的隐含语义结构(latent semantic structure)进行聚类(clustering)的统计模型。</li></ul><blockquote><p>主题模型认为在词(word)与文档(document)之间没有直接的联系，应当还有一个维度将它们串联起来，这个维度称为主题(topic)。</p></blockquote><p>每个文档都对应着一个或多个主题，而每个主题都有对应的词分布，通过主题，就可以得到每个文档的词分布。</p><p>由此有公式：</p><script type="math/tex; mode=display">p(\omega_i | d_j) = \sum _{k=1} ^{K} p(\omega_i | t_k) \times p( t_k | d_j), 其中\omega表示词，d表示文档，t表示主题，K表示主题个数</script><blockquote><p>在一个已知的数据集中，词和文档对应的$p(\omega_i | d_j)$都是已知的。主题模型就是根据这个已知的信息，通过计算$p(\omega_i | t_k)$和$p( t_k | d_j)$，从而得到<strong>主题的词分布</strong>和<strong>文档的主题分布</strong>信息。</p></blockquote><p>常用方法</p><ul><li>LSA（Latent Semantic Analysis）<ul><li>主要采用SVD（奇异值分解）暴力破解</li></ul></li><li>LDA（Latent Dirichlet Allocation, 隐含狄利克雷分布）<ul><li>贝叶斯学派方法论进行拟合</li></ul></li></ul><h1 id="LSA（Latent-Semantic-Analysis）"><a href="#LSA（Latent-Semantic-Analysis）" class="headerlink" title="LSA（Latent Semantic Analysis）"></a>LSA（Latent Semantic Analysis）</h1><p>LSA最初用在语义检索上，为解决<strong>一词多义</strong>和<strong>一义多词</strong>的问题：</p><ul><li>一义多词： <blockquote><p>美女和PPMM表示相同的含义，但是单纯依靠检索词“美女”来检索文档，很可能丧失掉那些包含“PPMM”的文档。</p></blockquote></li><li>一词多义：<blockquote><p>如果输入检索词是多个检索词组成的一个小document，例如“清澈 孩子”，那我们就知道这段文字主要想表达concept是和道德相关的，不应该将“春天到了，小河多么的清澈”这样的文本包含在内。</p></blockquote></li></ul><p>为了能够解决这个问题，需要将词语（term）中的concept提取出来，建立一个词语和概念的关联关系（t-c relationship），这样一个文档就能表示成为概念的向量。这样输入一段检索词之后，就可以先将检索词转换为概念，再通过概念去匹配文档</p><h1 id="LDA-Latent-Dirichlet-Allocation"><a href="#LDA-Latent-Dirichlet-Allocation" class="headerlink" title="LDA (Latent Dirichlet Allocation)"></a>LDA (Latent Dirichlet Allocation)</h1><p><strong>隐含狄利克雷分布</strong>（Latent Dirichlet Allocation, LDA）是由David Blei等人在<strong>2003</strong>年提出的，该方法的理论基础是<strong>贝叶斯理论</strong>。</p><blockquote><p>LDA根据<strong>词的共现信息</strong>，拟合出词-文档-主题的分布，进而将词、文本都映射到一个语义空间中。</p></blockquote><p>LDA算法假设文档中主题的先验分布和主题中词的先验分布都服从狄利克雷分布。在贝叶斯学派看来，先验分布+数据(似然)=后验分布。我们通过对已有数据集的统计，就可以得到每篇文档中主题的多项式分布和每个主题对应词的多项式分布。然后就可以根据贝叶斯学派的方法，通过先验的狄利克雷分布和观测数据得到的多项式分布，得到一组Dirichlet-multi共轭，并据此来推断文档中主题的后验分布，也就是我们最后需要的结果。那么具体的LDA模型应当如何进行求解，其中一种主流的方法就是吉布斯采样。结合吉布斯采样的LDA模型训练过程一般如下：</p><p>随机初始化，对语料中每篇文档中的每个词w，随机地赋予一个topic编号z。<br>重新扫描语料库，对每个词w按照吉布斯采样公式重新采样它的topic，在语料中进行更新。<br>重复以上语料库的重新采样过程直到吉布斯采样收敛。<br>统计语料库的topic-word共现频率矩阵，该矩阵就是LDA的模型。<br>经过以上的步骤，就得到一个训练好的LDA模型，接下来就可以按照一定的方式针对新文档的topic进行预估，具体步骤如下：</p><p>随机初始化，对当前文档中的每个词w，随机地赋予一个topic编号z。<br>重新扫描当前文档，按照吉布斯采样公式，重新采样它的topic。<br>重复以上过程直到吉布斯采样收敛。<br>统计文档中的topic分布即为预估结果。</p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;主题模型-（Topic-Model）&quot;&gt;&lt;a href=&quot;#主题模型-（Topic-Model）&quot; class=&quot;headerlink&quot; title=&quot;主题模型 （Topic Model）&quot;&gt;&lt;/a&gt;主题模型 （Topic Model）&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="Topic Model" scheme="http://hanrd.tech/categories/Topic-Model/"/>
+    
+      <category term="主题模型" scheme="http://hanrd.tech/categories/Topic-Model/%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B/"/>
+    
+    
+      <category term="Topic Model" scheme="http://hanrd.tech/tags/Topic-Model/"/>
+    
+      <category term="主题模型" scheme="http://hanrd.tech/tags/%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AAAI 2020 -- Self-Attention Enhanced Selective Gate with Entity-Aware Embedding for Distantly Supervised Relation Extraction</title>
+    <link href="http://hanrd.tech/posts/20200916/"/>
+    <id>http://hanrd.tech/posts/20200916/</id>
+    <published>2020-09-16T12:15:08.000Z</published>
+    <updated>2020-09-21T02:29:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><blockquote><p>远程监督由于其强烈的假设，深受噪音数据标签的影响。</p><p>大多数现有工作都在bag级别采用选择性注意力机制来降噪。<br>但是其无法胜任<strong>单句子bag</strong>的情况。</p><p>本文提出：</p><ul><li>提出一种实体感知词嵌入方法(<strong>entity-aware word embedding</strong>),来<strong>整合位置信息和头/尾实体embedding，以突出此任务的实体本质</strong>； </li><li>以PCNN捕获局部依存关系，并提出一种自注意力机制（<strong>self-attention</strong>）来捕获全局依存关系，作为PCNN的补充； </li><li>设计一个基于池的门(<strong>pooling-equipped gate</strong>)，来代替选择性注意力机制，该门基于上下文表示，作为聚合器生成bag级别的表示。</li></ul><p>与<strong>选择性注意力机制</strong>相比，该门控机制的主要<strong>优点</strong>是，<strong>即使bag中只有一个句子，也可以稳定执行，从而在所有训练数据中保持一致</strong>。</p><p>在NYT 2010数据集上实验表明，该模型在AUC和top-n指标方面均达到SOTA性能。</p></blockquote><h1 id="拟解决的问题"><a href="#拟解决的问题" class="headerlink" title="拟解决的问题"></a>拟解决的问题</h1><ul><li><strong>单句子bag</strong>在实际数据集上占比很高，并且单句子bag的标签很可能是错误的，即噪音bag；</li><li><strong>单句子bag</strong>的情况，会迫使基于选择性注意力机制的模型，返回单值标量的权重，导致注意力模块不能充分训练，从而影响性能。</li></ul><h1 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h1><ul><li>使用实体嵌入(entity embedding)和相对位置嵌入(position embedding)，并<strong>提出一种实体感知嵌入方法(entity-aware embedding approach)将实体信息动态集成到每个单词嵌入中，产生更具表达力的表示</strong>; </li><li>为增强PCNN捕获长期依赖的能力（Yu等人，2018），<strong>开发一种轻量级的自注意机制来捕获丰富的依赖信息</strong>，为PCNN产生互补依赖表示;</li><li><strong>设计一个选择性门结构（selective gate），将句子级别表示聚合为bag级别的表示</strong>。</li></ul><h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>(<strong>注: 本人认为本篇论文中的公式描述和模型图片都有点错误</strong>)<br></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200916/model.jpg" alt="结构图" title="">                </div>                <div class="image-caption">结构图</div>            </figure><p></p><h2 id="Entity-Aware-Embedding"><a href="#Entity-Aware-Embedding" class="headerlink" title="Entity-Aware Embedding"></a>Entity-Aware Embedding</h2><p>计算过程如下：</p><p>1.首先针对bag中的每一个句子：</p><p>$s= [\omega_1,\omega_2,…,\omega_n]$, 词嵌入表示为 $X^{(\omega)} = [v_1,v_2,…,v_n] \in R^{d_\omega \times n}$</p><p>2.加入相对位置嵌入(相对距离), 位置嵌入表示为 $ r_i^{e_h} 、r_i^{e_t} \in R^{d_r}$：</p><p>$ X^{(p)} = [x_1^{(p)}, x_2^{(p)},…,x_n^{(p)}] \in R^{d_p \times n} , \forall x_i^{(p)} = [v_i; r_i^{e_h}; r_i^{e_t}], 其中d_p = d_\omega + 2 \times d_r$</p><p>3.加入实体嵌入, 头尾实体嵌入表示为$v^{(h)}、v^{(t)}$：</p><p>$X^{(e)} = [x_1^{(e)}, x_2^{(e)},…,x_n^{(e)}] \in R^{3d_\omega \times n}, \forall x_i^{(e)} = [v_i; v^{(h)};v^{(t)}] \in R^{3d_\omega}$</p><p>4.gate机制计算：</p><p>$ \alpha=sigmoid(\lambda \cdot (W^{(g1)}X^{(e)} + b^{(g1)})) \in R^{d_h \times n}, W^{(g1)} \in R^{d_h \times 3d_\omega},  \lambda是超参数$</p><p>$\tilde{X}^{(p)} = \tanh(W^{(g2)}X^{(p)} + b^{(g2)}) \in R^{d_h \times n}, W^{(g2)} \in R^{d_h \times d_p}$</p><p>$X =\alpha \cdot (W^{(X)} X^{(e)}+ b^{(X)}) + (1-\alpha) \cdot \tilde X ^{(p)} \in R^{d_h \times n}, 其中W^{(X)} \in R^{d_h \times 3d_\omega}$</p><p>得到的$X$,被认为是所有单词的entity-aware embedding。</p><h2 id="self-Attention-Enhanced-Neural-Network"><a href="#self-Attention-Enhanced-Neural-Network" class="headerlink" title="self-Attention Enhanced Neural Network"></a>self-Attention Enhanced Neural Network</h2><blockquote><p>之前的一些工作（Vaswani等人，2017）发现，CNN由于缺乏衡量长期依赖的能力，即使堆叠多层，也无法在大多数NLP Benchmarks上达到SOTA性能。</p></blockquote><h3 id="PCNN"><a href="#PCNN" class="headerlink" title="PCNN"></a>PCNN</h3><p>针对每一个句子的计算公式</p><p>一维卷积操作可以表示为：</p><p>$ H^{(c)} = 1D_CNN(X;W^{(c)}; b^{(c)}) \in R^{d_c \times n}, d_c是输出通道个数(卷积核个数)$</p><p>所得output根据头尾实体位置划分：</p><p>$H^{(c)} = [H^{(1)},H^{(2)},H^{(3)}]$</p><p>$s = \tanh([Pool(H^{(1)}); Pool(H^{(2)}); Pool(H^{(3)})]) \in R^{3d_c}$</p><h3 id="Self-Attention-Mechanism"><a href="#Self-Attention-Mechanism" class="headerlink" title="Self-Attention Mechanism"></a>Self-Attention Mechanism</h3><p>计算公式:</p><p>$A = W^{(\alpha2)} \sigma(W^{(\alpha1)}X + b^{(\alpha1)}) + b^{(\alpha2)}, 其中W^{(\alpha1)}、W^{(\alpha2)} \in R^{d_h \times d_h}, \sigma 是激活函数$ </p><p>$P^{(A)} = softmax(A) \in R^{d_h \times n}$</p><p>$u = \sum P^{(A)} \odot X \in R^{d_h}$</p><h2 id="Selective-Gate"><a href="#Selective-Gate" class="headerlink" title="Selective Gate"></a>Selective Gate</h2><p>给定一个包含m个句子的bag，通过PCNN、Self-Attention得到的句子表示为</p><p>$S = [s_1,s_2,…,s_m] \in R^{3d_c \times m}$, $U = [u_1,u_2,…,u_m] \in R^{d_h \times m}$</p><p>计算公式如下：</p><p>1.首先逐句生成gate值，该值控制该句子的表示是否应该被保留</p><p>$g_j = sigmoid(W^{(g1)} \sigma(W^{(g2)}u_j + b^{(g2)}) + b^{(g1)}) \in R^{3d_c}, \forall j=1,…,m$</p><p>$W^{(g1)} \in R^{3d_c \times d_h}, W^{(g2)} \in R^{d_h \times d_h} , \sigma(\cdot)是激活函数$</p><p>2.对PCNN的句子表示加权求和</p><p>$c = \frac 1 m \sum_{j=1}^m {g_j \cdot s_j} \in R^{3d_c}$</p><h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><p>$p = softmax(MLP(c)) \in R^{|C|}, 其中|C|是关系种类$ </p><h2 id="LOSS"><a href="#LOSS" class="headerlink" title="LOSS"></a>LOSS</h2><p>L2正则化</p><p>$L_{NLL} = - \frac 1 {|D|} \sum_{k=1}^{|D|} \log p_{(y^k)}^k + \beta  || {\theta} || _2^2, 其中\theta表示模型所有参数，\beta是系数$</p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;远程监督由于其强烈的假设，深受噪音数据标签的影响。&lt;/p&gt;
+&lt;p&gt;大多数现有工作都在bag级别采用选择性注意力机制
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+      <category term="AAAI 2020" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/AAAI-2020/"/>
+    
+    
+      <category term="AAAI 2020" scheme="http://hanrd.tech/tags/AAAI-2020/"/>
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ACL 2020 -- Relation Extraction with Explanation</title>
+    <link href="http://hanrd.tech/posts/20200905/"/>
+    <id>http://hanrd.tech/posts/20200905/</id>
+    <published>2020-09-05T03:04:15.000Z</published>
+    <updated>2020-09-06T09:23:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><blockquote><p>最近远程监督关系抽取的NRE模型都是针对每个分包bag，通过学习句子的重要性权重来减轻不相关句子的影响。<br>目前为止，努力的重点是<strong>提高抽取的准确性</strong>，但对模型的<strong>解释性知之甚少</strong>。</p><p>本文标注了一个带有<strong>基本事实句子级解释</strong>的测试集，以评估关系提取模型提供的可解释性。<br>实验证明，用细粒度实体类型（entity type）替换句子中的实体不仅提高了提取的准确性，而且改善了可解释性。<br>本文还提出**自动生成“干扰”句子，对bag数据增强，并训练模型忽略这些“干扰”句子。<br>在FB-NYT数据集上，本文取得了SOTA性能，同时提高了模型可解释性。</p></blockquote><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>远程监督关系抽取降噪研究：</p><ul><li>基于attention的模型</li><li>利用附加资源（additional resources）的模型</li><li>利用监督数据的模型</li></ul><blockquote><p>现有方法，关注于提高模型的准确率（accuracy），而对于模型是因为<strong>正确的推理</strong>还是<strong>某些不相关的偏置/偏见</strong>而正确分类知之甚少。</p></blockquote><h1 id="Baseline-Models"><a href="#Baseline-Models" class="headerlink" title="Baseline Models"></a>Baseline Models</h1><h2 id="DirectSup"><a href="#DirectSup" class="headerlink" title="DirectSup"></a>DirectSup</h2><p>给定一个分包bag，DirectSup使用具有不同过滤器大小的CNN对每个句子进行编码。<br>连接具有不同滤波器大小的CNN的输出，以产生句子的编码。</p><h2 id="CNNs-ATT"><a href="#CNNs-ATT" class="headerlink" title="CNNs+ATT"></a>CNNs+ATT</h2><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;最近远程监督关系抽取的NRE模型都是针对每个分包bag，通过学习句子的重要性权重来减轻不相关句子的影响。&lt;br&gt;目
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+      <category term="ACL 2020" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/ACL-2020/"/>
+    
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+      <category term="ACL 2020" scheme="http://hanrd.tech/tags/ACL-2020/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VS code - Module &#39;torch&#39; has no &#39;xxx&#39; member</title>
+    <link href="http://hanrd.tech/posts/20200904a/"/>
+    <id>http://hanrd.tech/posts/20200904a/</id>
+    <published>2020-09-04T03:05:05.000Z</published>
+    <updated>2020-09-08T07:30:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="vscode-‘torch’-has-no-‘xxx’-member"><a href="#vscode-‘torch’-has-no-‘xxx’-member" class="headerlink" title="vscode  ‘torch’ has no ‘xxx’ member"></a>vscode  ‘torch’ has no ‘xxx’ member</h1><p>vscode User settings中加上</p><pre><code>"python.linting.pylintArgs": [    "–errors-only",    "–generated-members=numpy.* ,torch.* ,cv2.* , cv.*",]</code></pre><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;vscode-‘torch’-has-no-‘xxx’-member&quot;&gt;&lt;a href=&quot;#vscode-‘torch’-has-no-‘xxx’-member&quot; class=&quot;headerlink&quot; title=&quot;vscode  ‘torch’ has no ‘
+      
+    
+    </summary>
+    
+    
+      <category term="VS code" scheme="http://hanrd.tech/categories/VS-code/"/>
+    
+    
+      <category term="VS code" scheme="http://hanrd.tech/tags/VS-code/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>markdownPad2 -- 破解</title>
+    <link href="http://hanrd.tech/posts/20200902a/"/>
+    <id>http://hanrd.tech/posts/20200902a/</id>
+    <published>2020-09-02T11:57:49.000Z</published>
+    <updated>2020-09-02T11:59:30.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Email-address"><a href="#Email-address" class="headerlink" title="Email address :"></a>Email address :</h2><blockquote><p>Soar360@live.com  </p></blockquote><h2 id="License-key"><a href="#License-key" class="headerlink" title="License key :"></a>License key :</h2><blockquote><p>GBPduHjWfJU1mZqcPM3BikjYKF6xKhlKIys3i1MU2eJHqWGImDHzWdD6xhMNLGVpbP2M5SN6bnxn2kSE8qHqNY5QaaRxmO3YSMHxlv2EYpjdwLcPwfeTG7kUdnhKE0vVy4RidP6Y2wZ0q74f47fzsZo45JE2hfQBFi2O9Jldjp1mW8HUpTtLA2a5/sQytXJUQl/QKO0jUQY4pa5CCx20sV1ClOTZtAGngSOJtIOFXK599sBr5aIEFyH0K7H4BoNMiiDMnxt1rD8Vb/ikJdhGMMQr0R4B+L3nWU97eaVPTRKfWGDE8/eAgKzpGwrQQoDh+nzX1xoVQ8NAuH+s4UcSeQ==</p></blockquote><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Email-address&quot;&gt;&lt;a href=&quot;#Email-address&quot; class=&quot;headerlink&quot; title=&quot;Email address :&quot;&gt;&lt;/a&gt;Email address :&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Soar360@l
+      
+    
+    </summary>
+    
+    
+      <category term="MarkdownPad2" scheme="http://hanrd.tech/categories/MarkdownPad2/"/>
+    
+    
+      <category term="MarkdownPad2" scheme="http://hanrd.tech/tags/MarkdownPad2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ICLR 2019 -- ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS</title>
+    <link href="http://hanrd.tech/posts/20200830a/"/>
+    <id>http://hanrd.tech/posts/20200830a/</id>
+    <published>2020-08-30T08:28:30.000Z</published>
+    <updated>2020-09-03T07:50:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="拟解决问题"><a href="#拟解决问题" class="headerlink" title="拟解决问题"></a>拟解决问题</h1><p>语言虽然看起来是一个序列，实际上内部是有复杂的层次结构的，这也是NLP的难点所在。复杂的层次结构，意味着序列即使看起来相同，也可能因为内部层次结构的不同而有语义的差别。</p><p>在斯坦福CS224n上提到了这样的一个例子：</p><blockquote><p>The police killed the man with a knife.</p></blockquote><p>这个句子，可以有两种理解：</p><ul><li>警察把那个带刀的人干掉了</li><li>警察用刀干掉了那个人</li></ul><p>上面两种解释对应的句法树分别是这样的：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/police-tree.jpg" alt="句法树" title="">                </div>                <div class="image-caption">句法树</div>            </figure><blockquote><p>序列看起来一样，但是由于内部的层级结构不一样会导致不同的语义理解</p></blockquote><p>当用LSTM为语言序列编码Encode的时候，由于LSTM单纯认为语言是一个序列，忽略了语言内部的语法树的层级结构，因此其无法解决上面<strong>相同序列，不同语义</strong>的问题。</p><h1 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h1><p>本文提出ON-LSTM(Ordered Neurons - LSTM)，通过重新设计LSTM递归的cell的<strong>cell states的更新方式及策略</strong>，实现将语法树的层级结构融合进LSTM编码器中，解决上述问题。</p><h1 id="回顾LSTM"><a href="#回顾LSTM" class="headerlink" title="回顾LSTM"></a>回顾LSTM</h1><p>LSTM主要由三个特殊的门（gate）结构组成：遗忘门、输入门、输出门</p><p>具体的公式如下：<br></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/lstm-formula.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p></p><p>示意图如下：<br></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/lstm-img.png" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p></p><h1 id="ON-LSTM"><a href="#ON-LSTM" class="headerlink" title="ON-LSTM"></a>ON-LSTM</h1><h2 id="从LSTM开始"><a href="#从LSTM开始" class="headerlink" title="从LSTM开始"></a>从LSTM开始</h2><p>论文中一直是从神经元排序的角度解释的，对我个人来说，很难理解，故下文按照cell state的角度理解。</p><p>LSTM的<strong>核心</strong>就是<strong>cell state</strong>：信息在cell state这个传送带上流动，伴随着一些简单的线性变换，乘和加，分别由“遗忘门”和“输入门”来控制cell state的信息更新。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/cell-state-flow.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>这样存在一个问题：<br><strong>每次更新，cell state这个向量的每一维都会更新</strong></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/cell-update.JPG" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>信息流就是存在于这个cell state中，如果希望模型可以刻画出语言的结构信息，也就意味着这个cell state中要隐含着层次结构的信息。</p><p>所以作者希望，能够让这个cell state的不同维度，对应到语言的不同层级上，让不同的层级使用不一样的方式进行更新，具体来说就是层次越高的更新越少。这样的话，cell state就包含了层次信息了。</p><p><strong>作者的例子：</strong></p><p>假设我们有一个很简单的句子，三个词组成[x1,x2,x3]，有三个层次，用下图的最左边的图表示，分别是句子（S）、短语（NP，VP）、词（N，V）。<strong>我们希望cell state中也可以有对应的三个层次，层次就体现在不同的更新频率上。</strong></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/eg1.JPG" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>层次越高的，自然其信息应该保留的时间更久，所以其更新频率应该越低。上图的最右边是三个词分别对应的cell states。颜色越深代表更新频率越高。</p><ul><li>当读到第一个词x1的时候，这个时候是new S，new NP，new word，所以三个层次都应该更新；</li><li>当读到第二个词x2的时候，这个时候是new VP，new word，所以下面两个层次应该更新；</li><li>当读到第三个词x3的时候，这个时候只是new word，所以只是最下面的层次应该更新；<br>这样，语言的层次就和cell states的不同区间对应上的。</li></ul><blockquote><p>这样，就相当于给<strong>cell states</strong>加了一个顺序，从某种意义上讲也相当于是给LSTM的神经元加了顺序，因此作者称这种结构是<strong>Ordered-Neurons</strong>，对应的LSTM称为<strong>ON-LSTM</strong>。所以并不是真的给神经元排序。</p></blockquote><p>接下来的问题：</p><p>上面给cell states这样分区间，是因为我们提前知道了句子的结构，但我们真正使用LSTM进行建模、训练的时候，是不知道语言的真实层次的，除非你先把每个句子都解析成语法树，再显式加入到LSTM中的，但是这种方法不仅开销大，而且不一定可靠，所以我们<strong>需要设计一种结构，让模型可以学习到如何给cell state去分区</strong>。</p><h2 id="ON-LSTM具体设计"><a href="#ON-LSTM具体设计" class="headerlink" title="ON-LSTM具体设计"></a>ON-LSTM具体设计</h2><p>为了实现区间的划分，模型用到了两个整数 $l_{his}$ 和 $l_{now}$，它们分别用来表示<strong>历史信息的最低等级</strong> 和 <strong>当前信息的最高等级</strong></p><ul><li>$l_{his}$表示cell state中高于该等级的维度需要保留历史信息$c_{t-1}$，对应于<strong>低更新频率</strong></li><li>$l_{now}$表示cell state中低于该等级的维度需要补充更新输入信息$\hat{c_t}$，对应于<strong>高更新频率</strong></li></ul><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/level-his-now.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>总体上，就包含以下两种情况：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/two-case.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><ul><li><p>$l_{his} &lt; l_{now}$ ,有重叠交汇部分：</p><ul><li><strong>交汇部分</strong>，采用原来LSTM更新方式，融合历史信息和当前输入信息</li><li><strong>低于$l_{his}$的</strong>，完全更新为新输入的信息</li><li><strong>高于$l_{now}$的</strong>，完全保留历史信息</li></ul></li><li><p>$l_{his} &gt; l_{now}$ ,无重叠交汇部分：</p><ul><li><strong>无交汇部分</strong>，全部设置为0</li><li><strong>低于$l_{now}$的</strong>，完全更新为新输入的信息</li><li><strong>高于$l_{his}$的</strong>，完全保留历史信息</li></ul></li></ul><blockquote><p>其实该模型认为高层次的语法信息主要是来自于历史信息，而低层次的主要来自当前输入信息，而这也比较符合人们的直观印象，对于一个新的输入，它对于语法信息的影响往往局限于一个较低的层次，高层次的信息（如句子或者短语信息）仍然来自于历史信息，只有当一个句子或者短语完结的时候，历史信息的影响变小，这时新的输入才有可能影响较高语法层次的信息。而这样也就使得高语法层次的信息的更新频率较低，大多时候是保持不变，而低语法层次的信息则随着当前的输入一直变化。</p></blockquote><h2 id="ON-LSTM实现过程"><a href="#ON-LSTM实现过程" class="headerlink" title="ON-LSTM实现过程"></a>ON-LSTM实现过程</h2><p>把$l_{his}、 l_{now}$转化为向量</p><script type="math/tex; mode=display">L_k = [0,0,...,1,0,...,0] ,其中只有第k位为1</script><p>定义累加函数</p><script type="math/tex; mode=display">cumsum([x_1,x_2,...,x_n]) = [x_1, x_1+x_2, x_1+x_2+x_3,..., x_1+x_2+...+x_n]</script><p>因此，</p><ul><li>$cumsum(L_{l_{his}})=[0,…,0,1,1,…,1]$就表示出了需要保留历史信息的维度（1段）</li><li>$1-cumsum(L_{l_{now}})=[1,…,1,0,0,…,0]$就表示出了需要更新保存新输入信息的维度（1段）</li></ul><p>由于，上面这种分为0段和1段的形式，都是整数，这样函数不可导，无法训练，所以需要做一下软化，即用softmax函数处理一下。</p><p>定义 $cummax(X) = cumsum(softmax(X))$</p><p>综上，引入两个门（gate）结构：master forget（$\tilde{f_t}$）、master input（$\tilde{i_t}$）。</p><p>具体计算公式如下：</p><script type="math/tex; mode=display">\tilde{f_t} = cummax(W_{\tilde{f_t}}x_t+U_{\tilde{f_t}}h_{t-1}+b_{\tilde{f_t}})</script><script type="math/tex; mode=display">\tilde{i_t} = 1-cummax(W_{\tilde{i_t}}x_t+U_{\tilde{i_t}}h_{t-1}+b_{\tilde{i_t}})</script><script type="math/tex; mode=display">\omega_t=\tilde{f_t} \circ \tilde{i_t} (按位相乘，表示重叠交汇部分)</script><script type="math/tex; mode=display">c_t = \omega_t \circ (f_t \circ c_{t-1}+ i_t \circ \hat{c_t}) + (\tilde{f_t}-\omega_t) \circ c_{t-1} + (\tilde{i_t}-\omega_t) \circ \hat{c_t}</script><p>整体计算流程如下：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200830a/on-lstm-img.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><blockquote><p>通常隐层神经元的数目都比较大，而实际中语法的层数远远达不到这个数字，因此对于$\tilde{f_t}$和$\tilde{i_t}$而言，其实不需要那么多的维数，这样会导致需要学习的参数量过多，但是 $\circ$ 要求它们的维数必须这么大，因此我们可以构造一个维数为$D_m = D / c$ 的向量，其中D为隐层神经元的维数，然后在将其扩充为D维向量，例如D=6，c=3，先构造一个向量[0.2, 0.8] ，然后将其扩充为 [0.2, 0.2, 0.2, 0.8, 0.8, 0.8] 。</p></blockquote><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该ON-LSTM模型从语法结构的角度出发，根据语法层次对cell states进行有序排列，再按照语法层次的不同实行不同的更新规则，从而实现对于较高语法层次信息的保留，这样对于语言模型等任务无疑是很有利的。另外，利用该模型还能够较好地从句子中无监督地提取出语法结构，而这也是该模型的一大亮点。</p><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="https://arxiv.org/abs/1810.09536" target="_blank" rel="noopener">ORDERED NEURONS: INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS</a></p><p>[2] <a href="https://kexue.fm/archives/6621" target="_blank" rel="noopener">苏剑林. (2019, May 28). ON-LSTM：用有序神经元表达层次结构 [Blog post].</a> </p><p>[3] <a href="https://zhuanlan.zhihu.com/p/77086523" target="_blank" rel="noopener">有序的神经元——ON-LSTM模型浅析</a></p><p>[4] <a href="https://zhuanlan.zhihu.com/p/69314959" target="_blank" rel="noopener">ON-LSTM：能表示语言层次的LSTM</a></p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;拟解决问题&quot;&gt;&lt;a href=&quot;#拟解决问题&quot; class=&quot;headerlink&quot; title=&quot;拟解决问题&quot;&gt;&lt;/a&gt;拟解决问题&lt;/h1&gt;&lt;p&gt;语言虽然看起来是一个序列，实际上内部是有复杂的层次结构的，这也是NLP的难点所在。复杂的层次结构，意味着序列即使看起
+      
+    
+    </summary>
+    
+    
+      <category term="ICLR 2019" scheme="http://hanrd.tech/categories/ICLR-2019/"/>
+    
+    
+      <category term="ICLR 2019" scheme="http://hanrd.tech/tags/ICLR-2019/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ACL 2020 -- Exploiting the Syntax-Model Consistency for Neural Relation Extraction</title>
+    <link href="http://hanrd.tech/posts/20200829a/"/>
+    <id>http://hanrd.tech/posts/20200829a/</id>
+    <published>2020-08-29T06:02:41.000Z</published>
+    <updated>2020-09-16T12:16:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文研究了关系抽取(Re)的任务，目的是识别文本中提到的两个实体之间的语义关系。 在Re的深度学习模型中，<strong>整合输入句子的依存树中的句法结构是有益的</strong>。<br>在这种模型中，依赖树经常被用来<strong>直接构造网络结构</strong>或<strong>获得单词对之间的依赖关系，以此通过多任务学习将句法信息注入模型中</strong>。</p><p>这些方法的主要问题是<strong>训练数据中缺乏超越句法结构的泛化</strong>，或者<strong>未能捕捉词对于RE的句法重要性</strong>。</p><p>为了克服这些问题，我们提出了一种新的Re深度学习模型，该模型<strong>使用依赖树提取单词的基于句法的重要性得分，作为树的向量表示，以将句法信息注入具有更大泛化性的模型中</strong>。 </p><p>特别是，我们利用<strong>有序神经元长短期记忆网络</strong>(ON-LSTM)来推断句子中<strong>每个单词的基于模型的重要性得分</strong>，然后对其进行调整，使其与基于句法的分数保持一致，从而实现句法信息注入。 </p><p>我们进行了广泛的实验来证明所提出的方法的有效性，从而在三个基准数据集上取得了SOTA性能。</p><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>最近对RE的研究集中在深度学习上，以开发从文本数据中自动生成句子向量表示的方法。在这些最近的研究中，值得注意的是，<strong>输入句子的句法树（即依存树）可以为深度学习模型提供有效的信息，从而得到SOTA性能</strong></p><p>特别是，以前的RE深度学习模型大多都利用句法树中呈现的单词连接来构造网络结构(例如，依存树上的图卷积神经网络(GCN))。不幸的是，这些模型由于<strong>训练数据的树结构可能与测试数据中的树结构有很大的不同</strong>而导致泛化性较差，即模型过拟合于训练数据的句法树结构。这一问题在跨领域RE时，尤为明显。</p><p>为克服这一问题，总体策略是<strong>获得更一般的句法树向量表示</strong>，这些嵌入向量可用来将句法信息注入到深度学习模型中，以获得更好的泛化效果。</p><p>2019年 Veyseh等人给出了RE的一般树表示，其中依存树被分解为句子中单词之间的依赖关系集（即边)，称为基于边的表示。然后，在多任务学习框架中使用这些依赖关系，来同时预测两个实体间的关系和输入句子中单词对之间的依赖关系。</p><p><strong>基于边的表示</strong>的<strong>主要缺点</strong>是它只捕获单词之间的成对（局部）连接，而完全忽略了单词在句子中对RE问题的整体（全局）重要性，特别是，在RE的关系预测过程中，给定句子中的某些单词可能比其他单词包含更有用的信息，并且这个句子的依存树可以帮助更好地识别那些重要的单词，并为它们分配更高的重要性得分（<strong>即在两个实体之间沿最短依赖路径选择单词</strong>）</p><p>在本文中，我们提出从依存树中获得句子中每个单词的重要性得分（称为基于句法的重要性得分 syntax-based importance scores），这将作为依存树的一般向量表示，以将句法信息注入RE深度学习模型中。</p><p>如何在RE深度学习模型中使用基于句法的重要性得分？</p><ul><li>首先，利用深度学习模型中的单词向量表示（词嵌入可能参与训练）为每个单词计算一个重要性得分（称为model-based importance scores）</li><li>利用KL散度使上述两个重要性得分的分布一致，使这个重要性得分能够反映句法信息</li></ul><p>为了实现上述想法，本文首次采用了ON-LSTM(Ordered-Neuron Long Short-Term Momory Networks)计算单词的model-based importance scores。</p><p>ON-LSTM相较于LSTM新填了2个门（gate）结构：</p><ul><li>master forget</li><li>master input</li></ul><p>ON-LSTM局限：</p><blockquote><p> master gates 和 model-based importance scores 仅依赖于当前词本身及其左上下文（先前时刻隐状态）</p><p>为了更有效利用整个句子的信息，本文提出<strong>先生成整个句子的向量表示，并把其作为每个单词计算其重要性得分的输入</strong></p></blockquote><p>为了进一步改善深度学习模型的编码能力，以学习到更好的特征向量，本文引入一种新的<strong>归纳偏置</strong>：</p><blockquote><p>使 基于<strong>两个实体间的最短依赖路径</strong>的特征向量 和 基于<strong>整个句子</strong>的特征向量 的相似度尽可能高</p></blockquote><p>该归纳偏置基于以下直觉：句子中两个实体的语义关系可以从整个句子或者最短依赖路径中推断出来。</p><h1 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h1><p>本文模型主要分为三大组件：</p><ul><li>CEON-LSTM （context-enriched ON-LSTM）<ul><li>用于计算model-based importance scores</li></ul></li><li>syntax-model consistency component<ul><li>促使syntax-based与model-based重要性得分分布一致</li></ul></li><li>Sentence-Dependency Path Similarity<ul><li><em>基于句子整体的特征向量</em>和<em>基于最短依存路径的特征向量</em>的相似度组件</li></ul></li></ul><h2 id="嵌入层"><a href="#嵌入层" class="headerlink" title="嵌入层"></a>嵌入层</h2><p>三部分的拼接：</p><ul><li>预训练词嵌入（pre-trained word embedding）</li><li>基于相对距离的位置嵌入（position embedding）<ul><li>t-s、t-o</li></ul></li><li>BIO实体标注嵌入（entity type embedding）</li></ul><h2 id="CEON-LSTM"><a href="#CEON-LSTM" class="headerlink" title="CEON-LSTM"></a>CEON-LSTM</h2><h3 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h3><p>公式如下：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200829a/lstm-formula.JPG" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>计算流程图如下：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200829a/lstm-img.png" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><h3 id="ON-LSTM"><a href="#ON-LSTM" class="headerlink" title="ON-LSTM"></a>ON-LSTM</h3><blockquote><p>为了将依存树中的句法结构融合进LSTM，引入两个门（gate）：master forget($\tilde{f_t}$)、 master input($\tilde{i_t}$)</p></blockquote><p>首先定义累加函数</p><script type="math/tex; mode=display">cumsum([x_1,x_2,...,x_n]) = [x_1, x_1+x_2, x_1+x_2+x_3,..., x_1+x_2+...+x_n]</script><p>定义数值软化函数 $cummax(X) = cumsum(softmax(X))$</p><p>具体计算公式如下：</p><script type="math/tex; mode=display">\tilde{f_t} = cummax(W_{\tilde{f_t}}x_t+U_{\tilde{f_t}}h_{t-1}+b_{\tilde{f_t}})</script><script type="math/tex; mode=display">\tilde{i_t} = 1-cummax(W_{\tilde{i_t}}x_t+U_{\tilde{i_t}}h_{t-1}+b_{\tilde{i_t}})</script><script type="math/tex; mode=display">\omega_t=\tilde{f_t} \circ \tilde{i_t} (按位相乘，表示重叠交汇部分)</script><script type="math/tex; mode=display">c_t = \omega_t \circ (f_t \circ c_{t-1}+ i_t \circ \hat{c_t}) + (\tilde{f_t}-\omega_t) \circ c_{t-1} + (\tilde{i_t}-\omega_t) \circ \hat{c_t}</script><p>整体计算流程如下：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/posts/20200829a/on-lstm-img.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>$\tilde{f_t}$和$\tilde{i_t}$的输出分别从0递增到1、从1递减至0，且都可以分为两个段（近0段、近1段），其中近1段可以理解为当前时间步处于活跃状态的cell states中的神经元/维度。详见<a href="http://hanrd.tech/posts/20200830a/">2</a></p><p>因此，本文利用近1段，即<strong>处于活跃态的维度的个数</strong>计算model-based scores。</p><p>master forget的值：</p><script type="math/tex; mode=display">\tilde{f_t} = \tilde{f_{t1}},\tilde{f_{t2}},...,\tilde{f_{tD}}</script><p>model-based score：</p><script type="math/tex; mode=display">mod_t = 1 - \sum \nolimits_{i = 1..D} \tilde{f_{ti}}</script><h3 id="CEON-LSTM-1"><a href="#CEON-LSTM-1" class="headerlink" title="CEON-LSTM"></a>CEON-LSTM</h3><blockquote><p>ON-LSTM引入句子上下文信息</p></blockquote><p>用下述$x’_t$代替mater gates计算中的$x_t$</p><script type="math/tex; mode=display">x = x_1, x_2,..., x_N</script><script type="math/tex; mode=display">x'_t = \sum \nolimits_i \alpha_{ti} (W_x x_i + b_x)</script><script type="math/tex; mode=display">\alpha_{ti} = \frac{ \exp ((W_h h_{t-1} + b_h) \bullet (W_x x_i + b_x))} { \sum \limits _{j = 1} ^N \exp ((W_h h_{t-1} + b_h) \bullet (W_x x_j + b_x)) }</script><h2 id="Syntax-Model-Consistency"><a href="#Syntax-Model-Consistency" class="headerlink" title="Syntax-Model Consistency"></a>Syntax-Model Consistency</h2><p>首先，计算syntax-based importance score ($syn_t$)：</p><ol><li>计算依存树最短依赖路径 $DP$ (词序列)</li><li>计算依存树任意词对间最长路径长度 $T$</li><li>$ syn_t = T - minLength(w_t, DP) $  ,<br>其中$minLength(w_t, DP)$表示计算$w_t$与最短依存路径$DP$上某一单词在依存树上的路径长度的最短长度</li></ol><blockquote><p>经过上述计算，位于最短依存路径DP上的单词的重要性得分均为T, 而其他单词，距离DP越远得分越低。</p><p>该syntax-based score可以看作是原始依存树的泛化（relaxd）版，可以避免模型对训练数据语法结构的<strong>过拟合</strong></p></blockquote><p>Syntax-Model Consistency的思路可以理解为：</p><blockquote><p>利用syntax-based score为model-based score提供监督信号，通过KL散度定义loss</p></blockquote><p>计算公式如下：</p><script type="math/tex; mode=display">\overline{mod}_1, \overline{mod}_2, ..., \overline{mod}_N = softmax(mod_1, mod_2,...,mod_N)</script><script type="math/tex; mode=display">\overline{syn}_1, \overline{syn}_2, ..., \overline{syn}_N = softmax(syn_1, syn_2,...,syn_N)</script><script type="math/tex; mode=display">L_{importance} = - \sum \nolimits_i \overline{mod}_i \log \frac {\overline{mod}_i} {\overline{syn}_i}</script><h2 id="Sentence-Dependency-Path-Similarity"><a href="#Sentence-Dependency-Path-Similarity" class="headerlink" title="Sentence-Dependency Path Similarity"></a>Sentence-Dependency Path Similarity</h2><blockquote><p>最大化<strong>基于句子整体的特征向量</strong>和<strong>基于最短依存路径的特征向量</strong>的相似度</p></blockquote><ul><li>首先划定两个单词的序列：整个句子词序列、最短依存路径词序列</li><li>max-pooling模型CEON-LSTM的隐状态序列$h = h_1,h_2,…,h_N$的上述单词序列对应的隐状态序列</li></ul><p>首先计算句子$X$和最短依存路径$DP$的特征向量表示$R_X$、$R_{DP}$</p><script type="math/tex; mode=display">R_X = MaxPooling_{x_i \in X}(h_i)</script><script type="math/tex; mode=display">R_{DP} = MaxPooling_{x_i \in DP}(h_i)</script><p>定义损失函数：</p><script type="math/tex; mode=display">L_{path} = 1 - \cos (R_X, R_{DP}) ,其中\cos表示余弦相似度</script><h2 id="Output-amp-Loss"><a href="#Output-amp-Loss" class="headerlink" title="Output &amp; Loss"></a>Output &amp; Loss</h2><p>用于RE预测的全部特征向量为：</p><script type="math/tex; mode=display">V = [x_s, x_o, h_s, h_o, R_X], s和o为主客两个实体的索引</script><script type="math/tex; mode=display">output= P(.| X, x_s, x_o) = softmax(W_{output} V + b_{output})</script><script type="math/tex; mode=display">L_{label} = - \log P(r|X, x_s, x_o), r是最适关系标签,即真实标签</script><p>损失函数定义：</p><script type="math/tex; mode=display">L = L_{label} + \alpha L_{importance} + \beta L_{path}</script><h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://www.aclweb.org/anthology/2020.acl-main.715/" target="_blank" rel="noopener">[1].Exploiting the Syntax-Model Consistency for Neural Relation Extraction</a></p><p><a href="http://hanrd.tech/posts/20200830a/">[2].ORDERED NEURONS:INTEGRATING TREE STRUCTURES INTO RECURRENT NEURAL NETWORKS</a></p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h1&gt;&lt;p&gt;本文研究了关系抽取(Re)的任务，目的是识别文本中提到的两个实体之间的语义关系。 在Re的深度学习模型中，&lt;strong&gt;整合输入句子的依存
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+      <category term="ACL 2020" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/ACL-2020/"/>
+    
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+      <category term="ACL 2020" scheme="http://hanrd.tech/tags/ACL-2020/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Scrapy使用笔记</title>
+    <link href="http://hanrd.tech/posts/20200827a/"/>
+    <id>http://hanrd.tech/posts/20200827a/</id>
+    <published>2020-08-27T06:13:55.000Z</published>
+    <updated>2020-08-27T06:19:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="1-创建项目"><a href="#1-创建项目" class="headerlink" title="1.创建项目"></a>1.创建项目</h1><blockquote><p>scrapy startproject tutorial 创建名为tutorial的项目</p></blockquote><h1 id="2-定义Item"><a href="#2-定义Item" class="headerlink" title="2.定义Item"></a>2.定义Item</h1><blockquote><p>Items.py:</p></blockquote><pre><code>import scrapyclass DmozItem(scrapy.Item):    title = scrapy.Field()    link = scrapy.Field()    desc = scrapy.Field()</code></pre><h1 id="3-编写爬虫Spider"><a href="#3-编写爬虫Spider" class="headerlink" title="3.编写爬虫Spider"></a>3.编写爬虫Spider</h1><blockquote><p>tutorial/spiders/下创建 dmoz_spider.py:</p><p>必须继承scrapy.Spider类；定义 name、start_urls、parse()</p></blockquote><pre><code>import scrapyclass DmozSpider(scrapy.spiders.Spider):    name = "dmoz"    allowed_domains = ["dmoz.org"]    start_urls = [        "http://www.dmoz.org/Computers/Programming/Languages/Python/Books/",        "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"    ]    def parse(self, response):        filename = response.url.split("/")[-2]        with open(filename, 'wb') as f:            f.write(response.body)</code></pre><h1 id="4-爬取数据"><a href="#4-爬取数据" class="headerlink" title="4.爬取数据"></a>4.爬取数据</h1><blockquote><p>首先，进入项目根目录</p><p>scrapy crawl dmoz</p></blockquote><h1 id="5-提取Item-Xpath-和-css-选择器selector"><a href="#5-提取Item-Xpath-和-css-选择器selector" class="headerlink" title="5.提取Item: Xpath 和 css 选择器selector"></a>5.提取Item: Xpath 和 css 选择器selector</h1><pre><code>for sel in response.xpath('//ul/li'):    title = sel.xpath('a/text()').extract()    link = sel.xpath('a/@href').extract()    desc = sel.xpath('text()').extract()    print title, link, desc</code></pre><h1 id="6-使用Item"><a href="#6-使用Item" class="headerlink" title="6.使用Item"></a>6.使用Item</h1><pre><code>from tutorial.items import DmozItemdef parse(self, response):        for sel in response.xpath('//ul/li'):            item = TutorialItem()            item['title'] = sel.xpath('a/text()').extract()            item['link'] = sel.xpath('a/@href').extract()            item['desc'] = sel.xpath('text()').extract()            yield item</code></pre><h1 id="7-保存爬取的数据"><a href="#7-保存爬取的数据" class="headerlink" title="7.保存爬取的数据"></a>7.保存爬取的数据</h1><blockquote><p>scrapy crawl dmoz -o items.json</p></blockquote><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;1-创建项目&quot;&gt;&lt;a href=&quot;#1-创建项目&quot; class=&quot;headerlink&quot; title=&quot;1.创建项目&quot;&gt;&lt;/a&gt;1.创建项目&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;scrapy startproject tutorial 创建名为tutorial
+      
+    
+    </summary>
+    
+    
+      <category term="python爬虫" scheme="http://hanrd.tech/categories/python%E7%88%AC%E8%99%AB/"/>
+    
+    
+      <category term="爬虫框架" scheme="http://hanrd.tech/tags/%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6/"/>
+    
+      <category term="python" scheme="http://hanrd.tech/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kubernetes配置指南</title>
+    <link href="http://hanrd.tech/posts/k8sConfig/"/>
+    <id>http://hanrd.tech/posts/k8sConfig/</id>
+    <published>2020-07-17T12:27:04.000Z</published>
+    <updated>2020-07-17T12:31:17.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Kubernetes集群安全设置"><a href="#Kubernetes集群安全设置" class="headerlink" title="Kubernetes集群安全设置"></a>Kubernetes集群安全设置</h1><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Kubernetes集群安全设置&quot;&gt;&lt;a href=&quot;#Kubernetes集群安全设置&quot; class=&quot;headerlink&quot; title=&quot;Kubernetes集群安全设置&quot;&gt;&lt;/a&gt;Kubernetes集群安全设置&lt;/h1&gt;&lt;script&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="http://hanrd.tech/categories/Kubernetes/"/>
+    
+      <category term="K8s" scheme="http://hanrd.tech/categories/Kubernetes/K8s/"/>
+    
+    
+      <category term="Kubernetes配置" scheme="http://hanrd.tech/tags/Kubernetes%E9%85%8D%E7%BD%AE/"/>
+    
+      <category term="K8s配置" scheme="http://hanrd.tech/tags/K8s%E9%85%8D%E7%BD%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux的文件权限</title>
+    <link href="http://hanrd.tech/posts/200715a/"/>
+    <id>http://hanrd.tech/posts/200715a/</id>
+    <published>2020-07-15T07:35:41.000Z</published>
+    <updated>2020-07-15T08:34:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Linux-的文件权限"><a href="#Linux-的文件权限" class="headerlink" title="Linux 的文件权限"></a>Linux 的文件权限</h1><h2 id="用户与用户组"><a href="#用户与用户组" class="headerlink" title="用户与用户组"></a>用户与用户组</h2><blockquote><p>linux最优秀的地方，就在于<strong>多用户、多任务</strong>环境</p></blockquote><ul><li><p>文件所有者</p><ul><li>在多人同时使用主机的情况下，考虑每个人的隐私权及个人喜好的工作环境</li></ul></li><li><p>用户组</p><ul><li>在团队开发的时候尤其重要</li><li>每个账号（用户）都可以有多个用户组的支持</li></ul></li><li><p>其他人</p><ul><li>不属于“文件所有者及所属用户组中用户”的其他用户</li></ul></li></ul><blockquote><p><strong>root</strong>用户极其特殊，拥有最高权限</p></blockquote><h3 id="Linux用户身份与用户组记录的文件"><a href="#Linux用户身份与用户组记录的文件" class="headerlink" title="Linux用户身份与用户组记录的文件"></a>Linux用户身份与用户组记录的文件</h3><ul><li><p><strong>/etc/passwd</strong></p><ul><li>系统上的所有账号、一般身份用户及root的相关信息</li></ul></li><li><p><strong>/etc/shadow</strong></p><ul><li>个人密码</li></ul></li><li><p><strong>/etc/group</strong></p><ul><li>所有的组名</li></ul></li></ul><h2 id="Linux文件权限"><a href="#Linux文件权限" class="headerlink" title="Linux文件权限"></a>Linux文件权限</h2><blockquote><p>对数据安全性及系统保护有重要意义</p></blockquote><h3 id="Linux文件属性"><a href="#Linux文件属性" class="headerlink" title="Linux文件属性"></a>Linux文件属性</h3><blockquote><p><strong>ls -al</strong></p><p>显示当前目录下所有文件及目录的详细信息</p><p>-a 显示所有，包括隐藏文件（文件名以<strong>.</strong>开始的）</p><p>-l 显示详细信息</p></blockquote><ul><li><p>ls -al 输出7列信息</p><ul><li>-rw-r—r— 1 root root 42304 Sep 4 18:26 install.log</li></ul></li><li><p>第一列表示这个<strong>文件的类型与权限</strong>（permission），共计10个字符</p><ul><li><p>第一个字符表示文件类型</p><ul><li>-表示文件</li><li>d表示目录</li><li>l表示连接文件</li></ul></li><li><p>剩下九个每3个一组，分别为<strong>“文件所有者”</strong>、<strong>“同用户组”</strong>、<strong>“其他非本用户组”</strong>的权限，均含有“rwx”三个参数组合</p><ul><li>r表示可读</li><li>w表示可写</li><li>x表示可执行</li><li>注意：这三个权限的位置不会改变，如果没有相应权限，用<strong>-</strong>占位</li></ul></li></ul></li><li><p>第二列表示有多少个文件名连接到此节点（i-node）</p><ul><li>每个文件都会将它的权限与属性记录到文件系统的i-node</li></ul></li></ul><ul><li>第三列表示这个文件或目录的“所有者账号”</li><li>第四列表示这个文件的所属用户组</li><li>第五列表示这个文件的大小，默认单位<strong>B</strong></li><li><p>第六列表示这个文件的创建日期或者最近修改日期</p><ul><li>ls -l —full-time显示完整时间</li></ul></li><li><p>第七列表示该文件名</p></li></ul><h3 id="更改文件属性与权限"><a href="#更改文件属性与权限" class="headerlink" title="更改文件属性与权限"></a>更改文件属性与权限</h3><ul><li>chgrp<ul><li>改变所属用户组</li><li>chgrp users filename.log 把filename.log加到users用户组</li><li>-R 递归更改，适合于嵌套目录</li></ul></li><li><p>chown</p><ul><li>改变所有者</li><li>chown bin install.log</li><li>-R 递归更改，适合于嵌套目录</li><li>可以用于同时修改所有者和用户组，用<strong>:</strong>隔开<ul><li>如 chown hanrd:root install.log</li><li>hanrd所有者，root用户组</li><li>只改用户组 <strong>chown .root install.log</strong></li></ul></li></ul></li><li><p>chmod</p><ul><li>改变权限</li><li><p>数字类型</p><ul><li>r-4、w-2、x-1，各个值相加</li><li>rwx = 7</li><li>chmod 740 filename</li></ul></li><li><p>符号类型</p><ul><li>u-所有者</li><li>g-本用户组</li><li>o-其他非本用户组</li><li>a-所有上述三种身份</li><li>+添加权限、-除去权限、=设置权限</li><li>如<ul><li>chmod u=rwx,go=rw .bashrc</li><li>chmod a+w .bashrc</li></ul></li></ul></li></ul></li></ul><h3 id="目录与文件的权限意义"><a href="#目录与文件的权限意义" class="headerlink" title="目录与文件的权限意义"></a>目录与文件的权限意义</h3><ul><li><p>文件</p><ul><li>r-可以读取文件实际内容</li><li>w-可以编辑修改文件内容，不能删除文件</li><li>x-具有被执行权限，执行成功与否与文件内容有关</li></ul></li><li><p>目录</p><ul><li>r-获取目录结构列表，详细信息获取不到</li><li><p>w-更改该目录结构列表的权限，与文件名变动有关</p><ul><li>新建文件或目录</li><li>删除文件或目录</li><li>重命名</li><li>移动文件、目录位置</li></ul></li><li><p>x-能否进入该目录作为工作目录</p></li></ul></li></ul><h3 id="linux文件种类与扩展名"><a href="#linux文件种类与扩展名" class="headerlink" title="linux文件种类与扩展名"></a>linux文件种类与扩展名</h3><ul><li><p>普通文件</p><ul><li>用<strong>-</strong>表示</li><li>纯文本文件 - ASCII</li><li>二进制文件</li><li>数据格式文件，具有特殊格式，存储数据</li></ul></li><li><p>目录</p><ul><li>用<strong>d</strong>表示</li></ul></li><li><p>连接文件</p><ul><li>用<strong>l</strong>表示</li></ul></li></ul><h4 id="扩展名"><a href="#扩展名" class="headerlink" title="扩展名"></a>扩展名</h4><blockquote><p>一个文件能不能被linux执行，与它的第一列的10个属性有关，与文件名后缀一点关系没有</p></blockquote><h4 id="文件名长度限制"><a href="#文件名长度限制" class="headerlink" title="文件名长度限制"></a>文件名长度限制</h4><ul><li>单一文件或者目录最大容许的文件名为255个字符</li><li>完整路径名、文件名最大4096个字符</li><li>文件名尽量避免特殊字符</li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Linux-的文件权限&quot;&gt;&lt;a href=&quot;#Linux-的文件权限&quot; class=&quot;headerlink&quot; title=&quot;Linux 的文件权限&quot;&gt;&lt;/a&gt;Linux 的文件权限&lt;/h1&gt;&lt;h2 id=&quot;用户与用户组&quot;&gt;&lt;a href=&quot;#用户与用户组&quot; cla
+      
+    
+    </summary>
+    
+    
+      <category term="Linux-鸟哥私房菜" scheme="http://hanrd.tech/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/"/>
+    
+    
+      <category term="linux" scheme="http://hanrd.tech/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>论文笔记--关系抽取概述</title>
+    <link href="http://hanrd.tech/posts/200711ia/"/>
+    <id>http://hanrd.tech/posts/200711ia/</id>
+    <published>2020-07-11T11:02:41.000Z</published>
+    <updated>2020-09-22T12:49:45.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Neural-Relation-Extraction"><a href="#Neural-Relation-Extraction" class="headerlink" title="Neural Relation Extraction"></a>Neural Relation Extraction</h1><h2 id="Embedding"><a href="#Embedding" class="headerlink" title="Embedding"></a>Embedding</h2><p>1.Improving Distantly-Supervised Relation Extraction with Joint Label Embedding, EMNLP/IJCNLP 2019</p><blockquote><p>利用KG中结构化的三元组信息$(h,r,t)$和实体描述(WikiPedia主页中的第一段文本)，学习Label的嵌入向量表示，结合注意力机制，以选择bag内的有效句子。</p></blockquote><h2 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h2><h2 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h2><h2 id="Classifier"><a href="#Classifier" class="headerlink" title="Classifier"></a>Classifier</h2><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Neural-Relation-Extraction&quot;&gt;&lt;a href=&quot;#Neural-Relation-Extraction&quot; class=&quot;headerlink&quot; title=&quot;Neural Relation Extraction&quot;&gt;&lt;/a&gt;Neural R
+      
+    
+    </summary>
+    
+    
+      <category term="Relation Extraction Notes" scheme="http://hanrd.tech/categories/Relation-Extraction-Notes/"/>
+    
+    
+      <category term="Relation Extraction" scheme="http://hanrd.tech/tags/Relation-Extraction/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>首次登录与在线求助</title>
+    <link href="http://hanrd.tech/posts/927108io/"/>
+    <id>http://hanrd.tech/posts/927108io/</id>
+    <published>2020-07-11T02:01:31.000Z</published>
+    <updated>2020-07-13T09:14:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="X-window与命令行模式的切换"><a href="#X-window与命令行模式的切换" class="headerlink" title="X window与命令行模式的切换"></a>X window与命令行模式的切换</h1><ul><li>命令行模式，也称为终端界面（terminal或者console）</li><li>启动的程序称为<strong>shell</strong>，linux默认的shell就是bash</li></ul><blockquote><p>Linux默认情况会提供6个terminal来让用户登录，切换的方式是：[Ctrl]+[Alt]+[F1]~[F6],用户名密码登录，exit注销</p><p>这六个终端界面命名为 tty1~tty6，[Ctrl]+[Alt]+[F7]返回图形界面tty7</p></blockquote><h2 id="Linux登录模式"><a href="#Linux登录模式" class="headerlink" title="Linux登录模式"></a>Linux登录模式</h2><ul><li>仅有纯文本界面<ul><li>运行等级 <strong>run level 3</strong></li></ul></li><li>图形界面登录环境<ul><li>运行等级 <strong>run level 5</strong></li></ul></li></ul><h2 id="Linux运行等级"><a href="#Linux运行等级" class="headerlink" title="Linux运行等级"></a>Linux运行等级</h2><ul><li>共计<strong>7</strong>个run level</li><li>最常用到的是run level 3 与run level 5</li></ul><blockquote><p>若想要更改linux默认的登录模式，需要修改 <strong>/etc/inittab</strong>，下次重启生效</p></blockquote><h2 id="说明"><a href="#说明" class="headerlink" title="~说明"></a>~说明</h2><ul><li>~代表的是用户的主文件夹，它是个变化的值<ul><li>root的主目录：/root</li><li>hanrd这个用户的主目录：/home/hanrd</li></ul></li></ul><h2 id="提示符"><a href="#提示符" class="headerlink" title="提示符"></a>提示符</h2><ul><li>root提示符 <strong>#</strong></li><li>一般用户提示符 <strong>$</strong></li></ul><h1 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h1><ul><li>格式为: 命令 选项 参数1 参数2 …<ul><li>command [-options] parameter1 …</li><li>一行命令的第一个部分绝对是<strong>命令command</strong>或<strong>可执行文件</strong></li><li>选项参数设置<ul><li>-后面接选项的简写</li><li>—后面接选项的全名</li><li>特殊情况会有 +</li></ul></li><li>各部分用空格分隔，不论几个空格，都按照一个空格对待</li><li>按下回车Enter开始执行</li><li>命令太长可以用反斜杠\转义Enter，下一行续写</li></ul></li><li>特别注意，linux命令大小写敏感</li></ul><blockquote><p>ls</p><p>ls -al ~</p><p>ls -a -l ~</p></blockquote><h1 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h1><ul><li><p>echo $LANG</p><ul><li>显示目前所支持的语言</li></ul></li><li><p>LANG=en_US</p><ul><li>临时修改为英语</li></ul></li><li><p>date</p><ul><li>显示日期与时间</li><li>date +%Y/%m/%d 特定输出</li></ul></li><li><p>cal</p><ul><li>显示日历</li><li>cal 12 2020 指定年月</li></ul></li><li><p>bc</p><ul><li>显示计算器</li><li>quit离开</li><li>+、-、*、/、^、%</li><li>默认只输出结果的整数位</li><li>保留小数要执行<strong>scale=3</strong>，指定保留几位小数</li></ul></li></ul><h1 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h1><ul><li><p>[Tab]</p><ul><li>命令补全</li><li>文件补齐</li></ul></li><li><p>[Ctrl] + c</p><ul><li>中断目前程序/命令</li></ul></li><li><p>[Ctrl] + d</p><ul><li>表示键盘输入结束</li><li>可以用来直接离开文字界面，关闭terminal</li><li>相当于输入exit</li></ul></li></ul><h1 id="在线求助-man-page-info-page"><a href="#在线求助-man-page-info-page" class="headerlink" title="在线求助 man page / info page"></a>在线求助 man page / info page</h1><h2 id="man-page"><a href="#man-page" class="headerlink" title="man page"></a>man page</h2><ul><li>man是manual（操作说明）缩写</li><li>查询出的页面，叫做man page</li><li>如，man date</li><li>man page的文件数据通常放在<strong>/usr/share/man</strong>目录里，可通过修改名为<strong>/etc/man.config</strong>的文件更改目录（不同的distribution文件名略有不同）</li></ul><h3 id="详细说明"><a href="#详细说明" class="headerlink" title="详细说明"></a>详细说明</h3><ul><li><p>诸如“DATE(1)”中的数字的意义（1-9），<strong>常用数字</strong>如下：</p><ul><li>1—用户在shell环境中可以操作的命令或者可执行文件</li><li>5—配置文件或者是某些文件的格式</li><li>8—系统管理员可用的管理命令</li></ul></li><li><p>man page <strong>主要内容</strong>包括：</p><ul><li>NAME—简短的命令、数据名称说明</li><li>SYNOPSIS—简短的命令执行语法简介</li><li>DESCRIPTION—较为完整的说明，这部分最好仔细看看</li><li>OPTIONS—针对SYNOPSIS的所有的可用的选项的说明</li><li>SEE ALSO—其他参考材料</li><li>FILES—某些有关的文件</li><li>其他诸如，EXAMPLES、BUGS、AUTHORS等</li></ul></li><li><p>man page <strong>常用按键</strong></p><ul><li>向下翻一页<ul><li>空格</li><li>[Page Down]</li></ul></li><li>向上翻一页<ul><li>[Page Up]</li></ul></li><li>回到第一页<ul><li>[Home]</li></ul></li><li>去到最后一页<ul><li>[End]</li></ul></li><li>向下查询字符串<ul><li>/string</li></ul></li><li>向上查询字符串<ul><li>?string</li></ul></li><li>继续查询<ul><li>n继续当前查询方向查询写一个</li><li>N当前查询方向逆方向查询下一个</li></ul></li><li>离开<ul><li>q</li></ul></li></ul></li><li><p>高阶命令</p><ul><li><p>查找与指定命令或数据有关的man page文件</p><ul><li>whatis 命令或数据 <ul><li>需要root权限执行 makewhatis创建whatis数据库</li></ul></li><li>man -f 命令或数据</li></ul></li><li><p>查找包含指定关键字的man page文件</p><ul><li>apropos 命令或数据<ul><li>需要root权限执行 makewhatis创建whatis数据库</li></ul></li><li>man -k 命令或数据</li></ul></li></ul></li></ul><h2 id="info-page"><a href="#info-page" class="headerlink" title="info page"></a>info page</h2><blockquote><p>info与man的用途差不多</p><p>info page将文件数据拆成一个一个的段落，每个段落用自己的页面撰写，并且每个页面有“超链接”来跳到不同的页面中，每个独立的页面称为<strong>节点（Node）</strong></p><p>info page是只有linux才有的产物，必须按照info page的格式撰写求助文件才能具有info page的功能，info page的文件放置于<strong>/usr/share/info/</strong>目录中</p><p>非info page格式的文件也能用info显示，只不过显示效果与man相同</p></blockquote><h3 id="info-page内容"><a href="#info-page内容" class="headerlink" title="info page内容"></a>info page内容</h3><ul><li><p>第一行</p><ul><li>File—文件名（xx.info）</li><li>Node—节点名</li><li>Next—下一个节点</li><li>Up—回到上一层的节点总览界面</li><li>Prev—上一个节点</li></ul></li><li><p>Menu</p><ul><li>可使用方向键选择，按下[Enter]，前往该小节</li><li>也可[Tab]，在节点间移动</li></ul></li></ul><h3 id="按键"><a href="#按键" class="headerlink" title="按键"></a>按键</h3><ul><li>空格键 — 向下翻页</li><li>[Page Down] — 向下翻页</li><li>[Page Up] — 向上翻页</li><li>[Tab] — 在节点间移动，节点以“*”显示</li><li>[Enter] — 进入该节点</li><li>B — 光标移至info界面第一个节点处</li><li>E — 光标移至info界面最后一个节点处</li><li>N — 前往下一个节点</li><li>P — 前往上一个节点</li><li>U — 向上移动一层</li><li>S或者/ — 查询搜索</li><li>H — 显示求助菜单</li><li>? — 命令一览表</li><li>Q — 离开</li></ul><blockquote><p>上述命令不区分大小写字母</p></blockquote><h2 id="其他文档-documents"><a href="#其他文档-documents" class="headerlink" title="其他文档 documents"></a>其他文档 documents</h2><ul><li><strong>/usr/share/doc</strong>目录包含一些额外的说明文件，包含how-to及相关原理说明</li></ul><h2 id="文本编辑器-nano"><a href="#文本编辑器-nano" class="headerlink" title="文本编辑器 nano"></a>文本编辑器 nano</h2><ul><li><p>进入nano</p><ul><li>nano text.txt</li></ul></li><li><p>离开nano</p><ul><li>[Ctrl] + X</li><li>Y/N</li></ul></li><li><p>查询字符串</p><ul><li>[Ctrl] + W</li></ul></li></ul><blockquote><p>^表示[Ctrl]</p><p>M表示[Alt]</p></blockquote><h2 id="正确关机方法"><a href="#正确关机方法" class="headerlink" title="正确关机方法"></a>正确关机方法</h2><ul><li>关机时要注意：<ul><li>查看系统的使用状态<ul><li>who 查看谁在线</li><li>netstat -a 查看网络联机状态</li><li>ps -aux 查看后台执行的程序</li></ul></li><li>通知在线用户关机的时刻</li><li>正确的关机命令使用<ul><li>shutdown</li><li>reboot</li></ul></li></ul></li><li>非正常关机可能造成文件系统的毁损</li></ul><h3 id="数据同步写入硬盘"><a href="#数据同步写入硬盘" class="headerlink" title="数据同步写入硬盘"></a>数据同步写入硬盘</h3><ul><li><p>命令</p><ul><li>sync</li></ul></li><li><p>目的</p><ul><li>在默认情况下，某些已经加载内存中的数据不会直接被写回硬盘，而是先存在内存中，因而，特殊情况或者非正常关机会使数据的更新不正常</li><li>需要sync将内存里的尚未被更新的数据写入硬盘</li></ul></li></ul><h3 id="常用关机重启命令"><a href="#常用关机重启命令" class="headerlink" title="常用关机重启命令"></a>常用关机重启命令</h3><h4 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h4><blockquote><p>shutdown可以完成如下工作：</p><p>可以自由选择关机模式：关机、重启、单用户操作模式</p><p>可以设置关机时间</p><p>可以自定义关机消息</p><p>可以仅发出警告消息，不关机或重启</p><p>可以选择是否要用fsck检查文件系统</p></blockquote><ul><li>shutdown — 依据目前已启动的服务逐次关闭各服务，然后关机<ul><li>shutdown -h now<ul><li>立刻关机</li></ul></li><li>shutdown -h 20:25<ul><li>20：25关机</li></ul></li><li>shutdown -h +10<ul><li>十分钟后关机</li></ul></li><li>shutdown -r now<ul><li>立即重启</li></ul></li><li>shutdown -r +30 ‘the system will reboot’<ul><li>30分钟后重启，在目前登录者的屏幕前方显示该信息</li></ul></li><li>shutdown -k now ‘the system will reboot’<ul><li>仅发出警告消息，系统不会关机</li></ul></li></ul></li></ul><h4 id="reboot"><a href="#reboot" class="headerlink" title="reboot"></a>reboot</h4><ul><li>重启</li><li>通常执行:  sync;sync;sync;reboot</li></ul><h4 id="halt"><a href="#halt" class="headerlink" title="halt"></a>halt</h4><ul><li>不理会目前系统状态，硬件关机</li></ul><h4 id="poweroff"><a href="#poweroff" class="headerlink" title="poweroff"></a>poweroff</h4><ul><li>关机<ul><li>poweroff -f</li></ul></li></ul><h4 id="切换执行等级-init"><a href="#切换执行等级-init" class="headerlink" title="切换执行等级 init"></a>切换执行等级 init</h4><ul><li>run level 0<ul><li>关机</li></ul></li><li>run level 3<ul><li>纯命令行模式</li></ul></li><li>run level 5<ul><li>含有图形界面模式</li></ul></li><li>run level 6<ul><li>重启</li></ul></li></ul><blockquote><p><strong>init 0</strong>也可以关机</p></blockquote><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;X-window与命令行模式的切换&quot;&gt;&lt;a href=&quot;#X-window与命令行模式的切换&quot; class=&quot;headerlink&quot; title=&quot;X window与命令行模式的切换&quot;&gt;&lt;/a&gt;X window与命令行模式的切换&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;命令行模
+      
+    
+    </summary>
+    
+    
+      <category term="Linux-鸟哥私房菜" scheme="http://hanrd.tech/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/"/>
+    
+    
+      <category term="linux" scheme="http://hanrd.tech/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2.Linux如何学习、主机规划与磁盘分区</title>
+    <link href="http://hanrd.tech/posts/927108rt/"/>
+    <id>http://hanrd.tech/posts/927108rt/</id>
+    <published>2020-07-08T00:53:05.000Z</published>
+    <updated>2020-07-09T08:29:21.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Linux操作模式"><a href="#Linux操作模式" class="headerlink" title="Linux操作模式"></a>Linux操作模式</h1><ul><li>图形界面</li><li>命令行界面（Command Line）</li></ul><h1 id="Linux与硬件的搭配"><a href="#Linux与硬件的搭配" class="headerlink" title="Linux与硬件的搭配"></a>Linux与硬件的搭配</h1><ul><li>各个组件或设备在Linux下面都是一个文件<ul><li>硬盘 /dev/sd[a-p]</li></ul></li></ul><h1 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h1><ul><li><p>SATA/USB接口的磁盘根本没有一定的顺序</p><ul><li>设备文件名命名时，根据Linux内核检测到磁盘的顺序命名</li></ul></li><li><p>磁盘的组成</p><ul><li>磁盘的第一个扇区特别重要，包括：<ul><li><strong>主引导分区</strong>（Master Boot Record， MBR）<ul><li>安装引导加载程序的地方，446B</li><li>系统开机的时候会主动读取</li></ul></li><li><strong>分区表</strong>（partition table）<ul><li>记录整块硬盘分区的状态， 64B</li><li>分为若干记录区（最多4个），每组记录区记录了该区段的起始与结束的柱面号码</li></ul></li></ul></li></ul></li></ul><blockquote><p>所谓的分区只是针对64B的分区表进行设置</p><p>硬盘默认的分区表仅能写入四组分区信息，这四个分区信息称为<strong>主分区（primary）</strong>或<strong>扩展分区（extended）</strong></p><p>扩展分区最多只能有一个</p><p>分区最小的单位是<strong>柱面</strong></p><p>扩展分区继续切分的分区，叫做<strong>逻辑分区</strong>，逻辑分区的设备名称号码由<strong>5</strong>开始，1-4是保留给主分区或者扩展分区使用的，SATA硬盘最多11个逻辑分区（5-15）</p><p>能够被格式化后作为数据访问的分区为<strong>主分区</strong>与<strong>逻辑分区</strong>，<strong>扩展分区</strong>无法格式化</p></blockquote><h1 id="开机流程"><a href="#开机流程" class="headerlink" title="开机流程"></a>开机流程</h1><ul><li>BIOS是开机时计算机系统主动执行的第一个程序</li><li>BIOS会依据用户的设置去取得能够开机的硬盘，并读取该硬盘第一个扇区的MBR，MBR放置着最基本的引导加载程序，剩下的任务由该引导加载程序（Boot Loader）完成</li><li>引导加载程序目的是<strong>加载内核文件</strong>，剩下的由操作系统完成</li></ul><h3 id="Boot-Loader"><a href="#Boot-Loader" class="headerlink" title="Boot Loader"></a>Boot Loader</h3><ul><li>提供菜单：用户可以选择不同的开机选项</li><li>载入内核文件，开始操作系统</li><li>转交其他Loader：多重引导</li></ul><blockquote><p>引导加载程序可以安装在MBR，也可安装于每个分区的引导扇区（boot sector）</p></blockquote><ul><li>每个分区都有启动扇区</li><li>实际可开机的内核文件是放置在各分区内的</li><li>loader只会认识自己的系统分区内可开机的内核文件和其他loader</li><li>loader可以直接指向或者间接将管理权转交给另一个管理程序</li></ul><h1 id="Linux安装模式下，磁盘分区的选择"><a href="#Linux安装模式下，磁盘分区的选择" class="headerlink" title="Linux安装模式下，磁盘分区的选择"></a>Linux安装模式下，磁盘分区的选择</h1><blockquote><p>Linux的所有数据都是以文件的形态呈现的</p><p>目录树结构</p></blockquote><h2 id="文件系统与目录树的关系（挂载）"><a href="#文件系统与目录树的关系（挂载）" class="headerlink" title="文件系统与目录树的关系（挂载）"></a>文件系统与目录树的关系（挂载）</h2><ul><li>挂载<ul><li>利用一个目录作为进入点，将磁盘分区的数据放置在该目录下</li><li>进入点叫做<strong>挂载点</strong></li></ul></li></ul><h3 id="安装distributions，挂载点及磁盘分区的规划"><a href="#安装distributions，挂载点及磁盘分区的规划" class="headerlink" title="安装distributions，挂载点及磁盘分区的规划"></a>安装distributions，挂载点及磁盘分区的规划</h3><ul><li>/</li><li>swap</li><li>预留一个备用的剩余磁盘空间<blockquote><p>可以把/home、/usr、/boot、/var都单独分区</p></blockquote></li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Linux操作模式&quot;&gt;&lt;a href=&quot;#Linux操作模式&quot; class=&quot;headerlink&quot; title=&quot;Linux操作模式&quot;&gt;&lt;/a&gt;Linux操作模式&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;图形界面&lt;/li&gt;
+&lt;li&gt;命令行界面（Command Line）&lt;/l
+      
+    
+    </summary>
+    
+    
+      <category term="Linux-鸟哥私房菜" scheme="http://hanrd.tech/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/"/>
+    
+    
+      <category term="linux" scheme="http://hanrd.tech/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux是什么</title>
+    <link href="http://hanrd.tech/posts/e3a70ff1/"/>
+    <id>http://hanrd.tech/posts/e3a70ff1/</id>
+    <published>2020-07-06T12:31:51.000Z</published>
+    <updated>2020-07-07T03:34:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Linux是什么"><a href="#Linux是什么" class="headerlink" title="Linux是什么"></a>Linux是什么</h1><blockquote><p>Linux是一套操作系统，包括内核与系统调用接口（内核工具），提供了一个最底层的硬件控制与资源管理的完整架构。</p><p>1991年，芬兰人托瓦兹（Linus Torvalds）开发出了针对386硬件的内核原型。</p><p>Linux是GPL授权的‘<strong>Unix Like</strong>’自由软件。</p></blockquote><ul><li><p>Linux的内核版本</p><ul><li>版本编号：<ul><li>主版本.次版本.发行release版本-修改版本<ul><li>2.6.18-92.e15</li></ul></li><li>主次版本为奇数：开发版<ul><li>2.5.xx</li></ul></li><li>主次版本为偶数：稳定版<ul><li>2.6.xx</li></ul></li></ul></li></ul></li><li><p>Linux distributions（Linux 发行版）</p><ul><li>常说的Linux其实仅包括<strong>Linux内核</strong>与<strong>内核工具（文档）</strong></li><li>在此基础上加上<strong>应用软件</strong>，并制成可完全安装的程序，就是Linux distribution<ul><li>Linux Kernel + Softwares + Tools(Documentations) + 可完全安装= Linux distribution</li></ul></li></ul></li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Linux是什么&quot;&gt;&lt;a href=&quot;#Linux是什么&quot; class=&quot;headerlink&quot; title=&quot;Linux是什么&quot;&gt;&lt;/a&gt;Linux是什么&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Linux是一套操作系统，包括内核与系统调用接口（内核工具），提供
+      
+    
+    </summary>
+    
+    
+      <category term="Linux-鸟哥私房菜" scheme="http://hanrd.tech/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/"/>
+    
+    
+      <category term="linux" scheme="http://hanrd.tech/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>入门</title>
+    <link href="http://hanrd.tech/posts/b4c6216f/"/>
+    <id>http://hanrd.tech/posts/b4c6216f/</id>
+    <published>2020-07-05T16:07:54.000Z</published>
+    <updated>2020-07-15T07:36:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="markdown"><a href="#markdown" class="headerlink" title="markdown"></a>markdown</h1><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;markdown&quot;&gt;&lt;a href=&quot;#markdown&quot; class=&quot;headerlink&quot; title=&quot;markdown&quot;&gt;&lt;/a&gt;markdown&lt;/h1&gt;&lt;script&gt;
+        document.querySelectorAll(&#39;.gith
+      
+    
+    </summary>
+    
+    
+      <category term="入门" scheme="http://hanrd.tech/categories/%E5%85%A5%E9%97%A8/"/>
+    
+    
+      <category term="markdown" scheme="http://hanrd.tech/tags/markdown/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机概论</title>
+    <link href="http://hanrd.tech/posts/92710899/"/>
+    <id>http://hanrd.tech/posts/92710899/</id>
+    <published>2020-07-05T15:26:55.000Z</published>
+    <updated>2020-07-06T03:12:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h1><blockquote><p>接收用户输入指令与数据，经过中央处理器的数据与逻辑单元运算处理后，以产生或存储成有用的信息。</p></blockquote><h2 id="计算机硬件的五大单元"><a href="#计算机硬件的五大单元" class="headerlink" title="计算机硬件的五大单元"></a>计算机硬件的五大单元</h2><ul><li>输入单元：键盘、鼠标等</li><li>CPU内部的控制单元</li><li>CPU内部的算术逻辑单元</li><li>内存：CPU实际要处理的数据都来自内存</li><li>输出单元：显示器、打印机等</li></ul><h2 id="CPU种类"><a href="#CPU种类" class="headerlink" title="CPU种类"></a>CPU种类</h2><ul><li>精简指令集系统 RISC<ul><li>ARM系列</li><li>SPARC系列</li></ul></li><li>复杂指令集系统 CISC<ul><li>AMD、Intel等x86架构</li></ul></li></ul><h2 id="接口设备"><a href="#接口设备" class="headerlink" title="接口设备"></a>接口设备</h2><ul><li>主板<ul><li>主板芯片组</li></ul></li><li>存储设备<ul><li>硬盘、光盘</li></ul></li><li>显示设备<ul><li>显卡</li></ul></li><li>网络设备<ul><li>网卡</li></ul></li></ul><h2 id="计算机分类"><a href="#计算机分类" class="headerlink" title="计算机分类"></a>计算机分类</h2><ul><li>超级计算机</li><li>大型计算机</li><li>迷你计算机</li><li>工作站</li><li>个人计算机<ul><li>台式机</li><li>笔记本电脑</li></ul></li></ul><h1 id="PC机架构与接口设备"><a href="#PC机架构与接口设备" class="headerlink" title="PC机架构与接口设备"></a>PC机架构与接口设备</h1><blockquote><p>x86架构<br>主要有Intel、AMD</p></blockquote><h2 id="主板芯片组"><a href="#主板芯片组" class="headerlink" title="主板芯片组"></a>主板芯片组</h2><ul><li>北桥负责连接速度较快的CPU、内存、显卡等组件<ul><li>系统总线</li></ul></li><li>南桥负责连接速度较慢的周边接口，包括硬盘、USB、网卡等<ul><li>输入输出总线（I/O）</li></ul></li><li>特别注意，AMD的内存直接与CPU连接，不通过北桥</li></ul><h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><ul><li><p>频率</p><ul><li>不同的CPU由于微指令集不同、架构不同、每次频率能进行的工作指令数也不同，所以只能用来比较同款CPU的速度</li><li>外频<ul><li>CPU与外部组件进行数据传输/运算时的速度</li><li>通常超频，就是超的外频</li></ul></li><li>倍频<ul><li>CPU内部用来加速工作性能的一个倍数</li><li>出厂时通常被锁定，无法更改</li></ul></li><li>外频 * 倍频 = 频率</li></ul></li><li><p>总线与位数</p><ul><li>北桥所支持的频率：<strong>前端总线速度</strong><ul><li>2666MHz</li></ul></li><li>每次传送的位数：<strong>总线带宽</strong><ul><li>32/64</li></ul></li><li><strong>总线频宽</strong> = 总线带宽 * 前端总线速度</li><li>CPU每次能够处理解析的数据量：<strong>字组大小</strong>    <ul><li><strong>字组大小</strong>可以与<strong>总线带宽</strong>不相同</li><li>通常说的计算机位数，是指<strong>字组大小</strong></li></ul></li></ul></li><li><p>CPU等级</p><ul><li>目前64位CPU：x86_64等级</li></ul></li></ul><h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><ul><li>DRAM 动态随机访问内存<ul><li>内存主要组件就是DRAM，断电数据消失</li><li>DDR:双倍数据传送速度</li></ul></li><li>对服务器而言，内存的容量有时比CPU速度还重要</li><li>双通道设计<ul><li>扩大内存数据宽度</li></ul></li><li><p>CPU与内存的外率要尽量一致为佳</p></li><li><p>SRAM 静态随机访问内存</p><ul><li>通常SRAM容量较小、速度频率高，用作CPU 的L2缓存，集成到CPU内部</li></ul></li><li>ROM 只读存储器<ul><li>非挥发性内存，断电数据不消失</li><li>BIOS程序存储在ROM中，开机首先会读取BIOS程序</li><li>固件，也是一个程序，是对硬件更加重要的部分，最初也是使用ROM来进行软件的写入，现在写入到闪存或EEPROM中</li></ul></li></ul><h2 id="显卡"><a href="#显卡" class="headerlink" title="显卡"></a>显卡</h2><ul><li>显存、3D加速芯片GPU</li><li>PCI-Express（PCIe）规格</li></ul><h2 id="硬盘与存储设备"><a href="#硬盘与存储设备" class="headerlink" title="硬盘与存储设备"></a>硬盘与存储设备</h2><ul><li>物理组成<ul><li>盘片</li><li>机械手臂</li><li>磁头</li><li>主轴马达</li></ul></li><li>数据<ul><li>磁道</li><li>扇区 512B</li><li>柱面<ul><li>分割硬盘的最小单位</li></ul></li></ul></li><li>传输接口<ul><li>IDE接口</li><li>SATA接口</li><li>SCSI接口</li></ul></li></ul><h2 id="CMOS与BIOS"><a href="#CMOS与BIOS" class="headerlink" title="CMOS与BIOS"></a>CMOS与BIOS</h2><ul><li>CMOS主要功能为，记录主板上面的重要参数，包括系统时间、CPU电压与频率、各项设备的I/O地址与IRQ等,需要主板上的电池供电</li><li>BIOS是写入到主板上某一块闪存或EEPROM的程序，它可以在开机的时候执行，以加载CMOS当中的参数，并尝试调用存储设备中的开机程序，进一步进入到操作系统中。</li></ul><h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><ul><li><p>两部分</p><ul><li>内核<ul><li>直接参考硬件规格生成</li><li>功能：<ul><li>系统调用接口</li><li>程序管理</li><li>内存管理</li><li>文件系统管理</li><li>设备驱动</li></ul></li></ul></li><li>系统调用</li></ul></li><li><p>目前操作系统都会包含内核和相关的用户应用软件</p></li><li>操作系统只是在管理整个硬件资源，包括CPU、内存、输入输出设备及系统文件</li><li>应用程序的开发都是参考操作系统提供的开发接口，所以该应用程序只能在该操作系统上面运行</li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;计算机&quot;&gt;&lt;a href=&quot;#计算机&quot; class=&quot;headerlink&quot; title=&quot;计算机&quot;&gt;&lt;/a&gt;计算机&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;接收用户输入指令与数据，经过中央处理器的数据与逻辑单元运算处理后，以产生或存储成有用的信息。&lt;/p&gt;
+&lt;/
+      
+    
+    </summary>
+    
+    
+      <category term="Linux-鸟哥私房菜" scheme="http://hanrd.tech/categories/Linux-%E9%B8%9F%E5%93%A5%E7%A7%81%E6%88%BF%E8%8F%9C/"/>
+    
+    
+      <category term="linux" scheme="http://hanrd.tech/tags/linux/"/>
+    
+  </entry>
+  
+</feed>
