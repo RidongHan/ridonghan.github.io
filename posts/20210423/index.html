@@ -5,16 +5,16 @@
     <meta charset="utf-8">
     
     
-    <link rel="canonical" href="http://hanrd.tech/posts/20210206/">
+    <link rel="canonical" href="http://hanrd.tech/posts/20210423/">
     
     
-    <title>dpkg强制卸载软件 | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
+    <title>Linux之CPU主频控制 | Welcome to RidongHan&#39;s blogs! | 一只进击的IT菜鸟</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     
     <meta name="theme-color" content="#77AAFF">
     
     
-    <meta name="keywords" content="dpkg">
+    <meta name="keywords" content="Linux">
     
     
 
@@ -41,17 +41,17 @@
 
 
     
-    <meta name="description" content="dpkg强制卸载软件，忽略依赖warning1sudo dpkg --purge --force-depends 软件名 例如：1sudo dpkg --purge --force-depends &quot;libglvnd-dev&quot;          document.querySelectorAll(&#39;.github-emoji&#39;)           .forEach(el &#x3D;&gt; {">
+    <meta name="description" content="最大频率降为70%1echo &quot;70&quot; | sudo tee &#x2F;sys&#x2F;devices&#x2F;system&#x2F;cpu&#x2F;intel_pstate&#x2F;max_perf_pct 查看效果1watch -n 0 &quot;cat &#x2F;proc&#x2F;cpuinfo | grep -i mhz&quot;         document.querySelectorAll(&#39;.github-emoji&#39;)           .forEach">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dpkg强制卸载软件">
-<meta property="og:url" content="http://hanrd.tech/posts/20210206/index.html">
+<meta property="og:title" content="Linux之CPU主频控制">
+<meta property="og:url" content="http://hanrd.tech/posts/20210423/index.html">
 <meta property="og:site_name" content="Welcome to RidongHan&#39;s blogs!">
-<meta property="og:description" content="dpkg强制卸载软件，忽略依赖warning1sudo dpkg --purge --force-depends 软件名 例如：1sudo dpkg --purge --force-depends &quot;libglvnd-dev&quot;          document.querySelectorAll(&#39;.github-emoji&#39;)           .forEach(el &#x3D;&gt; {">
+<meta property="og:description" content="最大频率降为70%1echo &quot;70&quot; | sudo tee &#x2F;sys&#x2F;devices&#x2F;system&#x2F;cpu&#x2F;intel_pstate&#x2F;max_perf_pct 查看效果1watch -n 0 &quot;cat &#x2F;proc&#x2F;cpuinfo | grep -i mhz&quot;         document.querySelectorAll(&#39;.github-emoji&#39;)           .forEach">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-02-06T07:34:09.000Z">
-<meta property="article:modified_time" content="2021-02-06T07:38:58.000Z">
+<meta property="article:published_time" content="2021-04-23T05:39:50.000Z">
+<meta property="article:modified_time" content="2021-04-24T05:42:15.439Z">
 <meta property="article:author" content="韩日东">
-<meta property="article:tag" content="dpkg">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
     
         <link rel="alternate" type="application/atom+xml" title="Welcome to RidongHan&#39;s blogs!" href="/atom.xml">
@@ -154,7 +154,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">dpkg强制卸载软件</div>
+        <div class="flex-col header-title ellipsis">Linux之CPU主频控制</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -194,24 +194,24 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#dpkg强制卸载软件，忽略依赖warning"><span class="post-toc-number">1.</span> <span class="post-toc-text">dpkg强制卸载软件，忽略依赖warning</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最大频率降为70"><span class="post-toc-number">1.</span> <span class="post-toc-text">最大频率降为70%</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#查看效果"><span class="post-toc-number">2.</span> <span class="post-toc-text">查看效果</span></a></li></ol>
         </nav>
     </aside>
    
-<article id="post-dpkg强制卸载软件"
+<article id="post-Linux之CPU主频控制"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">dpkg强制卸载软件</h1>
+        <h1 class="post-card-title">Linux之CPU主频控制</h1>
         <div class="post-meta">
             <i class="icon icon-lg icon-calendar-o"></i>
             发表于
-            <time class="post-time" title="2021-02-06 15:34:09" datetime="2021-02-06T07:34:09.000Z"  itemprop="datePublished">2021-02-06</time>
+            <time class="post-time" title="2021-04-23 13:39:50" datetime="2021-04-23T05:39:50.000Z"  itemprop="datePublished">2021-04-23</time>
 
             <br id="mybreak"/>
             
 	<i class="icon icon-lg icon-folder-o"></i>
-	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/dpkg/">dpkg</a></li></ul>
+	分类：<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Linux/">Linux</a></li></ul>
 
 
             <i>·</i>
@@ -227,9 +227,8 @@
             阅读本文可能花费您&nbsp;<span class="post-count">1</span>&nbsp;分钟
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="dpkg强制卸载软件，忽略依赖warning"><a href="#dpkg强制卸载软件，忽略依赖warning" class="headerlink" title="dpkg强制卸载软件，忽略依赖warning"></a>dpkg强制卸载软件，忽略依赖warning</h1><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --purge --force-depends 软件名</span><br></pre></td></tr></tbody></table></figure>
-<p>例如：<br></p><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg --purge --force-depends "libglvnd-dev"</span><br></pre></td></tr></tbody></table></figure><p></p>
-<script>
+            <h2 id="最大频率降为70"><a href="#最大频率降为70" class="headerlink" title="最大频率降为70%"></a>最大频率降为70%</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "70" | sudo tee /sys/devices/system/cpu/intel_pstate/max_perf_pct</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">watch -n 0 "cat /proc/cpuinfo | grep -i mhz"</span><br></pre></td></tr></tbody></table></figure><script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -254,12 +253,12 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2021-02-06T07:38:58.000Z" itemprop="dateUpdated">2021-02-06 15:38:58</time>
+    Last updated: <time datetime="2021-04-24T05:42:15.439Z" itemprop="dateUpdated">2021-04-24 13:42:15</time>
 </span>
 
 
         
-        原文链接：<a href="/posts/20210206/" target="_blank" rel="external">http://hanrd.tech/posts/20210206/</a>
+        原文链接：<a href="/posts/20210423/" target="_blank" rel="external">http://hanrd.tech/posts/20210423/</a>
         
     </div>
     <footer>
@@ -275,7 +274,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dpkg/" rel="tag">dpkg</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
 
 
             
@@ -285,7 +284,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20210206/&title=《dpkg强制卸载软件》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20210423/&title=《Linux之CPU主频控制》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -295,22 +294,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20210206/&title=《dpkg强制卸载软件》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20210423/&title=《Linux之CPU主频控制》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20210206/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20210423/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《dpkg强制卸载软件》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20210206/&via=http://hanrd.tech" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux之CPU主频控制》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20210423/&via=http://hanrd.tech" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20210206/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20210423/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -333,9 +332,9 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/posts/20210423/" id="post-prev" class="post-nav-link">
+      <a href="/posts/20210424/" id="post-prev" class="post-nav-link">
         <h4 class="title" >
-          上一篇：Linux之CPU主频控制
+          上一篇：git&amp;github常用操作
         </h4>
       </a>
     </div>
@@ -343,8 +342,8 @@
 
   
     <div class="waves-block waves-effect next">
-      <a href="/posts/20201101/" id="post-next" class="post-nav-link">
-        <h4 class="title" data-hover="下一篇：COLING 2020 -- Improving Long-Tail Relation Extraction with Collaborating Relation-Augmented Attention">下一篇：COLING 2020 -- Improving Long-Tail Relation Extraction with Collaborating Relation-Augmented Attention</h4>
+      <a href="/posts/20210206/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：dpkg强制卸载软件">下一篇：dpkg强制卸载软件</h4>
       </a>
     </div>
   
@@ -408,7 +407,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20210206/&title=《dpkg强制卸载软件》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://hanrd.tech/posts/20210423/&title=《Linux之CPU主频控制》 — Welcome to RidongHan's blogs!&pic=http://hanrd.tech/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -418,22 +417,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20210206/&title=《dpkg强制卸载软件》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://hanrd.tech/posts/20210423/&title=《Linux之CPU主频控制》 — Welcome to RidongHan's blogs!&source=An IT Rookie ..." data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20210206/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://hanrd.tech/posts/20210423/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《dpkg强制卸载软件》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20210206/&via=http://hanrd.tech" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux之CPU主频控制》 — Welcome to RidongHan's blogs!&url=http://hanrd.tech/posts/20210423/&via=http://hanrd.tech" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20210206/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://hanrd.tech/posts/20210423/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -444,7 +443,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p class="wechatshare">扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxElEQVR42u3ay2rEMAwF0Pz/T6fQVWE65kp+TAaOVyVNrZMuhCz5uuJ1/67XJ3+fvz5Jnl87Fi4u7jT3Hq7XrZP3x2/O7ImLi3uSO05ehe2CFPZu/ySB4uLiPo2bp7/qnri4uN/LzQMkxQ0uLu7zudUA1c9bVkLh4uIe4VYbpjt+3tjfxcXFLXLv4poZtCyIjouLe4Q7DhYdReIdxk/y4xAuLu5ubvJSHqZ6/SLfExcX9zy3OjjpFTr5oOXtPwgXF/c4dxymWmkkaS6/qnVVw+Di4k5z87S19hJGuTzCxcU9yJ050hSOLq3PvnohcXFxF3Hz4mb+g/MWLS4u7hO41UKkejTKj0D/7ICLi3uE2wszDpD8FS4u7pO5vRFpb6DSS2q4uLjnub1rWDP5csHVDVxc3M3cvChpjkUn0hkuLu5nub0m5sxB6IoXLi7up7j5ysugakOkMErBxcXdzK0mlOqFzupBKP8tLi7ubm5vmFotenpF0rLZLy4uboubJ6+83VltwkbHMFxc3Idxq/VR0mrJiyRcXNwnc/PUllyqKA9mcHFxD3Kr49Ve6yQf2Cxoi+Di4s7mpamG6fyn9horuLi4G7g/m8u0e+kJtr8AAAAASUVORK5CYII=" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABw0lEQVR42u3awa7CMAwEwP7/T/ddkVD71nYTQJqcECrJlIMVb3Ic8Thfxvs37+P+t6/fHysGLi7umJssnIOqT1ZnwMXF3cm9qhi9Z5JXrc6Pi4v7zdy8kE3mxMXF/S3ufUuTtze4uLjfz02an0mckcz5cK+Gi4s74OaLrfu8JN/FxcVtcc/iuC9A1UCkvDouLu4Wbl5QnjpGrRYyXFzc/dxk4Wo5mwcohRKGi4u7hZtMUd2mzA9lLwsZLi7uAm6yQckPWp6KP+5nw8XFXc3Nm5Z80vwSRl74cHFxd3Lz5eehRv6nRKvg4uIu5uYXpArXp+LIIzm2uQxHcHFxl3Hzixe9eDSPV6JeDRcXdzF30q5Ut0cP0HFxcbdwkzjjvv5Vty9HcfwTiODi4n6IO9/0VF8vukeGi4u7hZtTqlucPGpJiikuLu5Obp6a9ELV0bamcJkEFxd3yj2Lo3f0khyTRC+Ji4u7hVstLr2LFJNbIc2XwcXFHXPnxasXm+YNFS4u7qe41ULTOyzpPYOLi/tb3HlDVX5tXFzcr+TmnVM1io1+hYuLu5FbbVRyyqQg4uLiforbO/icHITkscso38XFxe1w/wAp8+IxCyPN+gAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 

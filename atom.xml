@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hanrd.tech/"/>
-  <updated>2021-02-06T07:38:58.000Z</updated>
+  <updated>2021-04-24T05:38:34.260Z</updated>
   <id>http://hanrd.tech/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>git&amp;github常用操作</title>
+    <link href="http://hanrd.tech/posts/20210424/"/>
+    <id>http://hanrd.tech/posts/20210424/</id>
+    <published>2021-04-24T05:33:59.000Z</published>
+    <updated>2021-04-24T05:38:34.260Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="git-push项目到github："><a href="#git-push项目到github：" class="headerlink" title="git push项目到github："></a>git push项目到github：</h1><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line"></span><br><span class="line">git commit -m "first commit"</span><br><span class="line"></span><br><span class="line">git branch -M main</span><br><span class="line"></span><br><span class="line">git remote add origin git@github.com:RidongHan/xxx.git</span><br><span class="line"></span><br><span class="line">git push origin main</span><br></pre></td></tr></tbody></table></figure><h1 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h1><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br><span class="line"></span><br><span class="line">git reflog</span><br></pre></td></tr></tbody></table></figure><h1 id="git-lfs-大文件支持"><a href="#git-lfs-大文件支持" class="headerlink" title="git-lfs 大文件支持"></a>git-lfs 大文件支持</h1><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git lfs track "*.zip"</span><br></pre></td></tr></tbody></table></figure><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;git-push项目到github：&quot;&gt;&lt;a href=&quot;#git-push项目到github：&quot; class=&quot;headerlink&quot; title=&quot;git push项目到github：&quot;&gt;&lt;/a&gt;git push项目到github：&lt;/h1&gt;&lt;figure c
+      
+    
+    </summary>
+    
+    
+      <category term="Git/Github" scheme="http://hanrd.tech/categories/Git-Github/"/>
+    
+    
+      <category term="Git/Github" scheme="http://hanrd.tech/tags/Git-Github/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux之CPU主频控制</title>
+    <link href="http://hanrd.tech/posts/20210423/"/>
+    <id>http://hanrd.tech/posts/20210423/</id>
+    <published>2021-04-23T05:39:50.000Z</published>
+    <updated>2021-04-24T05:42:15.439Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="最大频率降为70"><a href="#最大频率降为70" class="headerlink" title="最大频率降为70%"></a>最大频率降为70%</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "70" | sudo tee /sys/devices/system/cpu/intel_pstate/max_perf_pct</span><br></pre></td></tr></tbody></table></figure><h2 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">watch -n 0 "cat /proc/cpuinfo | grep -i mhz"</span><br></pre></td></tr></tbody></table></figure><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;最大频率降为70&quot;&gt;&lt;a href=&quot;#最大频率降为70&quot; class=&quot;headerlink&quot; title=&quot;最大频率降为70%&quot;&gt;&lt;/a&gt;最大频率降为70%&lt;/h2&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="http://hanrd.tech/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="http://hanrd.tech/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>dpkg强制卸载软件</title>
